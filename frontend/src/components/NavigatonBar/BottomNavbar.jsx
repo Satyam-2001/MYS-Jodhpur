@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 export default function BottomNavigation() {
     const { isLoggedIn } = useSelector(state => state.user)
     return (
-        <Stack direction='row' sx={{ display: { md: 'none' }, width: '100%', height: '55px', bgcolor: 'background.paper', justifyContent: 'space-evenly', alignItems: 'center' }}>
+        <Stack position={'fixed'} direction='row' sx={{ display: { md: 'none' }, width: '100%', height: '64px', bgcolor: 'background.paper', justifyContent: 'space-evenly', alignItems: 'center', bottom: 0 }}>
             {sidebarNavigationList.map(({ Icon, name, to, auth }) => {
                 if (auth !== undefined && (auth ^ isLoggedIn)) return
                 return (

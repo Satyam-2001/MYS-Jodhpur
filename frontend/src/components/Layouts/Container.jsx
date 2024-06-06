@@ -30,12 +30,12 @@ export default function Container({ children, hideSideBar, hideBottomNavBar, hid
         )
     }
     return (
-        <Fragment>
+        <Stack height='100vh' sx={{ position: 'relative', paddingBottom: { xs: hideBottomNavBar ? 0 : '65px', md: 0 } }} bgcolor={'background.default'} boxSizing='border-box'>
             <Stack boxSizing='border-box' sx={{ flex: 1, overflow: 'hidden', bgcolor: 'background.default' }}>
                 {!hideAppBar && <Header />}
                 {Internal}
             </Stack>
             {!hideBottomNavBar && <BottomNavigation />}
-        </Fragment>
+        </Stack>
     )
 }
