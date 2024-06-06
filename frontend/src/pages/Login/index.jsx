@@ -16,7 +16,7 @@ export default function Login() {
     const navigate = useNavigate()
 
     const { mutateAsync } = useMutation({
-        mutationFn: (data) => axios.post('/user/login', data)
+        mutationFn: (data) => axios.post('/auth/login', data)
     })
 
     const formikState = useFormik({
@@ -40,8 +40,8 @@ export default function Login() {
     const { handleSubmit, isSubmitting, status } = formikState
     return (
         <Container hideSideBar sx={{ justifyContent: 'center', alignItems: 'center' }}>
-            <Paper sx={{ p: 3 }}>
-                <Stack alignItems='center' gap={1} width='400px'>
+            <Paper sx={{ p: 3, maxWidth: '90%' }}>
+                <Stack alignItems='center' gap={1} width='400px' maxWidth={'100%'}>
                     <Typography variant='h3' fontSize={'2rem'} fontWeight={700} sx={{ opacity: 0.8, pb: 1 }} >
                         Login
                     </Typography>
