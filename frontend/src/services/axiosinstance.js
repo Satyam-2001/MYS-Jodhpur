@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 const instance = axios.create({
-    baseURL: 'http://localhost:3001/',
-    // baseURL: 'https://wolfame.onrender.com',
+    // baseURL: 'http://localhost:3001/',
+    baseURL: 'https://mys-jodhpur.onrender.com',
 })
 
 instance.interceptors.request.use((request) => {
