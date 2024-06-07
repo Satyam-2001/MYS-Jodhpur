@@ -12,9 +12,8 @@ function ActivityCardView({ profileId }) {
         queryKey: ['users', profileId],
         queryFn: ({ signal }) => axios.get(`/user/${profileId}`, { signal, params: { select: 'basic_info' } }),
     })
-
-    if (!profile) return
-    if (isPending || !profile?.basic_info) {
+    
+    if (isPending || !profile || !profile?.basic_info) {
         return <UserCardGridViewSkeleton />
     }
     return <UserCardGridView profile={profile} sx={{ height: '100%', width: '100%' }} />
