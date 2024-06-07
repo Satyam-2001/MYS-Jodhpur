@@ -22,7 +22,6 @@ function ActivityCardView({ profileId }) {
 
 function Carousel({ list }) {
     const [itemIndex, setItemIndex] = useState(0)
-    const length = list?.length
     const forwardHandler = () => {
         setItemIndex(prop => prop + 1)
     }
@@ -49,7 +48,7 @@ function Carousel({ list }) {
 export default function ActivityCards({ data, isPending, field, title }) {
     const { user } = useSelector(state => state.user)
     const profileList = user?.[field]
-    if (isPending || profileList.length == 0) { return }
+    if (isPending || !profileList?.length) { return }
     return (
         <Stack gap={1} p={1}>
             <Typography sx={{ fontSize: '1.5rem', px: 1, fontFamily: 'Lexend,sans-serif' }}>{title}</Typography>
