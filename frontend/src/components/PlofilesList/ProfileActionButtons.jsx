@@ -1,13 +1,9 @@
-import Block from '../../UI/Block';
-import Mirror from '../../UI/Mirror';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import BookmarksOutlinedIcon from '@mui/icons-material/BookmarksOutlined';
-import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined';
 import ForwardToInboxOutlinedIcon from '@mui/icons-material/ForwardToInboxOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
-import MoveToInboxOutlinedIcon from '@mui/icons-material/MoveToInboxOutlined';
 import chroma from 'chroma-js';
-import { Button, IconButton, Stack, Typography, useTheme } from '@mui/material';
+import { Button, Stack, Typography, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '../../services/http';
@@ -178,6 +174,7 @@ export default function ProfileActionButtons({ text = true, profile, sx = {}, ..
             sx={{
                 height: '60px',
                 borderRadius: '10px',
+                flexShrink: 0,
                 backgroundColor: chroma(theme.palette.primary.main).alpha(0.1).hex(),
                 ...sx
             }}

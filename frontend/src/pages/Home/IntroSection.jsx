@@ -3,6 +3,7 @@ import { Box, Divider, Grid, Stack, Typography, useTheme, styled, Button, FormCo
 import Tilt from 'react-parallax-tilt'
 import Mirror from '../../UI/Mirror'
 import chroma from 'chroma-js'
+import { useNavigate } from 'react-router'
 
 function FeatureContainer({ children, color }) {
     const theme = useTheme()
@@ -56,7 +57,11 @@ function SelectInput({ label, value, menu }) {
 }
 
 export default function IntroSection({ color = 'primary' }) {
-    const theme = useTheme()
+    const navigate = useNavigate()
+
+    const nagigateRegisterHandler = () => {
+        navigate('/register')
+    }
 
     return (
         <Fragment>
@@ -87,7 +92,7 @@ export default function IntroSection({ color = 'primary' }) {
                             <FeatureContainer color='yellow'>
                                 Browse your Community
                             </FeatureContainer>
-                            <Button variant='contained' size='large' sx={{ backgroundImage: 'var(--text-gradient)', borderRadius: '20px', fontSize: '1.1rem', fontWeight: 600 }}>
+                            <Button variant='contained' onClick={nagigateRegisterHandler} size='large' sx={{ backgroundImage: 'var(--text-gradient)', borderRadius: '20px', fontSize: '1.1rem', fontWeight: 600 }}>
                                 Create Your Profile
                             </Button>
                         </Stack>

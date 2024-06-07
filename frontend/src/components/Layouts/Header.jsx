@@ -95,8 +95,8 @@ export default function Header() {
                                 </Link>
                             </Fragment>
                             :
-                            <Button variant='text' sx={{ p: 1, ml: 1 }} onClick={() => { navigate('/login') }}>
-                                Log In
+                            <Button variant='text' sx={{ p: 1, ml: 1 }} onClick={() => { navigate('/register') }}>
+                                Register
                             </Button>
                         }
                     </Stack>

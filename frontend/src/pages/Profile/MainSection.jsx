@@ -1,11 +1,13 @@
 import React, { useContext, useState } from 'react'
 import Block from '../../UI/Block'
-import { Avatar, Divider, Grid, Paper, Stack, Typography, useTheme } from '@mui/material'
+import { Avatar, Divider, Grid, Paper, Skeleton, Stack, Typography, useTheme } from '@mui/material'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import About from './About'
 import Biodata from './Biodata'
 import Images from './Images'
+
+
 
 function TabPanel({ value, index, children }) {
     if (value !== index) return <></>
@@ -17,6 +19,14 @@ function a11yProps(index) {
         id: `profile-tab-${index}`,
         'aria-controls': `profile-tabpanel-${index}`,
     };
+}
+
+export function MainSectionSkeleton() {
+    return (
+        <Block sx={{ flex: { md: 1 }, flexShrink: 0, p: 1, overflow: { md: 'hidden' }, height: { xs: '100%', md: undefined } }}>
+            <Skeleton variant='rounded' sx={{height: '100%', width: '100%'}} />
+        </Block>
+    )
 }
 
 

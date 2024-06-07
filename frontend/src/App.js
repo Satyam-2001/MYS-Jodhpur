@@ -9,11 +9,7 @@ function App(props) {
 
     useFetchData()
 
-    return (
-        <Stack height='100vh' sx={{ position: 'relative' }} bgcolor={'background.default'} boxSizing='border-box'>
-            <Outlet />
-        </Stack>
-    )
+    return <Outlet />
 }
 
 export default App

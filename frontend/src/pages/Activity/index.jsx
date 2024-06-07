@@ -5,8 +5,12 @@ import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined
 import ForwardToInboxOutlinedIcon from '@mui/icons-material/ForwardToInboxOutlined';
 import MoveToInboxOutlinedIcon from '@mui/icons-material/MoveToInboxOutlined';
 import Block from '../../UI/Block';
-import { Stack, Typography } from '@mui/material';
+import { Box, Grid, Stack, Typography } from '@mui/material';
 import { Link, NavLink, Outlet } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import axios from '../../services/axiosinstance'
+import ActivityCards from './ActivityCards';
+import './index.css'
 
 const activityTabs = [
     {
@@ -57,15 +61,49 @@ function ActivityTabCard({ label, Icon, to }) {
 }
 
 export default function Activity() {
+    const { data, isPending } = useQuery({
+        queryKey: ['users', 'activity'],
+        queryFn: () => axios.get('/activity')
+    })
+
+    console.log(data)
+
     return (
-        <Container className='hide-scroll-bar' direction='column' overflow='auto' gap={1}>
+        <Container className='hide-scroll-bar' direction='column' overflow='auto' gap={1} height='100%' >
             <Stack className='hide-scroll-bar' direction='row' gap={1} overflow={'auto'} width='100%' flexShrink={0}>
                 {activityTabs.map(tabValue => {
                     return <ActivityTabCard key={tabValue.label} {...tabValue} />
                 })}
             </Stack>
-            <Block sx={{ flex: 1 }}>
-
+            <Block height='max-content'>
+                <ActivityCards
+                    data={data}
+                    isPending={isPending}
+                    field={'shortlisted'}
+                    title={'Shortlisted Profiles'}
+                    url={'shortlisted'}
+                />
+                <ActivityCards
+                    data={data}
+                    isPending={isPending}
+                    field={'matchintrest'}
+                    title={'Matched Profiles'}
+                    url={'matchintrest'}
+                />
+                <ActivityCards
+                    data={data}
+                    isPending={isPending}
+                    field={'sendintrest'}
+                    title={'Intrests Sent'}
+                    url={'sendintrest'}
+                />
+                <ActivityCards
+                    data={data}
+                    isPending={isPending}
+                    field={'recieveintrest'}
+                    title={'Intrests Recieved'}
+                    url={'recieveintrest'}
+                />
             </Block>
         </Container>
     )

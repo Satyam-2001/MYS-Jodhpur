@@ -16,9 +16,8 @@ export default function ActivityProfilesList({ title, url }) {
     const dispatch = useDispatch()
     const { data: profileList, isPending } = useQuery({
         queryKey: ['users', url],
-        queryFn: ({ signal }) => axios.get(`/activity/${url}`, { signal }),
-        initialData: [],
-        staleTime: 10000,
+        queryFn: ({ signal }) => axios.get(`/activity/${url}`, { signal })
+        // staleTime: 10000,
     })
 
     useEffect(() => {
@@ -32,9 +31,9 @@ export default function ActivityProfilesList({ title, url }) {
                 <IconButton onClick={() => navigate('../')}>
                     <ArrowBackIosNewOutlinedIcon sx={{ fontSize: '1.4rem' }} />
                 </IconButton>
-                <Typography sx={{ fontSize: '1.4rem', px: 1, fontFamily: 'Lexend,sans-serif' }}>{title} ({profileList.length})</Typography>
+                <Typography sx={{ fontSize: '1.4rem', px: 1, fontFamily: 'Lexend,sans-serif' }}>{title} ({profileList?.length || 0})</Typography>
             </Block>
-            <ProfilesList profilesList={profileList || []} />
+            <ProfilesList profilesList={profileList || []} isPending={isPending} />
         </Container>
     )
 }

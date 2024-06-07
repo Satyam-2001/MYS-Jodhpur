@@ -1,4 +1,4 @@
-import { Button, Divider, Grid, IconButton, Stack, Typography, useTheme, Box, Paper } from '@mui/material'
+import { Button, Divider, Grid, IconButton, Stack, Typography, useTheme, Box, Paper, Skeleton } from '@mui/material'
 import parameters, { getParameters } from '../../data/parameters';
 import React, { useState } from 'react'
 import ProfileImage from '../ProfileImage';
@@ -7,6 +7,18 @@ import { Link } from 'react-router-dom';
 import ProfileActionButtons from './ProfileActionButtons';
 import { useSelector } from 'react-redux';
 import ParametersGrid from './ParametersGrid';
+import Block from '../../UI/Block';
+
+export function UserCardListViewSkeleton() {
+    const { isLoggedIn } = useSelector(state => state.user)
+
+    return (
+        <Block height={isLoggedIn ? '300px' : '240px'} gap={1} p={1} direction='row' width='100%'>
+            <Skeleton variant='rounded' width='220px' height='100%' />
+            <Skeleton variant='rounded' sx={{ flex: 1 }} height='100%' />
+        </Block>
+    )
+}
 
 export default function UserCardListView({ profile }) {
     const theme = useTheme()

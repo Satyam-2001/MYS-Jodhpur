@@ -2,14 +2,13 @@ import React, { useContext, useEffect } from 'react'
 import Conatiner from '../../components/Layouts/Container'
 import Block from '../../UI/Block'
 import { Avatar, Divider, Stack, Typography, useMediaQuery, useTheme } from '@mui/material'
-import MainSection from './MainSection'
-import SideSection from './SideSection'
+import MainSection, { MainSectionSkeleton } from './MainSection'
+import SideSection, { SideSectionSkeleton } from './SideSection'
 import { useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import axios from '../../services/axiosinstance'
 import { ProfileContext, ProfileProvider } from '../../context/ProfileProvider'
 import { useSelector } from 'react-redux'
-
 
 function ProfileComponent() {
     const params = useParams()
@@ -31,13 +30,13 @@ function ProfileComponent() {
         updateProfile(profileData)
     }, [profileData])
 
-    if (isPending || !profile?._id) return <></>
+    const isLoading = isPending || !profile._id
 
     return (
         <Conatiner className='hide-scroll-bar' hideSideBar hideBottomNavBar={!isMe && isMobile} hideAppBar={isMobile}>
             <Stack className='hide-scroll-bar' gap={1} width='100%' height='100%' overflow={'auto'} direction={{ xs: 'column', md: 'row' }}>
-                <SideSection />
-                <MainSection />
+                {isLoading ? <SideSectionSkeleton /> : <SideSection />}
+                {isLoading ? <MainSectionSkeleton /> : <MainSection />}
             </Stack>
         </Conatiner>
     )

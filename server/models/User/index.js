@@ -60,7 +60,9 @@ function getAge(dateString) {
 
 userSchema.methods.toJSON = function () {
     const userObject = this.toObject()
-    userObject.basic_info.age = getAge(userObject.basic_info.date_of_birth)
+    if (userObject.basic_info?.date_of_birth) {
+        userObject.basic_info.age = getAge(userObject.basic_info.date_of_birth)
+    }
     delete userObject.password
     delete userObject.tokens
     return userObject
@@ -85,13 +87,14 @@ userSchema.methods.filterUserFields = async function (user) {
             break
         }
         case 'Only Registered Users': {
-            if (!!user) {
+            if (!user) {
                 delete userObject.contact
                 userObject.contact = 'hidden'
             }
+            break
         }
         case 'Only Matches': {
-            if (!user.matchintrest?.includes(userObject._id)) {
+            if (!user || !user.matchintrest?.includes(userObject._id)) {
                 delete userObject.contact
                 userObject.contact = 'hidden'
             }

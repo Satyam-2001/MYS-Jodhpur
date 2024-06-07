@@ -4,6 +4,7 @@ const router = new express.Router()
 const User = require("../models/User")
 require('dotenv').config()
 const { sendEmail, verifyEmail, resendEmail } = require('../controller/mail')
+const { default: mongoose } = require('mongoose')
 
 router.post('/', auth, async (req, res) => {
     try {
@@ -42,6 +43,38 @@ router.post('/', auth, async (req, res) => {
         res.send({ user: req.user, token: req.token })
     }
     catch (e) {
+        res.status(500).send(e)
+    }
+})
+
+router.get('/', auth, async (req, res) => {
+    try {
+        const result = await User.findById(req.user._id)
+            .select('shortlisted sendintrest recieveintrest matchintrest')
+            .populate({
+                path: 'shortlisted',
+                select: 'basic_info',
+                options: { limit: 5 },
+            })
+            .populate({
+                path: 'sendintrest',
+                select: 'basic_info',
+                options: { limit: 5 },
+            })
+            .populate({
+                path: 'recieveintrest',
+                select: 'basic_info',
+                options: { limit: 5 },
+            })
+            .populate({
+                path: 'matchintrest',
+                select: 'basic_info',
+                options: { limit: 5 },
+            })
+        res.send(result)
+    }
+    catch (e) {
+        console.log(e)
         res.status(500).send(e)
     }
 })

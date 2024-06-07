@@ -42,7 +42,7 @@ export default function Search() {
             <Filters />
             <Stack sx={{ width: { xs: '100%', md: filter_open ? '75%' : '100%' }, height: '100%', transition: 'width 0.35s', flex: 1 }}>
                 <SearchHeader />
-                <ProfilesList isPending={isLoading} profilesList={userData} view={view_style} />
+                <ProfilesList isPending={isLoading} profilesList={userData || []} view={view_style} />
             </Stack>
         </Conatiner>
     )

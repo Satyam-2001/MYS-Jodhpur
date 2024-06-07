@@ -1,19 +1,21 @@
-import { Box, Stack } from '@mui/material'
+import { Box, Stack, useMediaQuery } from '@mui/material'
 import React from 'react'
 import './ImageSlider.css'
 
 function ImageSection({ start }) {
+    const isMobile = useMediaQuery(theme => theme.breakpoints.down('md'))
+    const imagesLength = isMobile ? 3 : 5
     return (
         <span style={{ display: 'flex', flexDirection: 'row' }}>
             {
-                Array.apply(null, { length: 5 }).map((_, index) => {
+                Array.apply(null, { length: imagesLength }).map((_, index) => {
                     return (
                         <Stack
                             key={start + index}
                             direction='row'
                             sx={{
                                 height: '100%',
-                                width: '20%',
+                                width: `${100/imagesLength}%`,
                                 padding: '10px',
                                 boxSizing: 'border-box',
                                 // opacity: 0.5

@@ -61,10 +61,11 @@ export default function BasicInfo() {
     const theme = useTheme()
     const { profile } = useContext(ProfileContext)
     const basicInfo = profile.basic_info
+    console.log(profile)
     return (
         <AboutContainer title='Basic info' EditModal={EditModal}>
             <Grid container py={2}>
-                {getParameters(basicInfo).map(({ Icon, value }) => {
+                {getParameters(basicInfo || {}).map(({ Icon, value }) => {
                     return (
                         <Grid key={value} item xs={12} sm={6} md={4}>
                             <Stack direction='row' gap={2} key={value} p={'3px'}>

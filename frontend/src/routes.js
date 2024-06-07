@@ -12,6 +12,7 @@ import IntrestRecieve from "./pages/Activity/Sections/IntrestRecieve";
 import IntrestSent from "./pages/Activity/Sections/IntrestSent";
 import MatchedProfiles from "./pages/Activity/Sections/MatchedProfiles";
 import Settings from "./pages/Settings";
+import Error from "./components/Error";
 
 const router = createBrowserRouter([
     {
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Home />
+                element: <Home />,
             },
             {
                 path: '/register',
@@ -81,6 +82,10 @@ const router = createBrowserRouter([
             {
                 path: '/settings',
                 element: <Settings />,
+            },
+            {
+                path: '*',
+                element: <Error />,
             }
         ],
     }
