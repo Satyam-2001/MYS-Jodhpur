@@ -9,7 +9,7 @@ export default function Register() {
     const [formData, setFormData] = useState()
 
     const { mutate: verifyOtpMutate } = useMutation({
-        mutationFn: (data) => axios.post('/auth/otp', data),
+        mutationFn: (data) => axios.post('/auth/otp/send', data),
         onSuccess: (data) => {
             console.log(data)
         },

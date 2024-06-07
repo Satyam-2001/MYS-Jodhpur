@@ -31,7 +31,7 @@ export default function Login() {
                 navigate('/profile')
             }
             catch (e) {
-                action.setStatus(e.response.data.msg)
+                action.setStatus(e.response.data.msg || 'Something went wrong.')
             }
         }
     })

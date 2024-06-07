@@ -7,7 +7,6 @@ import Mirror from '../../UI/Mirror'
 import chroma from 'chroma-js'
 
 
-
 function MirrorContainer({ children, title, color }) {
     const theme = useTheme()
     const mode = theme.palette.mode
