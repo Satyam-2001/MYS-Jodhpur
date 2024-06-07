@@ -61,11 +61,14 @@ router.get('/me', auth, async (req, res) => {
 router.get('/:id', authLazy, async (req, res) => {
     try {
         const userId = req.params.id
-        const user = await User.findById(userId, { shortlisted: 0, recieveintrest: 0, sendintrest: 0, matchintrest: 0 })
+        const options = req.query.select === 'basic_info' ? { basic_info: 1 } : { shortlisted: 0, recieveintrest: 0, sendintrest: 0, matchintrest: 0 }
+        const user = await User.findById(userId, options)
+        if (!user) return res.status(404).send({ msg: 'User not exist' })
         filteredUser = await user.filterUserFields(req.user)
         res.send(filteredUser)
     }
     catch (e) {
+        console.log(e)
         res.status(500).send(e)
     }
 })

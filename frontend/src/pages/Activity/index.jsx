@@ -61,12 +61,6 @@ function ActivityTabCard({ label, Icon, to }) {
 }
 
 export default function Activity() {
-    const { data, isPending } = useQuery({
-        queryKey: ['users', 'activity'],
-        queryFn: () => axios.get('/activity')
-    })
-
-    console.log(data)
 
     return (
         <Container className='hide-scroll-bar' direction='column' overflow='auto' gap={1} height='100%' >
@@ -75,36 +69,26 @@ export default function Activity() {
                     return <ActivityTabCard key={tabValue.label} {...tabValue} />
                 })}
             </Stack>
-            <Block height='max-content'>
-                <ActivityCards
-                    data={data}
-                    isPending={isPending}
-                    field={'shortlisted'}
-                    title={'Shortlisted Profiles'}
-                    url={'shortlisted'}
-                />
-                <ActivityCards
-                    data={data}
-                    isPending={isPending}
-                    field={'matchintrest'}
-                    title={'Matched Profiles'}
-                    url={'matchintrest'}
-                />
-                <ActivityCards
-                    data={data}
-                    isPending={isPending}
-                    field={'sendintrest'}
-                    title={'Intrests Sent'}
-                    url={'sendintrest'}
-                />
-                <ActivityCards
-                    data={data}
-                    isPending={isPending}
-                    field={'recieveintrest'}
-                    title={'Intrests Recieved'}
-                    url={'recieveintrest'}
-                />
-            </Block>
+            <ActivityCards
+                field={'shortlisted'}
+                title={'Shortlisted Profiles'}
+                url={'shortlisted'}
+            />
+            <ActivityCards
+                field={'matchintrest'}
+                title={'Matched Profiles'}
+                url={'matchintrest'}
+            />
+            <ActivityCards
+                field={'sendintrest'}
+                title={'Intrests Sent'}
+                url={'sendintrest'}
+            />
+            <ActivityCards
+                field={'recieveintrest'}
+                title={'Intrests Recieved'}
+                url={'recieveintrest'}
+            />
         </Container>
     )
 }

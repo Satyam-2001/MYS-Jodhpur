@@ -13,11 +13,12 @@
 }
 
 .event-slide {
-    width: '80%';
+    width: 80%;
     /* width: 75vw; */
 }
 
 .carousel {
+    max-width: 90vw;
     display: flex;
     justify-content: center;
 }
@@ -26,5 +27,5 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    min-width: 100%;
 }

@@ -20,12 +20,13 @@ const userSlice = createSlice({
         },
         signout(state) {
             state.isLoggedIn = false
+            state.user = {}
             localStorage.removeItem('token')
             localStorage.removeItem('user')
-            state.user = {}
         },
         setActivity(state, action) {
             state.user[action.payload.field] = action.payload.data
+            localStorage.setItem('user', JSON.stringify(state.user))
         }
     }
 })

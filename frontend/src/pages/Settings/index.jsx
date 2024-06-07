@@ -44,12 +44,12 @@ function SettingsSelectInput({ title, menuItems, field }) {
       <FormControl sx={{}}>
         <Select
           value={user.settings?.[field] || 'Everybody'}
-          sx={{fontSize: '1rem'}}
+          sx={{ fontSize: '1rem' }}
           onChange={handleChange}
           displayEmpty
         >
           {
-            menuItems.map((value) => <MenuItem key={value} value={value} sx={{fontSize: '1rem'}}>{value}</MenuItem>)
+            menuItems.map((value) => <MenuItem key={value} value={value} sx={{ fontSize: '1rem' }}>{value}</MenuItem>)
           }
         </Select>
       </FormControl>
@@ -116,6 +116,20 @@ function ChangePassword() {
   )
 }
 
+function LogoutButton() {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const logoutHandler = () => {
+    dispatch(userActions.signout())
+    navigate('/')
+  }
+  return (
+    <CustomButton sx={{ color: 'text.primary', bgcolor: 'background.default' }} onClick={logoutHandler} >
+      Logout
+    </CustomButton>
+  )
+}
+
 function DeleteProfile() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -174,6 +188,9 @@ export default function Settings() {
           </Grid>
           <Grid item xs={12} md={7} p={1} >
             <ChangePassword />
+          </Grid>
+          <Grid item xs={12} md={7} p={1} >
+            <LogoutButton />
           </Grid>
           <Grid item xs={12} md={7} p={1} >
             <DeleteProfile />

@@ -47,38 +47,6 @@ router.post('/', auth, async (req, res) => {
     }
 })
 
-router.get('/', auth, async (req, res) => {
-    try {
-        const result = await User.findById(req.user._id)
-            .select('shortlisted sendintrest recieveintrest matchintrest')
-            .populate({
-                path: 'shortlisted',
-                select: 'basic_info',
-                options: { limit: 5 },
-            })
-            .populate({
-                path: 'sendintrest',
-                select: 'basic_info',
-                options: { limit: 5 },
-            })
-            .populate({
-                path: 'recieveintrest',
-                select: 'basic_info',
-                options: { limit: 5 },
-            })
-            .populate({
-                path: 'matchintrest',
-                select: 'basic_info',
-                options: { limit: 5 },
-            })
-        res.send(result)
-    }
-    catch (e) {
-        console.log(e)
-        res.status(500).send(e)
-    }
-})
-
 router.get('/:field', auth, async (req, res) => {
     try {
         const field = req.params.field

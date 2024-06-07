@@ -6,4 +6,6 @@ const url = `mongodb+srv://Satyam2001:${encodeURIComponent(password)}@cluster0.3
 const options = {
     useNewUrlParser: true,
 };
-mongoose.connect(url, options)
+mongoose.connect(url, options).then(() => {
+    console.log('Connected to MongoDb')
+})
