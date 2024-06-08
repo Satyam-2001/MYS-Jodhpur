@@ -81,12 +81,12 @@ const parameters = [
         format: (data) => {
             const disability = data.disability
             if (!disability) return null
-            if (disability === 'No') return 
+            if (disability === 'No') return
             return 'Disabled'
         }
     },
     {
-        value: 'color',
+        value: 'complexion',
         Icon: FaceOutlinedIcon,
     },
     {

@@ -8,6 +8,7 @@ import { ProfileContext } from '../../../context/ProfileProvider';
 import axios from '../../../services/axiosinstance'
 import EditContainer from './components/EditContaioner';
 import InputField from '../../../UI/InputField';
+import { familySchema } from '../../../schemas/userSchema';
 
 function EditModal({ onSubmit, ...props }) {
 
@@ -15,6 +16,8 @@ function EditModal({ onSubmit, ...props }) {
 
     const { formikState, handleSubmit, isSubmitting } = useUpdateProfile({
         initialValues: profile.family || {},
+        validationSchema: familySchema,
+        onSubmit: props.onClose,
         mutationFn: (data) => axios.patch('/user/family', data),
     })
 

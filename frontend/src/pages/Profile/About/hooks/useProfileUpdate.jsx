@@ -6,7 +6,7 @@ import { queryClient } from "../../../../services/http"
 import { userActions } from "../../../../store/UserSlice"
 import { useDispatch } from "react-redux"
 
-export default function useUpdateProfile({ initialValues, mutationFn }) {
+export default function useUpdateProfile({ initialValues, mutationFn, validationSchema, onSubmit }) {
     const { profile, updateProfile } = useContext(ProfileContext)
     const dispatch = useDispatch()
 
@@ -19,10 +19,14 @@ export default function useUpdateProfile({ initialValues, mutationFn }) {
     })
     const formikState = useFormik({
         initialValues,
+        validationSchema,
+        validateOnChange: true,
+        validateOnBlur: false,
         onSubmit: async (values) => {
             try {
                 const data = await mutateAsync(values)
                 updateProfile(data.user)
+                onSubmit()
             }
             catch (e) {
                 console.log(e)

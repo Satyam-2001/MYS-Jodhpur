@@ -10,6 +10,7 @@ import EditContainer from './components/EditContaioner';
 import InputField from '../../../UI/InputField';
 import HomeIcon from '@mui/icons-material/Home';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { contactSchema } from '../../../schemas/userSchema';
 
 function EditModal({ onSubmit, ...props }) {
 
@@ -17,6 +18,8 @@ function EditModal({ onSubmit, ...props }) {
 
     const { formikState, handleSubmit, isSubmitting } = useUpdateProfile({
         initialValues: profile.contact,
+        validationSchema: contactSchema,
+        onSubmit: props.onClose,
         mutationFn: (data) => axios.patch('/user/contact', data),
     })
 

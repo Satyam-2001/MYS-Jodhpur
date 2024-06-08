@@ -13,6 +13,8 @@ import UnsubscribeIcon from '@mui/icons-material/Unsubscribe';
 import CheckIcon from '@mui/icons-material/Check';
 import { Fragment } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
+import { RWebShare } from "react-web-share";
+import ShareIcon from '@mui/icons-material/Share';
 
 export function ActionButton({ children, Icon, text, onClick = () => { }, sx = {}, ...props }) {
 
@@ -154,14 +156,25 @@ export function ChatButton({ profile, ...props }) {
     const { user } = useSelector(state => state.user)
     const isRecieveIntrest = (user.recieveintrest || []).includes(_id)
 
+    console.log(`${window.location.protocol}//${window.location.host}/profile/${profile._id}`)
+
     if (isRecieveIntrest) return
 
     return (
-        <ActionButton Icon={ChatBubbleOutlineOutlinedIcon} {...props}>
-            Chat
-        </ActionButton>
+        <RWebShare
+            data={{
+                text: 'Share Profile',
+                url: `${window.location.protocol}//${window.location.host}/profile/${profile._id}`,
+                title: profile.name,
+            }}
+        >
+            <ActionButton Icon={ShareIcon} {...props}>
+                Share
+            </ActionButton>
+        </RWebShare>
     )
 }
+
 
 
 export default function ProfileActionButtons({ text = true, profile, sx = {}, ...props }) {

@@ -17,10 +17,7 @@ const style = {
 };
 
 export default function EditContainer({ children, onSubmit, isSubmitting = false, ...props }) {
-    const handleSubmit = () => {
-        onSubmit()
-        props.onClose()
-    }
+
     return (
         <CustomModal {...props} >
             <Stack gap={2} alignItems={'center'} overflow={'hidden'}>
@@ -32,7 +29,7 @@ export default function EditContainer({ children, onSubmit, isSubmitting = false
                     <Button fullWidth onClick={props.onClose}>
                         Cancel
                     </Button>
-                    <Button fullWidth variant={'contained'} onClick={handleSubmit} disabled={isSubmitting} >
+                    <Button fullWidth variant={'contained'} onClick={onSubmit} disabled={isSubmitting} >
                         {isSubmitting ? 'Updating...' : 'Save'}
                     </Button>
                 </Stack>

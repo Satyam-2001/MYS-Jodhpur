@@ -1,14 +1,19 @@
 import React from 'react'
 import { Stack, TextField } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
-import { useDispatch, useSelector } from 'react-redux';
-import { searchActions } from '../../../store/SearchSlice';
+import { useSearchParams } from 'react-router-dom';
 
 export default function SearchBar() {
-    const { search } = useSelector(state => state.search)
-    const dispatch = useDispatch()
+    const [searchParams, setSearchParams] = useSearchParams()
+    const searchValue = searchParams.get('search') || ''
+
     const searchChangeHandler = (e) => {
-        dispatch(searchActions.setSearch(e.target.value))
+        const value = e.target.value
+        setSearchParams((searchParams) => {
+            if (value) searchParams.set('search', value)
+            else searchParams.delete('search')
+            return searchParams
+        })
     }
     return (
         <Stack sx={{ flexGrow: 1 }}>
@@ -16,7 +21,7 @@ export default function SearchBar() {
                 variant="filled"
                 size='small'
                 placeholder='Search your right match'
-                value={search}
+                value={searchValue}
                 onChange={searchChangeHandler}
                 inputProps={{
                     style: {

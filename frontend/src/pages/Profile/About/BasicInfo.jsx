@@ -5,12 +5,13 @@ import parameters, { getParameters } from '../../../data/parameters'
 import EditContainer from './components/EditContaioner'
 import InputField from '../../../UI/InputField'
 import { useFormik } from 'formik'
-import { height, gender, manglik, martial_status, profile_managed_by, kundli_milan, weight_category, color, diet, disease, disability } from '../../../data/selectionData'
+import { height, gender, manglik, martial_status, profile_managed_by, kundli_milan, weight_category, complexion, diet, disease, disability } from '../../../data/selectionData'
 import { useMutation } from '@tanstack/react-query'
 import axios from '../../../services/axiosinstance'
 import { queryClient } from '../../../services/http'
 import { ProfileContext } from '../../../context/ProfileProvider'
 import useUpdateProfile from './hooks/useProfileUpdate'
+import { basicInfoSchema } from '../../../schemas/userSchema'
 
 
 function EditModal({ onSubmit, ...props }) {
@@ -19,6 +20,8 @@ function EditModal({ onSubmit, ...props }) {
 
     const { formikState, handleSubmit, isSubmitting } = useUpdateProfile({
         initialValues: profile.basic_info,
+        validationSchema: basicInfoSchema,
+        onSubmit: props.onClose,
         mutationFn: (data) => axios.patch('/user/basic_info', data)
     })
 
@@ -33,7 +36,7 @@ function EditModal({ onSubmit, ...props }) {
         { label: 'Location', md: 6 },
         { label: 'Height', type: 'select', menuItems: height, md: 4 },
         { label: 'Weight Category', type: 'select', menuItems: weight_category, md: 4 },
-        { label: 'Color', type: 'select', menuItems: color, md: 4 },
+        { label: 'Complexion', type: 'select', menuItems: complexion, md: 4 },
         { label: 'Manglik', type: 'select', menuItems: manglik, md: 4 },
         { label: 'Martial Status', type: 'select', menuItems: martial_status, md: 4 },
         { label: 'Disability', type: 'select', menuItems: disability, md: 4 },

@@ -11,8 +11,8 @@ import PasswordInput from './PasswordInput';
 
 
 function InputField(props) {
-    const { label, formikState, ...prop } = props
-    const { values, handleChange, handleBlur, errors, touched, setFieldValue } = formikState
+    const { label, formikState, hideLabel, ...prop } = props
+    const { values, handleChange, handleBlur = () => { }, errors = {}, touched = {}, setFieldValue = () => { } } = formikState
     const type = props.type || 'text'
     const name = label.toLowerCase().replaceAll(' ', '_')
     let InputFieldComponent;
@@ -34,10 +34,10 @@ function InputField(props) {
         }
         case 'select': {
             InputFieldComponent = <FormControl fullWidth>
-                <InputLabel id={`label-${name}`} error={errors[name] && touched[name]}>{label}</InputLabel>
+                {!hideLabel && <InputLabel id={`label-${name}`} error={errors[name] && touched[name]}>{label}</InputLabel>}
                 <Select
                     id={name}
-                    label={label}
+                    label={hideLabel ? undefined : label}
                     name={name}
                     value={values[name]}
                     onChange={handleChange}

@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs")
 const { sendEmail, verifyEmail, resendEmail } = require('../controller/mail')
 
 const getYearsBackDate = (year) => {
+    if (year === undefined) return
     const currentDate = new Date();
     currentDate.setFullYear(currentDate.getFullYear() - year);
     return currentDate;
@@ -18,38 +19,47 @@ function getSortQuery(sortby) {
     return { [`basic_info.${sortby}`]: 1 }
 }
 
-function getFilterQuery(filters, user) {
-    const { search, min_age, max_age, min_height, max_height, min_income, max_income, gender } = filters
+function getFilterQuery(filters, user, field) {
+    const { search, min_age, max_age, min_height, max_height, min_income, max_income, gender, ...selection_filter } = filters
     const isLoggedIn = !!user
     const userGender = user?.basic_info?.gender
     const oppositeGender = userGender === 'Men' ? 'Women' : 'Men'
     const genderValue = isLoggedIn ? oppositeGender : gender
-    const filter = {
-        'basic_info.name': { $regex: search, $options: 'i' },
-        'basic_info.date_of_birth': { $lte: getYearsBackDate(min_age), $gte: getYearsBackDate(max_age) },
-        'basic_info.height': { $lte: max_height, $gte: min_height },
-        'basic_info.income': { $lte: max_income, $gte: min_income },
-    }
-    if (genderValue) {
-        filter['basic_info.gender'] = { $regex: `^${genderValue}$`, $options: 'i' }
-    }
+    const filter = {}
+    Object.keys(selection_filter).forEach(key => {
+        filter[`basic_info.${key}`] = { $regex: `^${selection_filter[key]}$`, $options: 'i' }
+    })
+    if (search) filter['basic_info.name'] = { $regex: search, $options: 'i' }
+    if (min_age || max_age) filter['basic_info.date_of_birth'] = { $lte: getYearsBackDate(min_age || 0), $gte: getYearsBackDate(max_age || 100) }
+    if (max_height || min_height) filter['basic_info.height'] = { $lte: max_height || 100, $gte: min_height || 0 }
+    if (max_income || min_income) filter['basic_info.income'] = { $lte: max_income || 1000, $gte: min_income || 0 }
+    if (genderValue) filter['basic_info.gender'] = { $regex: `^${genderValue}$`, $options: 'i' }
     return filter
 }
 
-router.get('/', authLazy, async (req, res) => {
+router.get('/list', authLazy, async (req, res) => {
     try {
-        const { sortby, ...filters } = req.query
+        const { page = 1, limit = 10, sortby, ...filters } = req.query
+        const skip = (page - 1) * limit;
+        const totalUsers = await User.countDocuments();
         const sort = getSortQuery(sortby)
         const filter = getFilterQuery(filters, req.user)
-        const users = await User.find(filter, { basic_info: 1 }, { sort })
-        res.send(users)
+        const users = await User.find(filter, { basic_info: 1 }, { sort }).skip(skip).limit(limit);
+        const data = {
+            totalUsers,
+            totalPages: Math.ceil(totalUsers / limit),
+            currentPage: page,
+            users,
+        };
+        res.send(data)
     }
     catch (e) {
+        console.log(e)
         res.status(500).send(e)
     }
 })
 
-router.get('/me', auth, async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
         res.send({ user: req.user, token: req.token })
     }
@@ -85,7 +95,7 @@ router.patch('/password', auth, async (req, res) => {
 })
 
 router.patch('/:field', auth, async (req, res) => {
-    const allowedFields = ['basic_info', 'about_me', 'family', 'contact']
+    const allowedFields = ['basic_info', 'about_me', 'family', 'contact', 'settings']
     try {
         const field = req.params.field
         if (!allowedFields.includes(field)) {

@@ -12,6 +12,7 @@ import { kundli_milan } from '../../../data/selectionData';
 import { ProfileContext } from '../../../context/ProfileProvider';
 import useUpdateProfile from './hooks/useProfileUpdate';
 import axios from '../../../services/axiosinstance'
+import { kundliSchema } from '../../../schemas/userSchema';
 
 
 function EditModal({ onSubmit, ...props }) {
@@ -20,6 +21,8 @@ function EditModal({ onSubmit, ...props }) {
 
     const { formikState, handleSubmit, isSubmitting } = useUpdateProfile({
         initialValues: profile.basic_info,
+        validationSchema: kundliSchema,
+        onSubmit: props.onClose,
         mutationFn: (data) => axios.patch('/user/basic_info', data)
     })
 

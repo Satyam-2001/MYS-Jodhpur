@@ -9,6 +9,7 @@ import axios from '../../../services/axiosinstance'
 import { queryClient } from '../../../services/http'
 import { ProfileContext } from '../../../context/ProfileProvider'
 import useUpdateProfile from './hooks/useProfileUpdate'
+import { aboutMeSchema } from '../../../schemas/userSchema'
 
 
 function EditModal({ onSubmit, ...props }) {
@@ -17,6 +18,8 @@ function EditModal({ onSubmit, ...props }) {
 
     const { formikState, handleSubmit, isSubmitting } = useUpdateProfile({
         initialValues: profile.about_me || {},
+        validationSchema: aboutMeSchema,
+        onSubmit: props.onClose,
         mutationFn: (data) => axios.patch('/user/about_me', data),
     })
 
@@ -33,7 +36,7 @@ export default function AboutMe() {
     return (
         <AboutContainer title='About Me' EditModal={EditModal}>
             <Stack py={2} justifyContent={description && 'center'} width='100%'>
-                {description || <Typography sx={{opacity: '0.6', fontSize: '1.3rem', fontWeight: 600}}>No Description</Typography>}
+                {description || <Typography sx={{ opacity: '0.6', fontSize: '1.3rem', fontWeight: 600 }}>No Description</Typography>}
             </Stack>
         </AboutContainer>
     )

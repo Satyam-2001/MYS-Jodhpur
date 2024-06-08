@@ -26,14 +26,21 @@ export default function useFetchData() {
 
     const { data, isPending } = useQuery({
         queryKey: ['users', 'me'],
-        queryFn: ({ signal }) => axios.get('/user/me', { signal }),
+        queryFn: ({ signal }) => axios.get('/user', { signal }),
         enabled: !!localStorage.getItem('token'),
         staleTime: 30000,
     })
 
     useEffect(() => {
-        if(isPending) return
-        dispatch(userActions.setUser(data))
+        if (!isPending) {
+            dispatch(userActions.setUser(data))
+            return
+        }
+        else if (localStorage.getItem('token')) {
+            const user = JsonParse(localStorage.getItem('user'))
+            const token = localStorage.getItem('token')
+            dispatch(userActions.setUser({ user, token, set_local: false }))
+        }
     }, [isPending])
 
 }

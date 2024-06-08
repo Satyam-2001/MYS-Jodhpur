@@ -29,4 +29,5 @@ export async function uploadMedia(file) {
 
 export async function deleteMedia(filename) {
     const response = await ReactS3Client.deleteFile(filename)
+    return response
 }

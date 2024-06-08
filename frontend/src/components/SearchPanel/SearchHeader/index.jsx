@@ -9,18 +9,24 @@ import SortMenu from './SortMenu'
 import Block from '../../../UI/Block';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchActions } from '../../../store/SearchSlice';
+import { useSearchParams } from 'react-router-dom';
 
 function ViewButton({ children, view, sx }) {
-    const { view_style } = useSelector(state => state.search)
-    const dispatch = useDispatch()
+    const [searchParams, setSearchParams] = useSearchParams()
+    const view_style = searchParams.get('view') || 'list'
+
     const active = view === view_style
     const changeViewStyleHandler = () => {
-        dispatch(searchActions.setViewStyle(view))
+        setSearchParams((searchParams) => {
+            searchParams.set('view', view)
+            return searchParams
+        })
     }
+
     return (
-        <IconButton 
-        onClick={changeViewStyleHandler} 
-        sx={{ backgroundImage: (active ? 'var(--text-gradient)' : 'none'), color: (active ? 'white' : undefined), ...sx }}>
+        <IconButton
+            onClick={changeViewStyleHandler}
+            sx={{ backgroundImage: (active ? 'var(--text-gradient)' : 'none'), color: (active ? 'white' : undefined), ...sx }}>
             {children}
         </IconButton>
     )
@@ -28,11 +34,17 @@ function ViewButton({ children, view, sx }) {
 
 export default function SearchHeader() {
 
-    const { filter_open } = useSelector(state => state.search)
-    const dispatch = useDispatch()
+    const [searchParams, setSearchParams] = useSearchParams()
+    const filter_open = searchParams.get('filter') === 'open'
+
 
     const toggleFilterHandler = () => {
-        dispatch(searchActions.toggleFilter())
+        setSearchParams((searchParams) => {
+            const filter_open = searchParams.get('filter') === 'open'
+            if (filter_open) searchParams.delete('filter')
+            else searchParams.set('filter', 'open')
+            return searchParams
+        })
     }
 
     return (

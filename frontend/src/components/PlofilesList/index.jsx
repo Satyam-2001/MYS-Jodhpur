@@ -5,7 +5,7 @@ import NoData from '../StatusMessage/NoData';
 import UserCardListView, { UserCardListViewSkeleton } from './UserCardListView';
 import UserCardGridView, { UserCardGridViewSkeleton } from './UserCardGridView';
 
-export default function ProfilesList({ profilesList, view, isPending }) {
+export default function ProfilesList({ profilesList, view, isPending, children }) {
 
     const shortScreen = useMediaQuery(theme => theme.breakpoints.down('md'))
 
@@ -40,6 +40,7 @@ export default function ProfilesList({ profilesList, view, isPending }) {
                     : <UserCardListViewSkeleton />
 
             )}
+            {children}
         </Grid>
     )
 }

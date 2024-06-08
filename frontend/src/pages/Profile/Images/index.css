@@ -1,0 +1,6 @@
+@import "~react-image-gallery/styles/css/image-gallery.css";
+
+.image-gallery {
+    max-width: 94%;
+    max-height: 96%;
+}

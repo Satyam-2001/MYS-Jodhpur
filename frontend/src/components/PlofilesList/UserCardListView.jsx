@@ -39,6 +39,7 @@ export default function UserCardListView({ profile }) {
                 borderRadius: '10px',
                 p: 1,
                 cursor: 'pointer',
+                scrollSnapAlign: 'start',
                 mb: 1,
             }} >
             <Link to={`/profile/${profile._id}`} style={{ textDecoration: 'none' }}>
