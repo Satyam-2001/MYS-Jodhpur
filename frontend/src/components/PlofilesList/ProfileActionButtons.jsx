@@ -90,13 +90,13 @@ export function ShortlistButton({ profile, ...props }) {
     )
 }
 
-export function SendIntrestButton({ profile, ...props }) {
+export function SendInterestButton({ profile, ...props }) {
     const { _id } = profile
     const { user } = useSelector(state => state.user)
     const dispatch = useDispatch()
-    const isMatchedIntrest = (user.matchintrest || []).includes(_id)
-    const isRecieveIntrest = (user.recieveintrest || []).includes(_id)
-    const isSentIntrest = (user.sendintrest || []).includes(_id)
+    const isMatchedInterest = (user.matchinterest || []).includes(_id)
+    const isRecieveInterest = (user.recieveinterest || []).includes(_id)
+    const isSentInterest = (user.sendinterest || []).includes(_id)
 
     const { mutate } = useMutation({
         mutationFn: ({ type }) => axios.post('/activity', { profileId: _id, type }),
@@ -108,40 +108,40 @@ export function SendIntrestButton({ profile, ...props }) {
 
     let content
 
-    if (isMatchedIntrest) {
+    if (isMatchedInterest) {
         content = {
             Icon: CloseIcon,
-            label: 'Remove Intrest',
+            label: 'Remove Interest',
             clickHandler: () => mutate({ type: 'remove' })
         }
     }
-    else if (isRecieveIntrest) {
+    else if (isRecieveInterest) {
         content = {
             Icon: CheckIcon,
-            label: 'Accept Intrest',
+            label: 'Accept Interest',
             clickHandler: () => mutate({ type: 'accept' })
         }
     }
-    else if (isSentIntrest) {
+    else if (isSentInterest) {
         content = {
             Icon: UnsubscribeIcon,
-            label: 'Cancel Intrest',
+            label: 'Cancel Interest',
             clickHandler: () => mutate({ type: 'cancel' })
         }
     }
     else {
         content = {
             Icon: ForwardToInboxOutlinedIcon,
-            label: 'Send Intrest',
+            label: 'Send Interest',
             clickHandler: () => mutate({ type: 'send' })
         }
     }
 
     return (
         <Fragment>
-            {isRecieveIntrest && (
+            {isRecieveInterest && (
                 <ActionButton Icon={CloseIcon} {...props} onClick={() => mutate({ type: 'decline' })}>
-                    Decline Intrest
+                    Decline Interest
                 </ActionButton >
             )}
             <ActionButton Icon={content.Icon} {...props} onClick={content.clickHandler}>
@@ -154,11 +154,11 @@ export function SendIntrestButton({ profile, ...props }) {
 export function ChatButton({ profile, ...props }) {
     const { _id } = profile
     const { user } = useSelector(state => state.user)
-    const isRecieveIntrest = (user.recieveintrest || []).includes(_id)
+    const isRecieveInterest = (user.recieveinterest || []).includes(_id)
 
     console.log(`${window.location.protocol}//${window.location.host}/profile/${profile._id}`)
 
-    if (isRecieveIntrest) return
+    if (isRecieveInterest) return
 
     return (
         <RWebShare
@@ -194,7 +194,7 @@ export default function ProfileActionButtons({ text = true, profile, sx = {}, ..
             {...props}
         >
             <ShortlistButton text={text} profile={profile} />
-            <SendIntrestButton text={text} profile={profile} />
+            <SendInterestButton text={text} profile={profile} />
             <ChatButton text={text} profile={profile} />
         </Stack>
     )

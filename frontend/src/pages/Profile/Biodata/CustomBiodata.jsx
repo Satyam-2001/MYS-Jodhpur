@@ -37,7 +37,7 @@ function IntroField({ label, value }) {
 function DetailBox({ title, children, hide = false, ...props }) {
     const { color } = useContext(CustomBiodataContext)
 
-    if (hide) return
+    if (hide === true) return
 
     return (
         <Stack gap={2} width='100%' alignItems={'center'} fontSize={'1em'} {...props}>
@@ -54,6 +54,17 @@ function DetailBox({ title, children, hide = false, ...props }) {
 export default forwardRef(function CustomBiodata(props, ref) {
     const { profile } = useContext(ProfileContext)
     const selectedBiodata = useContext(CustomBiodataContext)
+    // const [base64IMG, setBase64IMG] = useState('')
+    const imageUrl = profile.basic_info.profile_image
+
+    function containsField(obj) {
+        if (!obj || typeof obj !== 'object') return false
+        let contain = false
+        Object.values(obj).forEach(value => {
+            contain |= !!value
+        })
+        return contain
+    }
 
     return (
         <Stack
@@ -103,7 +114,7 @@ export default forwardRef(function CustomBiodata(props, ref) {
                         </Stack>
                         <Stack flex={1} p={1}>
                             {profile.basic_info.profile_image && <img
-                                src={profile.basic_info.profile_image}
+                                src={imageUrl}
                                 style={{
                                     aspectRatio: '1/1',
                                     // backgroundImage: `url(${profile.basic_info.profile_image})`,
@@ -116,13 +127,13 @@ export default forwardRef(function CustomBiodata(props, ref) {
                         </Stack>
                     </Stack>
                 </DetailBox>
-                <DetailBox title={'FAMILY DETAILS'} hide={!profile.family || !Object.keys(profile.family).length} >
+                <DetailBox title={'FAMILY DETAILS'} hide={!containsField(profile.family)} >
                     <IntroField label="Father's Name" value={profile.family?.father_name} />
                     <IntroField label='Occupation' value={profile.family?.father_occupation} />
                     <IntroField label="Mother's Name" value={profile.family?.mother_name} />
                     <IntroField label='Occupation' value={profile.family?.mother_occupation} />
                 </DetailBox>
-                <DetailBox title={'CONTACT DETAILS'}>
+                <DetailBox title={'CONTACT DETAILS'} hide={!containsField(profile.contact)}>
                     <IntroField label="Contact No." value={profile.contact.phone_number} />
                     <IntroField label='Email' value={profile.contact.email} />
                     <IntroField label='Address' value={profile.contact.address} />

@@ -10,6 +10,8 @@ import EditContainer from './components/EditContaioner';
 import InputField from '../../../UI/InputField';
 import HomeIcon from '@mui/icons-material/Home';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import FacebookIcon from '@mui/icons-material/Facebook';
 import { contactSchema } from '../../../schemas/userSchema';
 
 function EditModal({ onSubmit, ...props }) {
@@ -61,9 +63,7 @@ export default function Contact() {
     const contact = profile.contact
     const isHidden = contact === 'hidden'
 
-    const email = contact?.email
-    const phone_number = contact?.phone_number
-    const address = contact?.address
+    const { email, phone_number, address, alternate_phone_number, facebook, instagram } = contact || {}
 
     return (
         <AboutContainer title='Contact' EditModal={EditModal}>
@@ -73,10 +73,12 @@ export default function Contact() {
                     <Fragment>
                         <ContactItem Icon={EmailIcon}>{email}</ContactItem>
                         <ContactItem Icon={PhoneIcon}>{phone_number}</ContactItem>
+                        <ContactItem Icon={PhoneIcon}>{alternate_phone_number}</ContactItem>
                         <ContactItem Icon={HomeIcon}>{address}</ContactItem>
+                        <ContactItem Icon={InstagramIcon}>{instagram}</ContactItem>
+                        <ContactItem Icon={FacebookIcon}>{facebook}</ContactItem>
                     </Fragment>
                 }
-
             </Stack>
         </AboutContainer>
     )

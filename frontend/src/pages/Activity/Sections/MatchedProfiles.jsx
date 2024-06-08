@@ -5,7 +5,7 @@ export default function MatchedProfiles() {
     return (
         <ActivityProfilesList
             title={'Matched Profiles'}
-            url={'matchintrest'}
+            url={'matchinterest'}
         />
     )
 }

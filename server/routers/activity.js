@@ -30,26 +30,26 @@ router.post('/', auth, async (req, res) => {
             }
         }
         else if (type === 'send') {
-            req.user.sendintrest = [profileId].concat(req.user.sendintrest)
-            await User.findByIdAndUpdate(profileId, { $push: { recieveintrest: { $each: [userId], $position: 0 } } })
+            req.user.sendinterest = [profileId].concat(req.user.sendinterest)
+            await User.findByIdAndUpdate(profileId, { $push: { recieveinterest: { $each: [userId], $position: 0 } } })
         }
         else if (type === 'cancel') {
-            req.user.sendintrest = req.user.sendintrest.filter((id) => id != profileId)
-            await User.findByIdAndUpdate(profileId, { $pull: { recieveintrest: userId } })
+            req.user.sendinterest = req.user.sendinterest.filter((id) => id != profileId)
+            await User.findByIdAndUpdate(profileId, { $pull: { recieveinterest: userId } })
         }
         else if (type === 'accept') {
-            if (!req.user.recieveintrest.includes(profileId)) res.status(403).send()
-            req.user.recieveintrest = req.user.recieveintrest.filter((id) => id != profileId)
-            req.user.matchintrest = [profileId, ...req.user.matchintrest]
-            await User.findByIdAndUpdate(profileId, { $pull: { sendintrest: userId }, $push: { matchintrest: { $each: [userId], $position: 0 } } })
+            if (!req.user.recieveinterest.includes(profileId)) res.status(403).send()
+            req.user.recieveinterest = req.user.recieveinterest.filter((id) => id != profileId)
+            req.user.matchinterest = [profileId, ...req.user.matchinterest]
+            await User.findByIdAndUpdate(profileId, { $pull: { sendinterest: userId }, $push: { matchinterest: { $each: [userId], $position: 0 } } })
         }
         else if (type === 'decline') {
-            req.user.recieveintrest = req.user.recieveintrest.filter((id) => id != profileId)
-            await User.findByIdAndUpdate(profileId, { $pull: { sendintrest: userId } })
+            req.user.recieveinterest = req.user.recieveinterest.filter((id) => id != profileId)
+            await User.findByIdAndUpdate(profileId, { $pull: { sendinterest: userId } })
         }
         else if (type === 'remove') {
-            req.user.matchintrest = req.user.matchintrest.filter((id) => id != profileId)
-            await User.findByIdAndUpdate(profileId, { $pull: { matchintrest: userId } })
+            req.user.matchinterest = req.user.matchinterest.filter((id) => id != profileId)
+            await User.findByIdAndUpdate(profileId, { $pull: { matchinterest: userId } })
         }
         await req.user.save()
         res.send({ user: req.user, token: req.token })

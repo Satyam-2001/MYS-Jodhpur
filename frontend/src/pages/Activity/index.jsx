@@ -24,14 +24,14 @@ const activityTabs = [
         to: '/activity/matched'
     },
     {
-        label: 'Intrests Sent',
+        label: 'Interests Sent',
         Icon: ForwardToInboxOutlinedIcon,
-        to: '/activity/intrests_sent'
+        to: '/activity/interests_sent'
     },
     {
-        label: 'Intrests Recieved',
+        label: 'Interests Recieved',
         Icon: MoveToInboxOutlinedIcon,
-        to: '/activity/intrests_recieved'
+        to: '/activity/interests_recieved'
     },
 ]
 
@@ -75,19 +75,19 @@ export default function Activity() {
                 url={'shortlisted'}
             />
             <ActivityCards
-                field={'matchintrest'}
+                field={'matchinterest'}
                 title={'Matched Profiles'}
-                url={'matchintrest'}
+                url={'matchinterest'}
             />
             <ActivityCards
-                field={'sendintrest'}
-                title={'Intrests Sent'}
-                url={'sendintrest'}
+                field={'sendinterest'}
+                title={'Interests Sent'}
+                url={'sendinterest'}
             />
             <ActivityCards
-                field={'recieveintrest'}
-                title={'Intrests Recieved'}
-                url={'recieveintrest'}
+                field={'recieveinterest'}
+                title={'Interests Recieved'}
+                url={'recieveinterest'}
             />
         </Container>
     )

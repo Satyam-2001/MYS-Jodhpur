@@ -29,11 +29,11 @@ export default function SearchPanel({ queryKey, url }) {
     const { data, isPending } = useQuery({
         queryKey: [...queryKey, debouncedFilters],
         queryFn: ({ signal, queryKey }) => axios.get(url, { params: queryKey[queryKey.length - 1], signal }),
-        placeholderData: (data) => data,
+        // placeholderData: (data) => data,
         staleTime: 30000
     })
 
-    const { users: profilesList = [], currentPage = 1, totalPages = 10, totalUsers = 100 } = data || {}
+    const { users: profilesList = [], currentPage = 1, totalPages = 1, totalUsers = 10 } = data || {}
 
     const handlePageChange = (event, value) => {
         setPage(value)

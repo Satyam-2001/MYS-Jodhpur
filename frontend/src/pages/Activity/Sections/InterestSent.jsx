@@ -1,11 +1,11 @@
 import React from 'react'
 import ActivityProfilesList from '../ActivityProfilesList'
 
-export default function Intrestrecieve() {
+export default function InterestSent() {
     return (
         <ActivityProfilesList
-            title={'Intrests Recieve'}
-            url={'recieveintrest'}
+            title={'Interests Sent'}
+            url={'sendinterest'}
         />
     )
 }

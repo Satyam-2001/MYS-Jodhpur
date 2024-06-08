@@ -19,22 +19,27 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
-    sendintrest: [{
+    sendinterest: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
-    recieveintrest: [{
+    recieveinterest: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
-    matchintrest: [{
+    matchinterest: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
-
-    images: [{
-        type: String,
-    }],
+    images: {
+        type: [String],
+        validate: {
+            validator: function (array) {
+                return array.length <= 10;
+            },
+            message: 'You can store up to 10 images only.'
+        },
+    },
     password: {
         type: String,
         required: true
@@ -94,7 +99,7 @@ userSchema.methods.filterUserFields = async function (user) {
             break
         }
         case 'Only Matches': {
-            if (!user || !user.matchintrest?.includes(userObject._id)) {
+            if (!user || !user.matchinterest?.includes(userObject._id)) {
                 delete userObject.contact
                 userObject.contact = 'hidden'
             }

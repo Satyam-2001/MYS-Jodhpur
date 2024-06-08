@@ -15,6 +15,7 @@ import NameHeader from '../../../UI/NameHeader'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import './index.css'
+import { toast } from 'react-toastify';
 
 const style = {
     width: { xs: '100%', sm: '50%', md: '25%' },
@@ -97,7 +98,6 @@ function ImageMenu({ image }) {
     const { mutate: setAsProfile } = useMutation({
         mutationFn: () => axios.post('/user/image/profile', { image }),
         onSuccess: ({ user }) => {
-            console.log(user.images)
             updateProfile(user)
         }
     })
@@ -138,11 +138,13 @@ function ImageMenu({ image }) {
     )
 }
 
-function ImageGalleryModal({ selectedImage, onClose, open }) {
+function ImageGalleryModal({ selectedImage, onClose, open, setCurrentImage }) {
     const { profile, updateProfile } = useContext(ProfileContext)
     const { user } = useSelector(state => state.user)
     const isMe = user._id === profile._id
     const images = profile.images || []
+
+    console.log(selectedImage)
 
 
     return (
@@ -163,6 +165,7 @@ function ImageGalleryModal({ selectedImage, onClose, open }) {
                         items={images.map(createImageProps)}
                         showFullscreenButton={false}
                         lazyLoad={false}
+                        onSlide={setCurrentImage}
                     />
                 </Stack>
             </Stack>
@@ -181,7 +184,6 @@ export default function Images() {
     const modalOpen = selectedImage !== undefined
 
     function imageSelectHandler(index) {
-        // console.log(event, index)
         setSelectedImage(index)
     }
 
@@ -196,7 +198,6 @@ export default function Images() {
                 for (let file of files) {
                     imageUrl.push(encodeURI(await uploadMedia(file)))
                 }
-                console.log(imageUrl)
                 const data = await axios.post('/user/image', { image: imageUrl })
                 return data
             }
@@ -206,7 +207,9 @@ export default function Images() {
 
         },
         onSuccess: ({ user }) => {
-            updateProfile(user)
+            if (user) {
+                updateProfile(user)
+            }
         }
     })
 
@@ -217,16 +220,23 @@ export default function Images() {
 
     const { onClick, inputProps } = useImageInput({
         options,
-        onSelect: uploadImageHnadler
+        onSelect: (files) => {
+            if (files.length + images.length > 10) {
+                toast.error(`You can't upload more than 10 images`, { position: 'top-right' })
+            }
+            else {
+                uploadImageHnadler(files)
+            }
+        }
     })
 
     return (
         <Fragment>
-            <ImageGalleryModal open={modalOpen} selectedImage={selectedImage} onClose={modalCloseHandler} />
+            <input style={{ display: 'none' }} {...inputProps} />
+            <ImageGalleryModal open={modalOpen} selectedImage={selectedImage} onClose={modalCloseHandler} setCurrentImage={(index) => setSelectedImage(index)} />
             <Grid className='hide-scroll-bar' container py={2} px={1} sx={{ width: '100%', height: '100%', overflow: 'auto' }}>
                 {isEmpty && !isMe && <NoData />}
                 {isMe && <Grid item sx={style}>
-                    <input style={{ display: 'none' }} {...inputProps} />
                     <Paper
                         onClick={(e) => { if (!isPending) { onClick(e) } }}
                         sx={{

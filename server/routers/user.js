@@ -71,7 +71,7 @@ router.get('/', auth, async (req, res) => {
 router.get('/:id', authLazy, async (req, res) => {
     try {
         const userId = req.params.id
-        const options = req.query.select === 'basic_info' ? { basic_info: 1 } : { shortlisted: 0, recieveintrest: 0, sendintrest: 0, matchintrest: 0 }
+        const options = req.query.select === 'basic_info' ? { basic_info: 1 } : { shortlisted: 0, recieveinterest: 0, sendinterest: 0, matchinterest: 0 }
         const user = await User.findById(userId, options)
         if (!user) return res.status(404).send({ msg: 'User not exist' })
         filteredUser = await user.filterUserFields(req.user)
@@ -102,11 +102,14 @@ router.patch('/:field', auth, async (req, res) => {
             return res.status(500).send(e)
         }
         req.user[field] = req.user[field] || {}
-        Object.keys(req.body).forEach(update => req.user[field][update] = req.body[update])
+        Object.keys(req.body).forEach((update) => {
+            req.user[field][update] = req.body[update] === '' ? undefined : req.body[update]
+        })
         await req.user.save()
         res.send({ user: req.user, token: req.token })
     }
     catch (e) {
+        console.log(e)
         res.status(500).send(e)
     }
 })
