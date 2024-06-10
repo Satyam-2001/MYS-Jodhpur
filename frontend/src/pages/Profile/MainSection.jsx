@@ -7,8 +7,6 @@ import About from './About'
 import Biodata from './Biodata'
 import Images from './Images'
 
-
-
 function TabPanel({ value, index, children }) {
     if (value !== index) return <></>
     return children

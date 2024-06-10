@@ -32,10 +32,12 @@ function EditModal({ onSubmit, ...props }) {
 
 export default function AboutMe() {
     const { profile } = useContext(ProfileContext)
+    const profile_managed_by = profile?.basic_info?.profile_managed_by
     const description = profile?.about_me?.about_me
     return (
         <AboutContainer title='About Me' EditModal={EditModal}>
-            <Stack py={2} justifyContent={description && 'center'} width='100%'>
+            <Stack py={1} gap={1} justifyContent={description && 'center'} width='100%'>
+                <Typography sx={{ fontSize: '1rem', fontFamily: 'Lexend,sans-serif' }}>Profile Managed By {profile_managed_by}</Typography>
                 {description || <Typography sx={{ opacity: '0.6', fontSize: '1.3rem', fontWeight: 600 }}>No Description</Typography>}
             </Stack>
         </AboutContainer>

@@ -3,28 +3,26 @@ const { auth } = require('../middleware/auth')
 const router = new express.Router()
 const User = require("../models/User")
 require('dotenv').config()
-const { sendEmail, verifyEmail, resendEmail } = require('../controller/mail')
+const { sendVerificationEmail, verifyEmail } = require('../controller/auth')
 
 const verifyUnique = async (req, res, next) => {
     try {
         const { email } = req.body
-        const isEmailRegistered = await User.findOne({ email })
+        const isEmailRegistered = await User.findOne({ 'contact.email': email })
         if (isEmailRegistered) {
-            const error = {}
-            if (isEmailRegistered) error['msg'] = 'This email is already registered'
-            res.status(406).send(error)
+            res.status(406).send({
+                msg: 'Email is already registered'
+            })
+            return
         }
-        else {
-            next()
-        }
+        next()
     }
     catch (e) {
         res.status(400).send(e)
     }
 }
 
-router.post('/otp/send', verifyUnique, sendEmail)
-router.post('/otp/resend', resendEmail)
+router.post('/otp/send', verifyUnique, sendVerificationEmail)
 
 router.post('/register', verifyEmail, async (req, res) => {
     try {

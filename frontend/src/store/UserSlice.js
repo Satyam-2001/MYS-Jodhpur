@@ -11,7 +11,10 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         setUser(state, action) {
-            if (!action.payload?.user) return
+            if (!action.payload?.user) {
+                state.isLoggedIn = false
+                return
+            }
             state.isLoggedIn = true
             state.user = action.payload.user
             if (action.payload.set_local === false) return

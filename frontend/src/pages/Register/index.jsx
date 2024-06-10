@@ -13,6 +13,9 @@ export default function Register() {
         onSuccess: (data) => {
             console.log(data)
         },
+        onError: (error) => {
+            console.log(error)
+        }
     })
 
     const submitFormHandler = (formData) => {
@@ -20,12 +23,6 @@ export default function Register() {
         setFormData(formData)
     }
 
-    return (
-        <Container hideSideBar sx={{ alignItems: 'center', justifyContent: 'center' }}>
-            {formData === undefined ?
-                <RegisterationForm submitFormHandler={submitFormHandler} /> :
-                <VerificationForm formData={formData} />
-            }
-        </Container>
-    )
+    return <RegisterationForm submitFormHandler={submitFormHandler} />
+
 }

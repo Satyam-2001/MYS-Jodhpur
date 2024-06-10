@@ -32,7 +32,7 @@ const VerificationForm = ({ formData }) => {
     })
 
     const { mutate: resendOtpMutate } = useMutation({
-        mutationFn: (data) => axios.post('/auth/otp/resend', data),
+        mutationFn: (data) => axios.post('/auth/otp/send', data),
         onSuccess: (data) => {
             console.log(data)
         },

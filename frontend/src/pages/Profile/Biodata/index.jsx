@@ -53,22 +53,6 @@ export default function Biodata() {
     const { toPDF, targetRef } = usePDF({
         filename: `${profile.basic_info.name}.pdf`,
         page: { format: [105, 148.6] },
-        canvas: {
-            // default is 'image/jpeg' for better size performance
-            mimeType: 'image/png',
-            qualityRatio: 1
-        },
-        overrides: {
-            // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
-            pdf: {
-                compress: true,
-            },
-            // see https://html2canvas.hertzen.com/configuration for more options
-            canvas: {
-                useCORS: true,
-                
-            }
-        },
     });
     const [selectedBiodata, setSelectedBiodata] = useState(biodataDesigns[0])
 
@@ -101,7 +85,7 @@ export default function Biodata() {
                         Download
                     </Button>
                 </Stack>
-                <Stack overflow={'auto'}  >
+                <Stack overflow={'auto'} >
                     <CustomBiodata ref={targetRef} />
                 </Stack>
             </Stack>

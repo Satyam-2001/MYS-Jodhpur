@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Stack, useTheme } from "@mui/material";
 import { Outlet } from 'react-router';
 import useFetchData from './hooks/useFetchData';

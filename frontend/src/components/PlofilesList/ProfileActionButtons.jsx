@@ -156,8 +156,6 @@ export function ChatButton({ profile, ...props }) {
     const { user } = useSelector(state => state.user)
     const isRecieveInterest = (user.recieveinterest || []).includes(_id)
 
-    console.log(`${window.location.protocol}//${window.location.host}/profile/${profile._id}`)
-
     if (isRecieveInterest) return
 
     return (

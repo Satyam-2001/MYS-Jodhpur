@@ -1,8 +1,8 @@
 import axios from 'axios'
+import { BASE_URL } from './constant'
 
 const instance = axios.create({
-    // baseURL: 'http://localhost:3001/',
-    baseURL: 'https://mys-jodhpur.onrender.com',
+    baseURL: BASE_URL,
 })
 
 instance.interceptors.request.use((request) => {

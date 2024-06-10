@@ -54,7 +54,6 @@ router.get('/list', authLazy, async (req, res) => {
         res.send(data)
     }
     catch (e) {
-        console.log(e)
         res.status(500).send(e)
     }
 })
@@ -109,7 +108,6 @@ router.patch('/:field', auth, async (req, res) => {
         res.send({ user: req.user, token: req.token })
     }
     catch (e) {
-        console.log(e)
         res.status(500).send(e)
     }
 })

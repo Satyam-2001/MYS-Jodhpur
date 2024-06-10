@@ -35,9 +35,5 @@ export default function useUpdateProfile({ initialValues, mutationFn, validation
     })
     const { setValues, handleSubmit, isSubmitting } = formikState
 
-    // useEffect(() => {
-    //     setValues({ about_me: profile?.about_me })
-    // }, [profile])
-
     return { formikState, handleSubmit, isSubmitting }
 }

@@ -144,8 +144,6 @@ function ImageGalleryModal({ selectedImage, onClose, open, setCurrentImage }) {
     const isMe = user._id === profile._id
     const images = profile.images || []
 
-    console.log(selectedImage)
-
 
     return (
         <Modal open={open} sx={{ backgroundColor: 'background.default', }}>

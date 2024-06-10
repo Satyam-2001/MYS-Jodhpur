@@ -3,36 +3,17 @@ import Stack from '@mui/material/Stack';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import { Button, Grid, Link, Typography } from '@mui/material';
-import { Fragment, useMemo, useState } from 'react';
-import dayjs from 'dayjs';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { registerSchema } from '../../../schemas/registerSchema';
 import { useFormik } from 'formik'
 import InputField from '../../../UI/InputField';
 import { ColorlibConnector, ColorlibStepIcon } from '../../../UI/Stepper';
 import registration_steps from './registration_steps';
-
-const initialValues = {
-    name: '',
-    gender: 'Men',
-    date_of_birth: dayjs('2000-01-01'),
-    time_of_birth: dayjs('2001-01-01'),
-    place_of_birth: '',
-    email: '',
-    phone_number: '',
-    password: '',
-    education: '',
-    occupation: '',
-    income: '',
-    height: '',
-    location: '',
-    manglik: '',
-    father_name: '',
-    father_occupation: '',
-    mother_name: '',
-    mother_occupation: '',
-};
+import VerificationForm from '../VerificationForm'
+import { useMutation } from '@tanstack/react-query'
+import axios from '../../../services/axiosinstance'
+import Container from '../../../components/Layouts/Container';
 
 function FormControlButtonGroup({ selectedStep, stepBack, stepNext, }) {
     return (
@@ -50,23 +31,26 @@ function FormControlButtonGroup({ selectedStep, stepBack, stepNext, }) {
     )
 }
 
-function CustomForm({ next, prev, selectedStep, inputField, validationSchema }) {
+function CustomForm({ next, prev, selectedStep, inputField, active = false }) {
+    const stepData = registration_steps[selectedStep]
     const formikState =
         useFormik({
-            initialValues,
-            validationSchema,
+            initialValues: stepData.initialValues,
+            validationSchema: registerSchema[selectedStep],
             validateOnChange: true,
             validateOnBlur: false,
-            onSubmit: async (values, action) => {
+            onSubmit: (values, action) => {
                 next(values)
             },
         });
 
-    const { handleSubmit, errors } = formikState
+    const { handleSubmit, errors, setValues } = formikState
+
+    if (!active) return
     return (
         <Fragment>
             <Grid container sx={{ alignItems: 'center', justifyContent: 'center' }}>
-                {inputField.map((field) => {
+                {stepData.inputField.map((field) => {
                     return (
                         <Grid key={field.label} item xs={12} md={6} p={1} py={2}>
                             <InputField  {...field} formikState={formikState} />
@@ -84,7 +68,19 @@ function CustomForm({ next, prev, selectedStep, inputField, validationSchema }) 
 
 export default function RegisterationForm({ submitFormHandler }) {
     const [selectedStep, setSelectedStep] = useState(0)
-    const [formData, setFormData] = useState(initialValues)
+    const [formData, setFormData] = useState({})
+    const [verifyUserByOtp, setVerifyUserByOtp] = useState(false)
+    const [error, setError] = useState(null)
+
+    const { mutate: verifyOtpMutate } = useMutation({
+        mutationFn: (data) => axios.post('/auth/otp/send', data),
+        onSuccess: (data) => {
+            setVerifyUserByOtp(true)
+        },
+        onError: (error) => {
+            setError(error?.response?.data?.msg || 'Unknown Error Occured')
+        }
+    })
 
     const stepBack = (data) => {
         setFormData((prop) => { return { ...prop, ...data } })
@@ -93,42 +89,65 @@ export default function RegisterationForm({ submitFormHandler }) {
 
     const stepNext = (data) => {
         setFormData((prop) => { return { ...prop, ...data } })
-        setSelectedStep((prop) => prop + 1)
+        setSelectedStep((prop) => {
+            if (prop + 1 === registration_steps.length) {
+                verifyOtpMutate({ ...formData, ...data })
+                return prop
+            }
+            return prop + 1
+        })
     }
 
-    const formComponent = useMemo(() => registration_steps.map((step, index) => {
-        return <CustomForm next={stepNext} prev={stepBack} inputField={step.inputField} validationSchema={registerSchema[index]} selectedStep={index} />
-    }), [])
+    // useEffect(() => {
+    //     if (selectedStep === registration_steps.length) {
+    //         verifyOtpMutate(formData)
+    //     }
+    // }, [selectedStep, formData])
 
-    if (selectedStep === registration_steps.length) {
-        submitFormHandler(formData)
-        return <></>
+
+
+    // const formComponent = useMemo(() => registration_steps.map((step, index) => {
+    //     return <CustomForm next={stepNext} prev={stepBack} inputField={step.inputField} validationSchema={registerSchema[index]} selectedStep={index} />
+    // }), [])
+
+    if (verifyUserByOtp) {
+        return (
+            <Container hideSideBar sx={{ alignItems: 'center', justifyContent: 'center' }}>
+                <VerificationForm formData={formData} />
+            </ Container >
+        )
     }
 
     return (
-        <Stack className='hide-scroll-bar' pt={4} gap={2} sx={{ alignItems: 'center', height: '100%', overflow: 'auto', width: '100%' }}>
-            <Typography variant='h1' fontWeight={600} sx={{ fontSize: '3.6rem' }} >
-                <span className='text-gradient'>Register</span>
-            </Typography>
-            <Stack direction='row' gap={2} mt={3}>
-                <Typography variant='h3' fontSize={'1.4rem'} fontWeight={500} >
-                    Step {selectedStep + 1}
+        <Container hideSideBar sx={{ alignItems: 'center', justifyContent: 'center' }}>
+            <Stack className='hide-scroll-bar' pt={4} gap={2} sx={{ alignItems: 'center', height: '100%', overflow: 'auto', width: '100%' }}>
+                <Typography variant='h1' fontWeight={600} sx={{ fontSize: '3.6rem' }} >
+                    <span className='text-gradient'>Register</span>
                 </Typography>
-                <Typography variant='h3' fontSize={'1.4rem'} fontWeight={500} sx={{ opacity: 0.6 }} >
-                    {registration_steps[selectedStep]['label']}
-                </Typography>
+                <Stack direction='row' gap={2} mt={3}>
+                    <Typography variant='h3' fontSize={'1.4rem'} fontWeight={500} >
+                        Step {selectedStep + 1}
+                    </Typography>
+                    <Typography variant='h3' fontSize={'1.4rem'} fontWeight={500} sx={{ opacity: 0.6 }} >
+                        {registration_steps[selectedStep]['label']}
+                    </Typography>
+                </Stack>
+                <Stepper sx={{ width: '100%' }} alternativeLabel activeStep={selectedStep} connector={<ColorlibConnector />}>
+                    {registration_steps.map((label, index) => (
+                        <Step key={label}>
+                            <StepLabel StepIconComponent={(props) => <ColorlibStepIcon iconImage={registration_steps[index].icon} {...props} />}>
+                            </StepLabel>
+                        </Step>
+                    ))}
+                </Stepper>
+                {error && <Typography color='error' sx={{ fontSize: '1rem' }}>{error}</Typography>}
+                <Stack py={2} sx={{ width: { xs: '90%', md: '70%', alignItems: 'center' } }}>
+                    {registration_steps.map((step, index) => {
+                        return <CustomForm key={step.label} active={selectedStep === index} next={stepNext} prev={stepBack} inputField={step.inputField} validationSchema={registerSchema[index]} selectedStep={index} />
+                    })}
+                </Stack>
+
             </Stack>
-            <Stepper sx={{ width: '100%' }} alternativeLabel activeStep={selectedStep} connector={<ColorlibConnector />}>
-                {registration_steps.map((label, index) => (
-                    <Step key={label}>
-                        <StepLabel StepIconComponent={(props) => <ColorlibStepIcon iconImage={registration_steps[index].icon} {...props} />}>
-                        </StepLabel>
-                    </Step>
-                ))}
-            </Stepper>
-            <Stack py={2} sx={{ width: { xs: '90%', md: '70%', alignItems: 'center' } }}>
-                {formComponent[selectedStep]}
-            </Stack>
-        </Stack>
+        </Container>
     )
 }

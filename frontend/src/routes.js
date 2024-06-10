@@ -35,10 +35,10 @@ const router = createBrowserRouter([
                 path: '/search',
                 element: <Search />
             },
-            {
-                path: '/chats',
-                element: <Chats />
-            },
+            // {
+            //     path: '/chats',
+            //     element: <Chats />
+            // },
             {
                 path: '/activity',
                 element: <Outlet />,

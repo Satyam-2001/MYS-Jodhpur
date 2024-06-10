@@ -12,7 +12,7 @@ function ActivityCardView({ profileId }) {
         queryKey: ['users', profileId],
         queryFn: ({ signal }) => axios.get(`/user/${profileId}`, { signal, params: { select: 'basic_info' } }),
     })
-    
+
     if (isPending || !profile || !profile?.basic_info) {
         return <UserCardGridViewSkeleton />
     }
@@ -44,13 +44,13 @@ function Carousel({ list }) {
     )
 }
 
-export default function ActivityCards({ data, isPending, field, title }) {
+export default function ActivityCards({ isPending, field, label }) {
     const { user } = useSelector(state => state.user)
     const profileList = user?.[field]
     if (isPending || !profileList?.length) { return }
     return (
         <Stack gap={1} p={1}>
-            <Typography sx={{ fontSize: '1.5rem', px: 1, fontFamily: 'Lexend,sans-serif' }}>{title}</Typography>
+            <Typography sx={{ fontSize: '1.5rem', px: 1, fontFamily: 'Lexend,sans-serif' }}>{label}</Typography>
             <Carousel list={profileList} />
         </Stack>
     )

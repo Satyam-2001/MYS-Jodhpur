@@ -9,7 +9,6 @@ export default function useDebounce(value = {}, time = 500) {
         }, 500)
         return () => clearTimeout(timeout)
     }, [])
-    console.log(JSON.stringify(value), currentValue)
 
     return currentValue
 }

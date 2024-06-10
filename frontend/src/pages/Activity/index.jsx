@@ -12,33 +12,37 @@ import axios from '../../services/axiosinstance'
 import ActivityCards from './ActivityCards';
 import './index.css'
 
-const activityTabs = [
+const activityItems = [
     {
         label: 'Shortlisted Profiles',
         Icon: BookmarksOutlinedIcon,
-        to: '/activity/shortlist'
+        field: 'shortlisted',
+        to: 'shortlist'
     },
     {
         label: 'Matched Profiles',
         Icon: MarkEmailReadOutlinedIcon,
-        to: '/activity/matched'
+        field: 'matched',
+        to: 'matched'
     },
     {
         label: 'Interests Sent',
         Icon: ForwardToInboxOutlinedIcon,
-        to: '/activity/interests_sent'
+        field: 'sendinterest',
+        to: 'interests_sent'
     },
     {
         label: 'Interests Recieved',
         Icon: MoveToInboxOutlinedIcon,
-        to: '/activity/interests_recieved'
+        field: 'recieveinterest',
+        to: 'interests_recieved'
     },
 ]
 
 function ActivityTabCard({ label, Icon, to }) {
     const [isHover, setIsHover] = useState(false)
     return (
-        <Link to={to} style={{ textDecoration: 'none', flex: 1 }}>
+        <Link to={`/activity/${to}`} style={{ textDecoration: 'none', flex: 1 }}>
             <Block
                 gap={1}
                 onMouseOver={() => setIsHover(true)}
@@ -65,30 +69,13 @@ export default function Activity() {
     return (
         <Container className='hide-scroll-bar' direction='column' overflow='auto' gap={1} height='100%' >
             <Stack className='hide-scroll-bar' direction='row' gap={1} overflow={'auto'} width='100%' flexShrink={0}>
-                {activityTabs.map(tabValue => {
-                    return <ActivityTabCard key={tabValue.label} {...tabValue} />
+                {activityItems.map(value => {
+                    return <ActivityTabCard key={value.label} {...value} />
                 })}
             </Stack>
-            <ActivityCards
-                field={'shortlisted'}
-                title={'Shortlisted Profiles'}
-                url={'shortlisted'}
-            />
-            <ActivityCards
-                field={'matchinterest'}
-                title={'Matched Profiles'}
-                url={'matchinterest'}
-            />
-            <ActivityCards
-                field={'sendinterest'}
-                title={'Interests Sent'}
-                url={'sendinterest'}
-            />
-            <ActivityCards
-                field={'recieveinterest'}
-                title={'Interests Recieved'}
-                url={'recieveinterest'}
-            />
+            {activityItems.map(value => {
+                return <ActivityCards key={value.label} {...value} />
+            })}
         </Container>
     )
 }

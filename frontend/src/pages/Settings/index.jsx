@@ -124,7 +124,7 @@ function LogoutButton() {
     navigate('/')
   }
   return (
-    <CustomButton variant='contained' sx={{ color: 'text.primary' }} onClick={logoutHandler} >
+    <CustomButton variant='contained' sx={{ color: 'white' }} onClick={logoutHandler} >
       Logout
     </CustomButton>
   )

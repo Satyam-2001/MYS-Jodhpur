@@ -73,6 +73,7 @@ export default forwardRef(function CustomBiodata(props, ref) {
                 // maxWidth: '100%',
                 width: '600px',
                 maxWidth: '600px',
+
                 fontSize: '20px',
                 // overflow: 'auto',
                 flexShrink: 0,

@@ -2,33 +2,8 @@ const nodemailer = require('nodemailer');
 const Mailgen = require('mailgen');
 require('dotenv').config();
 
-let otpArray = []
-const minutes = 5
-
-const otpGenerator = () => {
-    const otp = Math.floor((Math.random() * 9000) + 1000);
-    return otp;
-}
-
-const getTime = () => {
-    return (new Date((new Date()).getTime() + minutes * 60000)).getTime();
-}
-
-const isSameUser = (user1, user2) => {
-    return user1.email == user2.email
-}
-
-const isOtpValid = (time) => {
-    const currentTime = new Date();
-    const expireTime = new Date(time);
-    return currentTime.getTime() <= expireTime.getTime();
-}
-
-const sendEmail = async (req, res) => {
-
-    const { email, first_name, last_name, password } = req.body;
-
-    let config = {
+const sendMail = async (email, subject, body) => {
+    const config = {
         service: 'gmail',
         auth: {
             user: process.env.EMAIL,
@@ -36,9 +11,9 @@ const sendEmail = async (req, res) => {
         }
     }
 
-    let transporter = nodemailer.createTransport(config);
+    const transporter = nodemailer.createTransport(config);
 
-    let MailGenerator = new Mailgen({
+    const MailGenerator = new Mailgen({
         theme: "default",
         product: {
             name: "MYS Jodhpur",
@@ -47,76 +22,18 @@ const sendEmail = async (req, res) => {
         }
     })
 
-    const otp = otpGenerator()
+    const response = { body }
 
-    let response = {
-        body: {
-            name: first_name,
-            intro: "It looks like you are trying to register to MYS Johpur using your email and password. As an additional security measure you are requested to enter the OTP code (one-time password) provided in this email.\nIf you did not intend to register to MYS Jodhpur, please ignore this email.",
-            outro: `The OTP code is: <b>${otp}</b>`
-        }
-    }
+    const mail = MailGenerator.generate(response)
 
-    let mail = MailGenerator.generate(response)
-
-    let message = {
+    const message = {
         from: process.env.EMAIL,
         to: email,
-        subject: "Verify Email",
-        html: mail
+        subject,
+        html: mail,
     }
 
-    try {
-        await transporter.sendMail(message)
-        const expire_time = getTime()
-        const otpField = {
-            email,
-            otp,
-            expire_time,
-        }
-        otpArray.push({ ...otpField, otp })
-        return res.status(201).json({ msg: 'OTP as been sent on your email', expire_time })
-    }
-    catch (e) {
-        return res.status(500).json({ e })
-    }
+    return await transporter.sendMail(message)
 }
 
-const resendEmail = (req, res) => {
-    const user = req.body;
-    otpArray = otpArray.filter((_user) => {
-        return !isOtpValid(_user.expire_time) || isSameUser(_user, user);
-    })
-    sendEmail(req, res)
-}
-
-const verifyEmail = (req, res, next) => {
-    try {
-        const user = req.body;
-        otpArray = otpArray.filter((_user) => {
-            return isOtpValid(_user.expire_time)
-        })
-        const userData = otpArray.find((_user) => {
-            return isSameUser(_user, user);
-        })
-        if (!userData) {
-            res.status(404).send({
-                msg: 'OTP have been expired',
-            })
-        }
-        if (userData.otp != user.otp) {
-            res.status(406).send({
-                msg: 'OTP doesn\'t match'
-            })
-        }
-        else {
-            delete req.body.otp
-            next()
-        }
-    }
-    catch (e) {
-        res.status(500).send()
-    }
-}
-
-module.exports = { sendEmail, verifyEmail, resendEmail }
+module.exports = sendMail

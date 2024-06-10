@@ -12,12 +12,10 @@ import { userActions } from '../../store/UserSlice'
 
 export default function ActivityProfilesList({ title, url }) {
     const navigate = useNavigate()
-    // const { user } = useSelector(state => state.user)
     const dispatch = useDispatch()
     const { data: profileList, isPending } = useQuery({
         queryKey: ['users', url],
         queryFn: ({ signal }) => axios.get(`/activity/${url}`, { signal })
-        // staleTime: 10000,
     })
 
     useEffect(() => {
