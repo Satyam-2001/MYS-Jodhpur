@@ -14,7 +14,9 @@ const userSchema = new mongoose.Schema({
     family: FamilySchema,
     contact: ContactSchema,
     settings: SettingsSchema,
-
+    last_seen: {
+        type: mongoose.Schema.Types.Mixed,
+    },
     shortlisted: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

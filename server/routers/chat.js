@@ -28,3 +28,35 @@ router.get('/list', auth, async (req, res) => {
         res.status(500).send(e)
     }
 })
+
+async function fetchChatByParticipants(participants) {
+    const chats = await Chat.findOne({ participants: { $all: participants, $size: 2 } })
+        .populate({
+            path: 'participants',
+            select: 'basic_info'
+        })
+        .populate('lastMessage')
+
+    if (chats) return chats
+
+    let new_chat = new Chat({ participants })
+    new_chat = await new_chat.save()
+    new_chat = await new_chat.populate({
+        path: 'participants',
+        select: 'basic_info'
+    })
+
+    return new_chat
+}
+
+async function updateChatLastSeenMessage(chatId, messageId) {
+    await Chat.findByIdAndUpdate(chatId, { lastMessage: messageId })
+    return await Chat.findById(chatId).populate({
+        path: 'participants',
+        select: 'basic_info'
+    })
+        .populate('lastMessage')
+
+}
+
+module.exports = { fetchChatByParticipants, updateChatLastSeenMessage }

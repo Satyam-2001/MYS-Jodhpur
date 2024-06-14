@@ -3,7 +3,8 @@ import { useDispatch } from "react-redux";
 import { userActions } from '../store/UserSlice'
 import { useQuery } from "@tanstack/react-query";
 import axios from "../services/axiosinstance";
-import { connectSocket } from '../services/socket'
+import { connectSocket, socket } from '../services/socket'
+import { chatActions } from "../store/ChatSlice";
 
 export default function useFetchData() {
     const dispatch = useDispatch()
@@ -35,9 +36,6 @@ export default function useFetchData() {
     useEffect(() => {
         if (!isPending) {
             dispatch(userActions.setUser(data))
-            const user_id = data.user._id
-            // if (user_id) connectSocket(user_id)
-            return
         }
         else if (localStorage.getItem('token')) {
             const user = JsonParse(localStorage.getItem('user'))

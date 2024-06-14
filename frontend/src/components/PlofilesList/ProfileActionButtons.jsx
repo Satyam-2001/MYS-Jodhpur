@@ -15,6 +15,7 @@ import { Fragment } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { RWebShare } from "react-web-share";
 import ShareIcon from '@mui/icons-material/Share';
+import { Link, useNavigate } from 'react-router-dom';
 
 export function ActionButton({ children, Icon, text, onClick = () => { }, sx = {}, ...props }) {
 
@@ -151,7 +152,7 @@ export function SendInterestButton({ profile, ...props }) {
     )
 }
 
-export function ChatButton({ profile, ...props }) {
+export function ShareButton({ profile, ...props }) {
     const { _id } = profile
     const { user } = useSelector(state => state.user)
     const isRecieveInterest = (user.recieveinterest || []).includes(_id)
@@ -170,6 +171,21 @@ export function ChatButton({ profile, ...props }) {
                 Share
             </ActionButton>
         </RWebShare>
+    )
+}
+
+export function ChatButton({ profile, ...props }) {
+    const { _id } = profile
+    const { user } = useSelector(state => state.user)
+    const navigate = useNavigate()
+    const isRecieveIntrest = (user.recieveintrest || []).includes(_id)
+
+    if (isRecieveIntrest) return
+
+    return (
+        <ActionButton Icon={ChatBubbleOutlineOutlinedIcon} onClick={() => navigate(`/chats/${_id}`)} {...props}>
+            Chat
+        </ActionButton>
     )
 }
 
@@ -193,6 +209,7 @@ export default function ProfileActionButtons({ text = true, profile, sx = {}, ..
         >
             <ShortlistButton text={text} profile={profile} />
             <SendInterestButton text={text} profile={profile} />
+            <ShareButton text={text} profile={profile} />
             <ChatButton text={text} profile={profile} />
         </Stack>
     )

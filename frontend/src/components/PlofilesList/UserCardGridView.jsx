@@ -15,6 +15,7 @@ const style = {
     maxHeight: '600px',
     minHeight: '350px',
     width: { xs: '100%', md: '48%' },
+    minWidth: 'min(100%, 320px)',
     maxWidth: '380px !important',
 }
 
@@ -34,7 +35,7 @@ export default function UserCardGridView({ profile, sx = {} }) {
         <Grid
             item
             xs={12}
-            md={5.8}
+            md={3.9}
             sx={{
                 bgcolor: 'background.paper',
                 p: 1,
@@ -66,7 +67,7 @@ export default function UserCardGridView({ profile, sx = {} }) {
                     <ParametersGrid profile={profile} color='white' />
                 </ProfileImage>
             </Link>
-            <ProfileActionButtons text={false} profile={profile} />
+            <ProfileActionButtons text={false} profile={profile} sx={{ height: { md: '70px' } }} />
         </Grid>
     )
 }

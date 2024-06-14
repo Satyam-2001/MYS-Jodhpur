@@ -7,7 +7,7 @@ import ProfileImage from '../../components/ProfileImage'
 import NameHeader from '../../UI/NameHeader'
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import { useNavigate } from 'react-router'
-import ProfileActionButtons, { ChatButton, SendInterestButton, ShortlistButton } from '../../components/PlofilesList/ProfileActionButtons';
+import ProfileActionButtons, { ShareButton, SendInterestButton, ShortlistButton } from '../../components/PlofilesList/ProfileActionButtons';
 import { useSelector } from 'react-redux';
 
 export function SideSectionSkeleton() {
@@ -46,7 +46,7 @@ export default function SideSection() {
                 <Stack gap={1} sx={{ display: { xs: 'none', md: 'flex' } }}>
                     <ShortlistButton profile={profile} text={true} variant='contained' />
                     <SendInterestButton profile={profile} text={true} variant='contained' />
-                    <ChatButton profile={profile} text={true} variant='contained' />
+                    <ShareButton profile={profile} text={true} variant='contained' />
                 </Stack>
             )}
         </ Block>

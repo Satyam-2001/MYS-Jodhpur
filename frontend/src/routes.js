@@ -13,6 +13,8 @@ import InterestSent from "./pages/Activity/Sections/InterestSent";
 import MatchedProfiles from "./pages/Activity/Sections/MatchedProfiles";
 import Settings from "./pages/Settings";
 import Error from "./components/Error";
+import ChatBlock from "./pages/Chats/ChatBlock";
+import EmptyChatBlock from "./pages/Chats/EmptyChatBlock";
 
 const router = createBrowserRouter([
     {
@@ -35,10 +37,20 @@ const router = createBrowserRouter([
                 path: '/search',
                 element: <Search />
             },
-            // {
-            //     path: '/chats',
-            //     element: <Chats />
-            // },
+            {
+                path: '/chats',
+                element: <Chats />,
+                children: [
+                    {
+                        index: true,
+                        element: <EmptyChatBlock />
+                    },
+                    {
+                        path: ':userId',
+                        element: <ChatBlock />
+                    }
+                ]
+            },
             {
                 path: '/activity',
                 element: <Outlet />,

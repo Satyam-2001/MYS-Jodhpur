@@ -2,9 +2,10 @@ import { Avatar, Divider, IconButton, Paper, Popover, Stack, Typography, useThem
 import chroma from 'chroma-js'
 import CallIcon from '@mui/icons-material/Call';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import React, { Fragment } from 'react'
-import SearchBar from '../ChatMenu/SearchBar';
-import MessageSent from './MessageSent';
+import { Link, useNavigate } from 'react-router-dom';
 
 function MenuButton() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -49,28 +50,34 @@ function MenuButton() {
 }
 
 export default function ChatHeader({ user }) {
+    const navigate = useNavigate()
+    if (!user) return
     return (
-        <Stack direction='row' gap={2} sx={{ backgroundColor: 'rgba(100, 100, 100, 0.12)', borderRadius: '10px', height: '56px', justifyContent: 'center', alignItems: 'center', p: 1, cursor: 'pointer' }}>
-            <Avatar
-                alt={user.first_name}
-                src={user.images[0]}
-                sx={{ width: 50, height: 50 }}
-            />
-            <Stack sx={{ flexGrow: 1, height: '100%' }}>
-                <Stack direction='row' sx={{ flexGrow: 1, justifyContent: 'space-between' }}>
-                    <Stack sx={{ justifyContent: 'space-between', py: 1 }}>
-                        <Typography variant='h3' sx={{ fontWeight: 500, fontSize: '1.2rem' }}>
-                            {`${user.first_name} ${user.last_name}, ${user.age}`}
+        <Stack gap={1} direction='row' sx={{ backgroundColor: 'rgba(100, 100, 100, 0.12)', borderRadius: '10px', height: '64px', justifyContent: 'space-between', alignItems: 'center', p: 1, cursor: 'pointer' }}>
+            <IconButton onClick={() => navigate('/chats')}>
+                <ArrowBackIcon sx={{ fontSize: '1.7rem' }} />
+            </IconButton>
+            <Link to={`/profile/${user._id}`} style={{ textDecoration: 'none' }}>
+                <Stack gap={2} direction='row' sx={{ justifyContent: 'space-between', alignItems: 'center', py: 1 }}>
+                    <Avatar
+                        alt={user.basic_info.profile_image}
+                        src={user.basic_info.profile_image}
+                        sx={{ width: 50, height: 50 }}
+                    />
+                    <Stack>
+                        <Typography variant='h3' sx={{ fontWeight: 500, fontSize: '1.2rem', fontFamily: 'Lexend,sans-serif' }}>
+                            {user.basic_info.name}
                         </Typography>
                     </Stack>
-                    <Stack direction='row' sx={{ justifyContent: 'space-evenly', alignItems: 'flex-end' }}>
-                        <IconButton size='large'>
-                            <CallIcon fontSize='large' />
-                        </IconButton>
-                        <MenuButton />
-                    </Stack>
                 </Stack>
-                {/* <Divider /> */}
+            </Link>
+            <Stack direction='row' sx={{ flexGrow: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
+                <Stack direction='row' sx={{ justifyContent: 'space-evenly', alignItems: 'center' }}>
+                    <IconButton size='large'>
+                        <CallIcon fontSize='large' />
+                    </IconButton>
+                    <MenuButton />
+                </Stack>
             </Stack>
         </Stack>
     )

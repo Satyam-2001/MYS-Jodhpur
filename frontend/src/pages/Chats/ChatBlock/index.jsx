@@ -1,30 +1,39 @@
-import { Avatar, Divider, IconButton, Stack, Typography, useTheme } from '@mui/material'
-import chroma from 'chroma-js'
-import CallIcon from '@mui/icons-material/Call';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import React, { Fragment } from 'react'
-import SearchBar from '../ChatMenu/SearchBar';
-import MessageSent from './MessageSent';
+
+import React, { Fragment, useContext, useEffect, useState } from 'react'
+import ChatFooter from './ChatFooter';
 import ChatHeader from './ChatHeader';
 import Block from '../../../UI/Block';
+import { useParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { GetOtherUserData, LoadMessages } from '../../../store/ChatSlice';
+import { SocketContext } from '../../../context/SocketProvider';
+import ChatBody from './ChatBody';
 
-export default function ChatBlock({ user }) {
-  const theme = useTheme()
-  const mode = theme.palette.mode
+export default function ChatBlock() {
+  const { socket } = useContext(SocketContext)
+  const { user } = useSelector(state => state.user)
+  const { chats, selected_chat } = useSelector(state => state.chats)
+  const { userId } = useParams()
+  const dispatch = useDispatch()
+  const oher_user = GetOtherUserData(user._id, selected_chat)
+
+  useEffect(() => {
+    if (!socket) return
+    dispatch(LoadMessages({ userId }, socket))
+  }, [userId, socket])
+
   return (
     <Block
-      p={1}
+      p={{ md: 1 }}
       sx={{
-        width: '70%',
+        width: { xs: '100%', md: '70%' },
         height: '100%',
-        overflow: 'auto',
-        display: {xs: 'none', md: 'flex'}
+        overflow: 'hidden',
+        display: { md: 'flex' }
       }}>
-      <ChatHeader user={user} />
-      <Stack sx={{ flexGrow: 1 }}>
-
-      </Stack>
-      <MessageSent />
+      <ChatHeader user={oher_user} />
+      <ChatBody />
+      <ChatFooter />
     </Block>
   )
 }
