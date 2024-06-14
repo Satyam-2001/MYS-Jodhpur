@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import io from "socket.io-client"; // Add this
 import { LoadChats, ReceiveMessage, chatActions } from "../store/ChatSlice";
+import { BASE_URL } from "../services/constant";
 
 export const SocketContext = createContext({
     socket: null,
@@ -14,7 +15,7 @@ export const SocketProvider = ({ children }) => {
 
     useEffect(() => {
         if (!user?._id) return
-        const new_socket = io('http://localhost:4000/', {
+        const new_socket = io(BASE_URL, {
             query: `user_id=${user._id}`,
         });
         setSocket(new_socket)
