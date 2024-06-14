@@ -83,33 +83,14 @@ export default function IntroSection({ color = 'primary' }) {
                             Easily!
                         </Typography>
                         <Stack gap={2} sx={{ alignItems: 'center', width: { xs: '100%', md: '60%' } }}>
-                            <FeatureContainer color='red'>
-                                100% Free Matrimonial Site
-                            </FeatureContainer>
-                            <FeatureContainer color='orange'>
-                                Horoscope Matching
-                            </FeatureContainer>
-                            <FeatureContainer color='yellow'>
-                                Browse your Community
-                            </FeatureContainer>
                             <Button variant='contained' onClick={nagigateRegisterHandler} size='large' sx={{ backgroundImage: 'var(--text-gradient)', borderRadius: '20px', fontSize: '1.1rem', fontWeight: 600 }}>
-                                Create Your Profile
+                                Register
                             </Button>
                         </Stack>
                     </Stack>
                 </Grid>
                 <Grid item md={6} sx={{ boxSizing: 'border-box', display: { xs: 'none', md: 'flex' }, alignItems: 'center', justifyContent: 'center' }}>
-                    <Mirror gap={3} sx={{ p: 2, width: '75%', display: 'flex' }}>
-                        <Typography variant='h2' fontSize={'1.8rem'} fontWeight={700} sx={{ opacity: 0.9, color: 'white' }}>
-                            Search Your Companion
-                        </Typography>
-                        <SelectInput label='Looking For' value={'Groom'} menu={['Groom', 'Bride']} />
-                        <SelectInput label='Religion' value={'Any'} menu={['Any', 'Hindu']} />
-                        <SelectInput label='Community' value={'Any'} menu={['Any', 'Hindu']} />
-                        <Button variant='contained' size='large' sx={{ backgroundImage: 'var(--text-gradient)' }}>
-                            Search
-                        </Button>
-                    </Mirror>
+                    {/* <img src={require('../../assets/logo.png')} /> */}
                 </ Grid>
             </Grid >
             <Divider />

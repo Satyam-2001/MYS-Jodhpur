@@ -41,7 +41,7 @@ export default function Header() {
                 <Stack gap={2} p={2} alignItems='center' maxWidth='auto' >
                     <img src={logo} style={{ width: '50%' }} />
                     <Typography variant='h3' fontFamily={"'Nosifer', sans-serif"}>
-                        <span className="text-gradient">Match My Mate</span>
+                        <span className="text-gradient">MYS Jodhpur</span>
                     </Typography>
                 </Stack>
             </Stack>

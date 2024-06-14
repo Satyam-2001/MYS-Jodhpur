@@ -19,7 +19,7 @@ export const SocketProvider = ({ children }) => {
             query: `user_id=${user._id}`,
         });
         setSocket(new_socket)
-        dispatch(LoadChats({ userId: user._id }, new_socket))
+        // dispatch(LoadChats({ userId: user._id }, new_socket))
     }, [user?._id])
 
     useEffect(() => {

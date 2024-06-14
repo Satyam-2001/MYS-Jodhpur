@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 
-import logo from '../assets/logo.png'
+import logo from '../../assets/logo.png'
 import navigationList from '../../data/navigation';
 
 const socials = [
@@ -43,7 +43,7 @@ function Footer() {
     const theme = useTheme()
 
     return (
-        <Paper sx={{ mt: 2 }}>
+        <Paper >
             <Grid spacing={3} container sx={{ p: 4, boxSizing: 'border-box' }}>
                 <Grid item xs={12} sm={4} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <img src={logo} style={{ height: '12rem' }} />
@@ -79,7 +79,7 @@ function Footer() {
             <Grid item xs={12} sx={{ justifyContent: 'center' }}>
                 <Divider />
                 <Typography variant='h5' fontSize={'1rem'} textAlign={'center'} sx={{ p: 2 }}>
-                    Copyright © 2024. All rights reserved by Match My Mate.
+                    Copyright © 2024. All rights reserved by MYS Jodhpur.
                 </Typography>
             </Grid>
         </Paper>
