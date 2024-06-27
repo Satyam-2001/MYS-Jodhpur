@@ -33,7 +33,7 @@ function ImageSection({ start }) {
                                         transform: 'rotate(0deg) scale(1.1)'
                                     }
                                 }}
-                                src={require(`../../assets/couples/${start + index + 1}.jpg`)}
+                                src={require(`../../../assets/couples/${start + index + 1}.jpg`)}
                             />
                         </Stack>
 

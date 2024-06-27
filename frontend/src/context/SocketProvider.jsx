@@ -5,25 +5,38 @@ import { LoadChats, ReceiveMessage, chatActions } from "../store/ChatSlice";
 import { BASE_URL } from "../services/constant";
 
 export const SocketContext = createContext({
+    isConnected: false,
     socket: null,
 })
 
 export const SocketProvider = ({ children }) => {
+    const [isConnected, setIsConnected] = useState(false)
     const [socket, setSocket] = useState()
     const dispatch = useDispatch()
     const { user } = useSelector(state => state.user)
 
     useEffect(() => {
         if (!user?._id) return
-        const new_socket = io(BASE_URL, {
+        const socket = io(BASE_URL, {
             query: `user_id=${user._id}`,
         });
-        setSocket(new_socket)
-        // dispatch(LoadChats({ userId: user._id }, new_socket))
+        setSocket(socket)
+
+        socket.on('connect', () => {
+            setIsConnected(true)
+        })
+        socket.on('disconnect', () => {
+            setIsConnected(false)
+        })
+
+        return () => {
+            socket.off('connection')
+            socket.off('disconnect')
+        }
     }, [user?._id])
 
     useEffect(() => {
-        if (!socket) return
+        if (!isConnected) return
         socket.on('new_message', (chat, message) => {
             dispatch(ReceiveMessage({ userId: user._id, chat, message }))
         })
@@ -38,10 +51,10 @@ export const SocketProvider = ({ children }) => {
             socket.off('update_message')
             socket.off('delete_message')
         }
-    }, [socket])
+    }, [isConnected])
 
     return (
-        <SocketContext.Provider value={{ socket }}>
+        <SocketContext.Provider value={{ socket, isConnected }}>
             {children}
         </SocketContext.Provider>
     )

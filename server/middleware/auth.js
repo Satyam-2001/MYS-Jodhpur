@@ -1,11 +1,20 @@
 const jwt = require("jsonwebtoken")
 const User = require("../models/User")
-require('dotenv').config();
+
+const verifyToken = async (req) => {
+    const token = req.header('Authorization').replace('Bearer ', '')
+    const decode = jwt.verify(token, process.env.JWT_SECRET)
+    const user = await User.findOne({ _id: decode._id, 'tokens.token': token })
+    if (!user) throw new Error()
+    req.token = token
+    req.user = user
+    return { user, token }
+}
 
 const auth = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '')
-        const decode = jwt.verify(token, process.env.PRIVATE_KEY)
+        const decode = jwt.verify(token, process.env.JWT_SECRET)
         const user = await User.findOne({ _id: decode._id, 'tokens.token': token })
         if (!user) throw new Error()
         req.token = token
@@ -20,9 +29,9 @@ const auth = async (req, res, next) => {
 const authLazy = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '')
-        const decode = jwt.verify(token, process.env.PRIVATE_KEY)
+        const decode = jwt.verify(token, process.env.JWT_SECRET)
         const user = await User.findOne({ _id: decode._id, 'tokens.token': token })
-        if (!user) next()
+        if (!user) throw new Error()
         req.token = token
         req.user = user
         next()

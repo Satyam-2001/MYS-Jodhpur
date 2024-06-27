@@ -6,7 +6,7 @@ import Footer from "../../components/Layouts/Footer"
 
 function Home() {
     return (
-        <Container hideSideBar direction='column' pt={0} p={0} overflow={'auto'}>
+        <Container hideSideBar appBarTranslucent direction='column' pt={0} p={0} overflow={'auto'}>
             <IntroSection />
             <HeroSection />
             <Footer />

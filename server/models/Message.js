@@ -67,7 +67,8 @@ messageSchema.statics.SendMessage = async (chatId, message) => {
 messageSchema.statics.CountUnreadMessages = async function (chatId, participantId) {
     const counts = await Message.countDocuments({
         chatId: chatId,
-        'readBy.participant': { $ne: participantId }
+        'readBy.participant': { $ne: participantId },
+        from: { $ne: participantId }
     });
     return counts
 };

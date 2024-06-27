@@ -6,6 +6,7 @@ const ContactSchema = require('./Contact')
 const FamilySchema = require('./Family')
 const SettingsSchema = require('./Settings')
 const AboutMeSchema = require('./AboutMe')
+const Chat = require("../Chat")
 require('dotenv').config();
 
 const userSchema = new mongoose.Schema({
@@ -123,6 +124,11 @@ userSchema.pre('save', async function (next) {
     if (this.isModified('password')) {
         this.password = await bcrypt.hash(this.password, 8)
     }
+    next()
+})
+
+userSchema.pre('remove', async function (next) {
+    await Chat.deleteMany({ type: 'personal', participants: { $all: [this._id] } })
     next()
 })
 

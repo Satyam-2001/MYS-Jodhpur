@@ -20,7 +20,7 @@ import { Fragment } from 'react';
 
 const drawerWidth = 280;
 
-export default function Header() {
+export default function Header({ appBarTranslucent }) {
     const theme = useTheme();
     const navigate = useNavigate()
 
@@ -63,42 +63,35 @@ export default function Header() {
                     }}
                     sx={{
                         display: { xs: 'block' },
-                        '& .MuiDrawer-paper': { width: drawerWidth },
+                        '& .MuiDrawer-paper': { width: drawerWidth, bgcolor: 'background.default' },
                     }}
                 >
                     {drawer}
                 </Drawer>
             </nav>
-            <AppBar position="fixed" elevation={0} sx={{ backgroundColor: chroma(theme.palette.background.paper).alpha(1).hex(), boxSizing: 'border-box', width: '100%', backdropFilter: 'blur(4px)' }}>
-                <Stack direction='row' justifyContent='space-between' alignItems='center' height='4rem' px={2} >
+            <AppBar position="fixed" elevation={0} sx={{ backgroundColor: chroma(theme.palette.background.paper).alpha(appBarTranslucent ? 0.3 : 1).hex(), boxSizing: 'border-box', width: '100%', backdropFilter: 'blur(4px)' }}>
+                <Stack direction='row' gap={4} justifyContent='space-between' alignItems='center' height='4rem' px={2} >
                     <Box onClick={handleDrawerToggle} justifyContent='space-between' alignItems='center' gap={2} sx={{ height: '3.2rem' }}>
                         <img src={logo} style={{ height: '95%' }} />
                     </Box>
                     <Navbar />
-                    <Stack direction='row' gap='2px' alignItems='center'>
+                    <Stack direction='row' gap={'12px'} alignItems='center'>
                         <IconButton
                             onClick={toggleMode}
-                            sx={{ p: { xs: '8px' } }}
                         >
                             {mode === 'dark' ? <LightModeOutlinedIcon sx={{ fontSize: { xs: '1.5rem', md: '1.8rem' } }} /> : <DarkModeOutlinedIcon sx={{ fontSize: { xs: '1.5rem', md: '1.8rem' } }} />}
                         </IconButton>
-                        {isLoggedIn ?
-                            <Fragment>
-                                <IconButton
-                                    sx={{ mx: { xs: 0, md: 2 }, p: { xs: '8px' } }}
-                                    onClick={toggleMode}
-                                >
-                                    <NotificationsNoneOutlinedIcon sx={{ fontSize: { xs: '1.5rem', md: '1.8rem' } }} />
-                                </IconButton>
-                                <Link to={`/profile`} style={{ paddingLeft: '4px' }}>
-                                    <Avatar alt={user?.basic_info?.name} src={image} />
-                                </Link>
-                            </Fragment>
-                            :
-                            <Button variant='text' sx={{ p: 1, ml: 1 }} onClick={() => { navigate('/register') }}>
-                                Register
-                            </Button>
-                        }
+                        {/* {isLoggedIn && <IconButton
+                            onClick={toggleMode}
+                        >
+                            <NotificationsNoneOutlinedIcon sx={{ fontSize: { xs: '1.5rem', md: '1.8rem' } }} />
+                        </IconButton>} */}
+                        {isLoggedIn && <Link to={`/profile`} style={{ paddingLeft: '4px' }}>
+                            <Avatar alt={user?.basic_info?.name} src={image} />
+                        </Link>}
+                        {!isLoggedIn && <Button variant='text' sx={{ p: 1, ml: 1 }} onClick={() => { navigate('/register') }}>
+                            Register
+                        </Button>}
                     </Stack>
                 </Stack>
                 {/* <Divider /> */}

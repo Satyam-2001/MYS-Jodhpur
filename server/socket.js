@@ -5,7 +5,8 @@ const { removeUserSocketByUserId, addUserSocket, getRelationBySocketId, getRelat
 const User = require("./models/User");
 
 const { app } = require('./app')
-const server = require('http').createServer(app);
+const http = require('http')
+const server = http.createServer(app);
 
 const io = socketio(server, {
     cors: {
@@ -42,9 +43,6 @@ io.on('connection', (socket) => {
             const reciever = getRelationByUserId(userId)
             const participants = [sender.user_id, userId]
             const chat = await Chat.fetchChatByParticipants(participants)
-            // if (!chat) {
-            //     return callback({ message_data: { messages: [], total: 0 } })
-            // }
             const messages = await Message.find({ chatId: chat._id }).populate('reply').sort({ 'created_at': -1 }).skip(skip).limit(10)
             const total = await Message.find({ chatId: chat._id }).countDocuments()
 

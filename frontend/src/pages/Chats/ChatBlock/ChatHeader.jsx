@@ -1,4 +1,4 @@
-import { Avatar, Divider, IconButton, Paper, Popover, Stack, Typography, useTheme } from '@mui/material'
+import { Avatar, Divider, IconButton, Menu, MenuItem, Paper, Popover, Stack, Typography, useTheme } from '@mui/material'
 import chroma from 'chroma-js'
 import CallIcon from '@mui/icons-material/Call';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -9,42 +9,37 @@ import { Link, useNavigate } from 'react-router-dom';
 
 function MenuButton() {
     const [anchorEl, setAnchorEl] = React.useState(null);
-
+    const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
-
     const handleClose = () => {
         setAnchorEl(null);
     };
 
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
-
     return (
         <Fragment>
-            <IconButton size='large' onClick={handleClick}>
+            <IconButton
+                id="chat-body-button"
+                aria-controls={open ? 'chat-body-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                size='large'
+                onClick={handleClick}
+            >
                 <MoreVertIcon fontSize='large' />
             </IconButton>
-            <Popover
-                // Note: The following zIndex style is specifically for documentation purposes and may not be necessary in your application.
-                id={id}
-                open={open}
+            <Menu
+                id="chat-body-menu"
                 anchorEl={anchorEl}
+                open={open}
                 onClose={handleClose}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
-                }}
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
+                MenuListProps={{
+                    'aria-labelledby': 'chat-body-button',
                 }}
             >
-                <Paper elevation={2}>
-                    <Typography sx={{ p: 2 }}>The content of the Popper.</Typography>
-                </Paper>
-            </Popover>
+                <MenuItem onClick={handleClose}>Delete Chat</MenuItem>
+            </Menu>
         </Fragment>
     )
 }
@@ -73,9 +68,9 @@ export default function ChatHeader({ user }) {
             </Link>
             <Stack direction='row' sx={{ flexGrow: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
                 <Stack direction='row' sx={{ justifyContent: 'space-evenly', alignItems: 'center' }}>
-                    <IconButton size='large'>
+                    {/* <IconButton size='large'>
                         <CallIcon fontSize='large' />
-                    </IconButton>
+                    </IconButton> */}
                     <MenuButton />
                 </Stack>
             </Stack>

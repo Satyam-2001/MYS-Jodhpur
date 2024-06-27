@@ -21,18 +21,12 @@ export function UserCardListViewSkeleton() {
 }
 
 export default function UserCardListView({ profile }) {
-    const theme = useTheme()
-    const userInfo = profile?.basic_info || {}
-    const image = userInfo.profile_image
     const { isLoggedIn } = useSelector(state => state.user)
 
-    const [isHover, setIsHover] = useState(false)
     return (
         <Grid
             item
             md={12}
-            onMouseOver={() => setIsHover(true)}
-            onMouseLeave={() => setIsHover(false)}
             sx={{
                 height: isLoggedIn ? '300px' : '240px',
                 bgcolor: 'background.paper',

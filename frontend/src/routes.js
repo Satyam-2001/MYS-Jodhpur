@@ -15,6 +15,7 @@ import Settings from "./pages/Settings";
 import Error from "./components/Error";
 import ChatBlock from "./pages/Chats/ChatBlock";
 import EmptyChatBlock from "./pages/Chats/EmptyChatBlock";
+import Members from "./pages/Members";
 
 const router = createBrowserRouter([
     {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
             {
                 path: '/search',
                 element: <Search />
+            },
+            {
+                path: '/members',
+                element: <Members />
             },
             {
                 path: '/chats',

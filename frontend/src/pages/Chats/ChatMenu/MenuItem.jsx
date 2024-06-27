@@ -39,7 +39,7 @@ export default function MenuItem({ chat }) {
                                 {time}
                             </Typography>
                             {!!chat.unread && <Typography sx={{ color: 'white', fontSize: '0.9rem', backgroundImage: 'var(--text-gradient)', borderRadius: '50%', width: '1.4rem', height: '1.4rem', textAlign: 'center' }}>
-                                {chat.unread}
+                                {chat?.unread}
                             </Typography>}
                         </Stack>
                     </Stack>

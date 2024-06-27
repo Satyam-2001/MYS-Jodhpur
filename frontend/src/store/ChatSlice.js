@@ -1,6 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { socket } from '../services/socket';
-import { dataTagSymbol } from '@tanstack/react-query';
 
 const initialState = {
     chats: [],
@@ -14,7 +12,7 @@ const initialState = {
 function addNewMessage(state, chat, message) {
     const current_chat = state.chats.find(item => item._id == chat._id)
     state.chats = state.chats.filter(item => item._id != chat._id)
-    let unread = current_chat.unread + 1
+    let unread = (current_chat?.unread || 0) + 1
     if (state.selected_chat?._id === chat._id) {
         unread = 0
         state.selected_chat = chat
@@ -24,7 +22,7 @@ function addNewMessage(state, chat, message) {
 }
 
 function updateMessage(state, message, find_function) {
-    if (state.selected_chat._id !== message.chatId) return
+    if (state.selected_chat?._id !== message.chatId) return
     const index = state.selected_messages.findIndex(find_function)
     if (index === -1) return
     state.selected_messages[index] = message

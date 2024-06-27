@@ -30,7 +30,6 @@ export function UserCardGridViewSkeleton() {
 
 export default function UserCardGridView({ profile, sx = {} }) {
     const userInfo = profile.basic_info
-    const image = userInfo.profile_image
     return (
         <Grid
             item
@@ -61,7 +60,6 @@ export default function UserCardGridView({ profile, sx = {} }) {
                     gradient={true}
                     profile={profile}
                     sx={{ height: '100%', flexShrink: 1 }}
-                    sx_image={{}}
                 >
                     <NameHeader profile={profile} sx={{ color: 'white' }} />
                     <ParametersGrid profile={profile} color='white' />

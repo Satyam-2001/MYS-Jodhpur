@@ -38,17 +38,19 @@ function ButtonElement({ to, name, icon }) {
         <NavLink to={to} >
             {({ isActive }) => (
                 <Button
-                    startIcon={icon}
+                    // startIcon={icon}
                     sx={{
-                        width: '75%',
-                        borderRadius: '10px',
+                        width: '100%',
+                        borderRadius: '30px',
+                        px: 2,
                         background: isActive ? 'linear-gradient(135deg, #cc0000 2.34%, #e96214d6 100.78%)' : 'transparent',
-                        color: theme.palette.text.primary,
+                        color: isActive ? 'white' : 'text.primary',
+                        fontFamily: 'lexend,sans-serif',
+                        textTransform: 'capitalize',
+                        fontSize: '1rem',
                     }}
                 >
-                    <Typography variant='h5'>
-                        {name}
-                    </Typography>
+                    {name}
                 </Button>)}
         </NavLink>)
 }
@@ -58,15 +60,16 @@ function Navbar() {
     return (
         <Stack
             direction='row'
-            gap={5}
+            gap={2}
             sx={{
                 display: { xs: 'none', sm: 'flex' },
+                // flex: 1,
                 position: 'absolute',
                 left: '50%',
                 transform: 'translate(-50%,0%)'
             }}
         >
-            {navigationList.map(({ name, to, icon }) => <IconElement key={name} to={to} name={name} icon={icon} />)}
+            {navigationList.map(({ name, to, icon }) => <ButtonElement key={name} to={to} name={name} icon={icon} />)}
         </Stack>
     )
 }

@@ -84,7 +84,7 @@ router.get('/:id', authLazy, async (req, res) => {
 
 router.patch('/password', auth, async (req, res) => {
     try {
-        req.user['password'] = await bcrypt.hash(req.body.password, 8)
+        req.user['password'] = req.body.password
         await req.user.save()
         res.send({ user: req.user, token: req.token })
     }

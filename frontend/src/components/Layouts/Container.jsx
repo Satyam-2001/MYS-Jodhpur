@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import BottomNavigation from '../NavigatonBar/BottomNavbar'
 import Header from './Header'
 
-export default function Container({ children, hideSideBar, hideBottomNavBar, hideAppBar, ...props }) {
+export default function Container({ children, hideSideBar, hideBottomNavBar, hideAppBar, appBarTranslucent , ...props }) {
     const { isLoggedIn } = useSelector(state => state.user)
     let Internal;
     if (!isLoggedIn || hideSideBar) {
@@ -32,7 +32,7 @@ export default function Container({ children, hideSideBar, hideBottomNavBar, hid
     return (
         <Stack height='100vh' sx={{ position: 'relative', paddingBottom: { xs: hideBottomNavBar ? 0 : '65px', md: 0 } }} bgcolor={'background.default'} boxSizing='border-box'>
             <Stack boxSizing='border-box' sx={{ flex: 1, overflow: 'hidden', bgcolor: 'background.default' }}>
-                {!hideAppBar && <Header />}
+                {!hideAppBar && <Header appBarTranslucent={appBarTranslucent} />}
                 {Internal}
             </Stack>
             {!hideBottomNavBar && <BottomNavigation />}

@@ -14,7 +14,7 @@ chatSchema.statics.fetchChatsByUserId = async (userId) => {
             select: 'basic_info last_seen'
         })
         .populate('lastMessage')
-        .sort({ 'lastMessage.createdAt': -1 });
+        .sort({ 'lastMessage.created_at': -1 });
 
     const result = [];
 

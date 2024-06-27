@@ -7,8 +7,7 @@ import { Outlet, useParams } from 'react-router'
 
 export default function Chats() {
 
-    
-    const {userId} = useParams()
+    const { userId } = useParams()
     const isMobile = useMediaQuery(theme => theme.breakpoints.down('md'))
 
     if (isMobile) {

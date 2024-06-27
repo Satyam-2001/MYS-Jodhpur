@@ -5,6 +5,8 @@ import MenuItem from './MenuItem'
 import Block from '../../../UI/Block'
 import { useSelector } from 'react-redux'
 import { GetChats } from '../../../store/ChatSlice'
+import { useQuery } from '@tanstack/react-query'
+import axios from '../../../services/axiosinstance'
 
 export default function ChatMenu() {
     const { chats } = useSelector(state => state.chats)
