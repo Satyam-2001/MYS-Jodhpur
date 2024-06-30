@@ -15,7 +15,6 @@ function removeUserSocketBySocketId(socket_id) {
     user_socket_relation = user_socket_relation.filter(relation => relation.socket_id !== socket_id)
 }
 
-
 function getRelationByUserId(user_id) {
     return user_socket_relation.filter(relation => relation.user_id === user_id)
 }

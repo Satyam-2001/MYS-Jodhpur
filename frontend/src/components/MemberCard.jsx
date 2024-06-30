@@ -3,7 +3,7 @@ import { Stack, Typography, useTheme } from '@mui/material'
 import Tilt from 'react-parallax-tilt'
 import { defaultImage } from '../data/constants'
 
-export default function MemberCard({ name, designation, image }) {
+export default function MemberCard({ name, designation, image, hideDesignaton }) {
     const theme = useTheme()
     return (
         <Tilt
@@ -31,7 +31,7 @@ export default function MemberCard({ name, designation, image }) {
             <Stack gap={1} sx={{ alignItems: 'center' }}>
                 <img src={image || defaultImage} style={{ borderRadius: '1rem', width: '97%' }} />
                 <Typography sx={{ fontSize: '1.2rem', fontFamily: 'lexend,sans-serif', textAlign: 'center' }}>{name}</Typography>
-                <Typography sx={{ fontSize: '1rem', fontFamily: 'lexend,sans-serif', textAlign: 'center' }}>{designation}</Typography>
+                {!hideDesignaton && <Typography sx={{ fontSize: '1rem', fontFamily: 'lexend,sans-serif', textAlign: 'center' }}>{designation}</Typography>}
             </Stack>
         </Tilt>
     )

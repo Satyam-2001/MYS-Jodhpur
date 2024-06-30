@@ -79,7 +79,7 @@ export default function Header({ appBarTranslucent }) {
                         <IconButton
                             onClick={toggleMode}
                         >
-                            {mode === 'dark' ? <LightModeOutlinedIcon sx={{ fontSize: { xs: '1.5rem', md: '1.8rem' } }} /> : <DarkModeOutlinedIcon sx={{ fontSize: { xs: '1.5rem', md: '1.8rem' } }} />}
+                            {mode === 'dark' ? <LightModeOutlinedIcon sx={{ fontSize: { xs: '1.5rem', md: '1.8rem' } }} /> : <DarkModeOutlinedIcon sx={{ color: 'text.primary', fontSize: { xs: '1.5rem', md: '1.8rem' } }} />}
                         </IconButton>
                         {/* {isLoggedIn && <IconButton
                             onClick={toggleMode}

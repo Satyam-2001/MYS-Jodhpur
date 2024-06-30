@@ -20,7 +20,7 @@ function chatio(app, options = {}) {
 
     io.on('connection', (socket) => {
 
-        const socketController = new SocketController(socket)
+        const socketController = new SocketController(socket, io)
 
         socket.on('send_message', socketController.sendMessage)
         socket.on('create_chat', socketController.createChat)

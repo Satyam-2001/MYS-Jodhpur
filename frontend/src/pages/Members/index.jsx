@@ -4,7 +4,7 @@ import MemberCard from '../../components/MemberCard'
 import { Grid, Typography } from '@mui/material'
 import { karyakaarni, members, padadhikari } from '../../data/members'
 
-function MembersGrid({ title, members }) {
+function MembersGrid({ title, members, hideDesignaton }) {
     return (
         <Fragment>
             <Typography variant='h1' fontWeight={600} sx={{ fontSize: '4.5rem', textAlign: 'center' }}>
@@ -14,7 +14,7 @@ function MembersGrid({ title, members }) {
                 {members.map((data) => {
                     return (
                         <Grid item xs={6} md={2.4} key={data.name} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <MemberCard {...data} />
+                            <MemberCard {...data} hideDesignaton={hideDesignaton} />
                         </Grid>
                     )
                 })}
@@ -27,8 +27,8 @@ export default function Members() {
     return (
         <Container hideSideBar direction='column' gap={4} pt={12} overflow={'auto'}>
             <MembersGrid title={'पदाधिकारी'} members={padadhikari} />
-            <MembersGrid title={'कार्यकारणी'} members={karyakaarni} />
-            <MembersGrid title={'सदस्य'} members={members} />
+            <MembersGrid title={'कार्यकारणी सदस्य'} hideDesignaton members={karyakaarni} />
+            <MembersGrid title={'सदस्य'} hideDesignaton members={members} />
         </Container>
     )
 }

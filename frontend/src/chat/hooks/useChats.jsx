@@ -10,7 +10,7 @@ export default function useChats() {
         
     }
 
-    function createChat({ type = 'personal', participants = [], user_id }) {
+    async function createChat({ type = 'personal', participants = [], user_id }) {
         if (type === 'personal') {
             if (!user_id) {
                 throw 'You should provide User Id to create Chat'
@@ -19,7 +19,7 @@ export default function useChats() {
                 throw 'For Personal Chat there must be a single participant'
             }
             socket.emit('create_chat', { type, participants: [user._id, user_id] }, () => {
-
+                
             })
         }
     }

@@ -27,13 +27,12 @@ export default function IntroSection({ color = 'primary' }) {
                 backgroundSize: 'cover',
                 backgroundPosition: { xs: 'center', md: 'inherit' },
                 backgroundImage: 'url(https://img.freepik.com/free-photo/indian-couple-celebrating-propose-day-by-being-romantic-with-each-other_23-2151110911.jpg?t=st=1716188729~exp=1716192329~hmac=c8be8967d90706140b34ce1156a21e7ad1193032f018471994c34b1f47462fa1&w=900)',
+                overflow: 'hidden'
             }}>
                 <Grid item md={6}>
-                    <Stack px={2} gap={2} direction='column' sx={{ justifyContent: 'center' }}>
-                        <Typography variant='h1' fontWeight={600} sx={{ fontSize: '3.6rem', color: 'white' }} m={0}>
-                            Find Your<br />
-                            <span class="text-gradient">Dream Partner</span><br />
-                            Easily!
+                    <Stack px={2} gap={4} direction='column' sx={{ justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                        <Typography variant='h1' fontWeight={600} sx={{ cursor: 'pointer', transition: 'scale 0.2s', fontSize: { xs: '2.8rem', md: '3.6rem' }, color: 'white', textAlign: 'center', fontFamily: 'lexend,sans-serif', '&:hover': { scale: '1.1' } }} m={0}>
+                            <span class="text-gradient">Maheshwari<br />Yuva Sansthan,<br />Jodhpur</span><br />
                         </Typography>
                         <Stack gap={2} direction='column' sx={{ alignItems: 'center', width: { xs: '100%', md: '60%' } }}>
                             <Button variant='contained' fullWidth onClick={navigateLoginHandler} size='large' sx={{ backgroundImage: 'var(--text-gradient)', borderRadius: '20px', fontSize: '1.1rem', fontWeight: 600 }}>
@@ -46,7 +45,7 @@ export default function IntroSection({ color = 'primary' }) {
                     </Stack>
                 </Grid>
                 <Grid item md={6} sx={{ boxSizing: 'border-box', display: { xs: 'none', md: 'flex' }, alignItems: 'center', justifyContent: 'center' }}>
-                    {/* <img src={require('../../assets/logo.png')} /> */}
+                    <img src={require('../../assets/logo.png')} />
                 </ Grid>
             </Grid >
             <Divider />

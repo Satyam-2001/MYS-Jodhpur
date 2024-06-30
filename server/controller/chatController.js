@@ -85,4 +85,4 @@ async function DeleteChat(user_id, chat_id) {
     return chat
 }
 
-module.exports = { FetchChats, ChatById, ReadChat, ActiveParticpantByChatId, ReadChat, DeleteChat }
+module.exports = { CreateChat, FetchChats, ChatById, ReadChat, ActiveParticpantByChatId, ReadChat, DeleteChat }

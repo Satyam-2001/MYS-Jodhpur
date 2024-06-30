@@ -1,4 +1,4 @@
-import { createContext } from "react"
+import { createContext, useEffect } from "react"
 import { useQuery } from '@tanstack/react-query'
 import axios from '../services/axiosinstance'
 import { useDispatch, useSelector } from 'react-redux'
@@ -37,7 +37,7 @@ export default function ChatClientProvider(props) {
         })
 
         return () => {
-            socket.off('connection')
+            socket.off('connect')
             socket.off('disconnect')
         }
     }, [user?._id])
@@ -60,10 +60,13 @@ export default function ChatClientProvider(props) {
         }
     }, [isConnected])
 
+    useEffect(() => {
+        // dispatch(chatActions)
+    }, [chats])
+
     const context_value = {
         isConnected,
-        socket,
-        chats
+        socket
     }
 
     return (

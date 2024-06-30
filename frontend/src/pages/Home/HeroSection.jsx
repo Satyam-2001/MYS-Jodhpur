@@ -7,6 +7,7 @@ import Mirror from '../../UI/Mirror'
 import chroma from 'chroma-js'
 import SubContainer from './components/SubContainer'
 import Members from './Members'
+import ColorBlock from '../../UI/ColorBlock'
 
 
 function MirrorContainer({ children, title, color }) {
@@ -14,57 +15,50 @@ function MirrorContainer({ children, title, color }) {
     const mode = theme.palette.mode
     return (
         <Grid item md={3} sx={{ px: 2, py: { xs: 2, md: 0 } }}>
-            <Tilt
-                tiltEnable={false}
-                glareEnable={true}
-                scale={1.1}
-                glareMaxOpacity={0.3}
-                glareColor={mode === 'dark' ? 'white' : chroma(color).darken().hex()}
-                glarePosition="all"
-                glareBorderRadius="10px"
-                style={{ borderRadius: '20px' }}
-            >
-                <Stack sx={{ p: 3, gap: 2, alignItems: 'center', borderRadius: 'inherit', border: 'solid 1px', borderColor: color, backgroundColor: chroma(color).alpha(0.25).hex() }}>
-                    <img style={{
-                        height: '80px', filter: (mode === 'dark' ? 'invert(100%)' : 'none')
-                    }} src={require(`../../assets/community/${title.toLowerCase()}.png`)} />
-                    <Typography variant='h2'>
-                        {title}
-                    </Typography>
-                    <Typography variant='body1' sx={{ fontSize: '1.2rem', textAlign: 'center', color: theme.palette.text.secondary }}>
-                        {children}
-                    </Typography>
-                    {/* <Button variant='contained' size='large' sx={{ backgroundColor: mode === 'dark' ? chroma(color).darken().hex() : color, fontWeight: 500, borderRadius: '20px' }}>
+            <ColorBlock color={color}>
+                <img style={{
+                    height: '80px', filter: (mode === 'dark' ? 'invert(100%)' : 'none')
+                }} src={require(`../../assets/community/${title.toLowerCase()}.png`)} />
+                <Typography variant='h2'>
+                    {title}
+                </Typography>
+                <Typography variant='body1' sx={{ fontSize: '1.2rem', textAlign: 'center', color: theme.palette.text.secondary }}>
+                    {children}
+                </Typography>
+                {/* <Button variant='contained' size='large' sx={{ backgroundColor: mode === 'dark' ? chroma(color).darken().hex() : color, fontWeight: 500, borderRadius: '20px' }}>
                         Explore
                     </Button> */}
-                </Stack>
-            </Tilt>
+            </ColorBlock>
         </Grid >
     )
 }
 
+function SelectionBlock({ to, title, src, direction, color }) {
+    const theme = useTheme()
+
+    return (
+        <Link to={to} style={{ textDecoration: 'none', flex: 1 }}>
+            <Stack direction={{ xs: 'column-reverse', ...direction }} gap={2} sx={{ alignItems: 'center', justifyContent: 'space-between', transition: 'scale 0.2s', '&:hover': { opacity: 1, scale: '1.1' } }}>
+                <ColorBlock color={color} style={{ height: 'fit-content', flex: 1, height: '10rem', margin: '0px 20px' }}>
+                    <Typography sx={{ fontSize: { xs: '1rem', md: '1.4rem' }, textAlign: 'center' }}>
+                        {title}
+                    </Typography>
+                </ColorBlock>
+                <Box sx={{ height: '400px', transition: 'scale 0.2s' }}>
+                    <img style={{ height: '100%', objectFit: 'contain' }} src={src} />
+                </Box>
+            </Stack>
+        </Link>
+    )
+}
 
 function SelectSection() {
 
     return (
-        <Fragment>
-            <Stack direction='row' sx={{ justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                <Stack direction='row'>
-                    <Link to={'/search?gender=men'}>
-                        <Stack direction={{ md: 'row-reverse' }} gap={2} sx={{ '&:hover': { opacity: 1, scale: '1.1' } }}>
-                            <Box sx={{ height: '400px', transition: 'scale 0.2s' }}>
-                                <img style={{ height: '100%', objectFit: 'contain' }} src={require('../../assets/groom.png')} />
-                            </Box>
-                        </Stack>
-                    </Link>
-                    <Link to={'/search?gender=women'}>
-                        <Box sx={{ height: '400px', transition: 'scale 0.2s', '&:hover': { opacity: 1, scale: '1.1' } }}>
-                            <img style={{ height: '400px', objectFit: 'contain' }} src={require('../../assets/bride.png')} />
-                        </Box>
-                    </Link>
-                </Stack>
-            </Stack>
-        </Fragment>
+        <Stack direction='row' gap={1} sx={{ justifyContent: 'center', alignItems: 'center', height: '100%', flex: 1 }}>
+            <SelectionBlock direction={{ md: 'row' }} color={'#02b2f7'} title={'Looking For Groom?'} to={'/search?gender=men'} src={require('../../assets/groom.png')} />
+            <SelectionBlock direction={{ md: 'row-reverse' }} color={'#fa46fa'} title={'Looking For Bride?'} to={'/search?gender=women'} src={require('../../assets/bride.png')} />
+        </Stack>
     )
 }
 
@@ -98,7 +92,7 @@ function CommunitySection() {
 
     return (
         <Fragment >
-            <Stack p={4} sx={{ justifyContent: 'center', alignItems: 'center' }}>
+            <Stack sx={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Typography variant='h1' fontWeight={600} sx={{ fontSize: '3.6rem', textAlign: 'center' }} m={0}>
                     Meet Your
                     <span class="text-gradient"> Soul Mate</span><br />

@@ -81,6 +81,13 @@ const chatSlice = createSlice({
             if (!state.selected_messages) return
             state.selected_messages = state.selected_messages.filter(item => item._id !== message._id)
         },
+        deleteChat(state, action) {
+            const chatId = action.payload
+            if (state.selected_chat._id == chatId) {
+                state.selected_chat = null
+            }
+            state.chats = state.chats.filter(chat => chat._id != chatId)
+        },
         setReply(state, action) {
             state.reply_message = action.payload
         }
