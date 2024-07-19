@@ -113,6 +113,7 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', async (data) => {
         const user = getRelationBySocketId(socket.id)
+        if (!user) return
         await User.findByIdAndUpdate(user.user_id, { last_seen: Date.now() })
         removeUserSocketBySocketId(socket.id)
     })
