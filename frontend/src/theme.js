@@ -49,8 +49,8 @@ export const themeSettings = (mode) => {
                 main,
             },
             background: {
-                default: '#161616',
-                paper: '#202020',
+                default: 'rgb(21,24,27)',
+                paper: 'rgb(24,28,31)',
             },
             grey: {
                 A100: '#1f1f1f'

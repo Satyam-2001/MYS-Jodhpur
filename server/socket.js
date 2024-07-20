@@ -66,7 +66,6 @@ io.on('connection', (socket) => {
             const participants = [sender.user_id, userId]
             let chat = await Chat.fetchChatByParticipants(participants)
             let new_message = await Message.SendMessage(chat._id, message)
-            chat = await Chat.updateChatLastSeenMessage(chat._id, new_message._id)
             callback(chat, new_message)
 
             if (reciever) {
