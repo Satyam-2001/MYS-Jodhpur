@@ -27,19 +27,10 @@ chatSchema.pre('remove', async function (next) {
 chatSchema.statics.fetchChatsByUserId = async (user_id) => {
 
     let chats = await Chat.find({ participants: { $all: [user_id] } }).populate({
-        path: 'messages',
-        options: {
-            // limit: 1,
-            sort: { created_at: -1 }
-        }
-    }).populate({
         path: 'participants',
         select: 'basic_info'
     })
 
-    chats = chats.filter(chat => {
-        return chat.messages.length >= 1
-    })
     const result = []
 
     for (let chat of chats) {
@@ -48,8 +39,12 @@ chatSchema.statics.fetchChatsByUserId = async (user_id) => {
             'readBy.participant': { $ne: user_id },
             from: { $ne: user_id }
         });
-        result.push({ ...chat.toObject(), unread: unreadCount })
+        const messages = await Message.find({ chatId: chat._id }, {}, { sort: { created_at: -1 } }).limit(1)
+        if (!messages) continue
+        result.push({ ...chat.toObject(), messages, unread: unreadCount })
     }
+
+    result.sort((a, b) => b.messages[0].created_at - a.messages[0].created_at)
 
     return result;
 };
@@ -57,14 +52,8 @@ chatSchema.statics.fetchChatsByUserId = async (user_id) => {
 chatSchema.statics.fetchChatByParticipants = async (participants, options = { create: true }) => {
     const chats = await Chat.findOne({ participants: { $all: participants, $size: 2 } })
         .populate({
-            path: 'messages',
-            options: {
-                // limit: 1,
-                sort: { created_at: -1 }
-            }
-        }).populate({
             path: 'participants',
-            select: 'basic_info'
+            select: 'basic_info last_seen'
         })
 
     if (chats || options.create === false) return chats
@@ -73,7 +62,7 @@ chatSchema.statics.fetchChatByParticipants = async (participants, options = { cr
     new_chat = await new_chat.save()
     new_chat = await new_chat.populate({
         path: 'participants',
-        select: 'basic_info'
+        select: 'basic_info last_seen'
     })
 
     return new_chat

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { userActions } from '../store/UserSlice'
 import { useQuery } from "@tanstack/react-query";
 import axios from "../services/axiosinstance";
-import { connectSocket, socket } from '../services/socket'
 import { chatActions } from "../store/ChatSlice";
 
 export default function useFetchData() {
@@ -19,11 +18,12 @@ export default function useFetchData() {
         }
     }
 
+    const profile = JsonParse(localStorage.getItem('user'))
+
     const { data, isPending } = useQuery({
         queryKey: ['users', 'me'],
         queryFn: ({ signal }) => axios.get('/user', { signal }),
         enabled: !!localStorage.getItem('token'),
-        staleTime: 30000,
     })
 
     const { data: chats } = useQuery({

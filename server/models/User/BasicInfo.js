@@ -13,11 +13,9 @@ const BasicInfoSchema = new mongoose.Schema({
     },
     time_of_birth: {
         type: Date,
-        required: true,
     },
     place_of_birth: {
         type: String,
-        required: true,
         maxLength: 50,
     },
     gender: {
@@ -46,18 +44,30 @@ const BasicInfoSchema = new mongoose.Schema({
         type: String,
         maxLength: 70,
     },
+    employed_in: {
+        type: String,
+        maxLength: 50,
+    },
+    company_name: {
+        type: String,
+        maxLength: 70,
+    },
+    college: {
+        type: String,
+        maxLength: 70,
+    },
     income: {
         type: Number,
         min: 0,
         max: 10000,
     },
-    manglik: {
+    mother_tongue: {
         type: String,
         maxLength: 30,
     },
-    profile_managed_by: {
+    manglik: {
         type: String,
-        maxLength: 50,
+        maxLength: 30,
     },
     complexion: {
         type: String,
@@ -69,17 +79,22 @@ const BasicInfoSchema = new mongoose.Schema({
     martial_status: {
         type: String,
         maxLength: 50,
-
     },
     diet: {
         type: String,
         maxLength: 50,
-
+    },
+    drinks: {
+        type: String,
+        maxLength: 50,
+    },
+    smoke: {
+        type: String,
+        maxLength: 50,
     },
     disability: {
         type: String,
         maxLength: 50,
-
     },
     disease: {
         type: String,

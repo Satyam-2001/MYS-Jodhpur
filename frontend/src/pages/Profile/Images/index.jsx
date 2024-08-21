@@ -1,4 +1,4 @@
-import { Button, Grid, IconButton, Modal, Paper, Stack, Typography, Popover } from '@mui/material'
+import { Button, Grid, IconButton, Modal, Paper, Stack, Typography, Popover, CircularProgress } from '@mui/material'
 import React, { Fragment, useContext, useState } from 'react'
 import { ProfileContext } from '../../../context/ProfileProvider'
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
@@ -16,10 +16,17 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import './index.css'
 import { toast } from 'react-toastify';
+import { ElevatedStack } from '../../../UI/ElevatedComponents';
+import ImageContainer from './ImageContainer';
+import { useNavigate } from 'react-router';
+import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import EmptyGallery from '../../../components/StatusMessage/Empty/EmptyGallery';
 
 const style = {
-    width: { xs: '100%', sm: '50%', md: '25%' },
-    height: '250px',
+    // width: { xs: '50%', sm: '50%', md: '25%' },
+    display: 'flex',
+    alignItems: 'stretch',
     p: 1,
 }
 
@@ -45,134 +52,19 @@ function ImageBox({ image, onClick }) {
         }
     })
 
-
     return (
-        <Grid
-            item
+        <ImageContainer
             onClick={onClick}
-            sx={style}
-        >
-            <Paper sx={{ width: '100%', height: '100%', overflow: 'hidden' }}>
-                <Stack p={1} height='100%' width='100%' sx={{ backgroundSize: 'cover', backgroundImage: `url(${image})`, alignItems: 'flex-end', justifyContent: 'space-between' }} />
-            </Paper>
-        </Grid>
+            sx={{
+                backgroundSize: 'cover',
+                backgroundImage: `url(${image})`,
+            }}
+        />
     )
 }
-
-const createImageProps = (path) => {
-    return {
-        original: path,
-        thumbnail: path,
-        originalHeight: '400px',
-        // originalWidth: '1000px',
-        // thumbnailHeight: '150px',
-        // thumbnailWidth: '300px',
-    }
-}
-
-
-
-function ImageMenu({ image }) {
-    const [anchorEl, setAnchorEl] = useState(null);
-    const { updateProfile, profile } = useContext(ProfileContext)
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
-
-    const { mutate: deleteImage } = useMutation({
-        mutationFn: () => axios.delete('/user/image', { data: { image } }),
-        onSuccess: ({ user }) => {
-            deleteMedia(image)
-            updateProfile(user)
-        }
-    })
-
-    const { mutate: setAsProfile } = useMutation({
-        mutationFn: () => axios.post('/user/image/profile', { image }),
-        onSuccess: ({ user }) => {
-            updateProfile(user)
-        }
-    })
-
-    return (
-        <Fragment>
-            <IconButton onClick={handleClick} >
-                <MoreVertIcon fontSize='large' sx={{ ":hover": { color: 'primary.main' } }} />
-            </IconButton>
-            <Popover
-                // Note: The following zIndex style is specifically for documentation purposes and may not be necessary in your application.
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                onClick={handleClose}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
-                }}
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                }}
-            >
-                <Paper elevation={2}>
-                    <Stack gap={'1px'} p={'2px'}>
-                        <Button onClick={setAsProfile} sx={{ color: 'text.primary', textTransform: 'none', fontSize: '1rem', fontFamily: 'Lexend,sans-serif' }}>
-                            Set As Profile Image
-                        </Button>
-                        <Button onClick={deleteImage} sx={{ color: 'text.primary', textTransform: 'none', fontSize: '1rem', fontFamily: 'Lexend,sans-serif' }}>
-                            Delete Image
-                        </Button>
-                    </Stack>
-                </Paper>
-            </Popover>
-        </Fragment>
-    )
-}
-
-function ImageGalleryModal({ selectedImage, onClose, open, setCurrentImage }) {
-    const { profile, updateProfile } = useContext(ProfileContext)
-    const { user } = useSelector(state => state.user)
-    const isMe = user._id === profile._id
-    const images = profile.images || []
-
-
-    return (
-        <Modal open={open} sx={{ backgroundColor: 'background.default', }}>
-            <Stack height='100vh'>
-                <Stack direction='row' alignItems={'center'} justifyContent={'space-between'} sx={{ bgcolor: 'background.paper', height: '70px', p: 1 }}>
-                    <Stack direction='row' gap={1}>
-                        <IconButton onClick={onClose} >
-                            <ArrowBackIosIcon />
-                        </IconButton>
-                        <NameHeader profile={profile} />
-                    </Stack>
-                    {isMe && <ImageMenu image={images[selectedImage]} />}
-                </Stack>
-                <Stack sx={{ flex: 1, justifyContent: 'center', alignItems: 'center', bgcolor: 'background.default' }}>
-                    < ImageGallery
-                        startIndex={selectedImage}
-                        items={images.map(createImageProps)}
-                        showFullscreenButton={false}
-                        lazyLoad={false}
-                        onSlide={setCurrentImage}
-                    />
-                </Stack>
-            </Stack>
-        </Modal>
-    )
-}
-
 
 export default function Images() {
+    const navigate = useNavigate()
     const { profile, updateProfile } = useContext(ProfileContext)
     const { user } = useSelector(state => state.user)
     const isMe = user._id === profile._id
@@ -180,9 +72,10 @@ export default function Images() {
     const isEmpty = images.length === 0
     const [selectedImage, setSelectedImage] = useState(undefined)
     const modalOpen = selectedImage !== undefined
+    const noData = isEmpty && !isMe
 
     function imageSelectHandler(index) {
-        setSelectedImage(index)
+        navigate(`/profile/${profile._id}/gallery/?image=${index}`)
     }
 
     function modalCloseHandler() {
@@ -231,34 +124,32 @@ export default function Images() {
     return (
         <Fragment>
             <input style={{ display: 'none' }} {...inputProps} />
-            <ImageGalleryModal open={modalOpen} selectedImage={selectedImage} onClose={modalCloseHandler} setCurrentImage={(index) => setSelectedImage(index)} />
-            <Grid className='hide-scroll-bar' container py={2} px={1} sx={{ width: '100%', height: '100%', overflow: 'auto' }}>
-                {isEmpty && !isMe && <NoData />}
-                {isMe && <Grid item sx={style}>
-                    <Paper
+            {noData && <EmptyGallery />}
+            {!noData &&
+                <Stack direction='row' className='hide-scroll-bar' container py={{ xs: 1, md: 1.5 }} px={0} sx={{ width: '100%', overflow: 'auto', flexWrap: 'wrap' }}>
+                    {isMe && images.length <= 10 && <ImageContainer
                         onClick={(e) => { if (!isPending) { onClick(e) } }}
                         sx={{
-                            cursor: 'pointer',
+                            // height: 1,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            width: '100%',
-                            height: '100%',
                             flexDirection: 'column',
-                            color: isPending && 'GrayText'
-                        }}>
-                        <CameraAltIcon sx={{ fontSize: '100px' }} />
-                        <Typography fontSize='1rem' fontFamily={'Lexend,sans-serif'}>
-                            {isPending ? 'Uploading' : 'Add Photo'}
-                        </Typography>
-                    </Paper>
-                </Grid>}
-                {images.map((image, index) => {
-                    return (
-                        <ImageBox key={image} image={image} onClick={() => imageSelectHandler(index)} />
-                    )
-                })}
-            </Grid>
+                            color: isPending && 'GrayText',
+                            bgcolor: !isPending && 'primary.light',
+                        }}
+                    >
+                        {isPending ? <CircularProgress color='primary' /> : <AddOutlinedIcon sx={{ fontSize: '80px', color: 'white' }} />}
+                        {/* {!isPending && <Typography fontSize='1rem' fontFamily={'Lexend,sans-serif'}>
+                            Add Photo
+                        </Typography>} */}
+                    </ImageContainer>}
+                    {images.map((image, index) => {
+                        return (
+                            <ImageBox key={image} image={image} onClick={() => imageSelectHandler(index)} />
+                        )
+                    })}
+                </Stack>}
         </Fragment >
     )
 }

@@ -8,6 +8,26 @@ const SettingsSchema = new mongoose.Schema({
     contact_visibility: {
         type: String,
         default: 'Everybody'
+    },
+    show_activity_status: {
+        type: Boolean,
+        default: true,
+    },
+    name_visibility: {
+        type: String,
+        default: 'Everybody',
+    },
+    image_visibility: {
+        type: String,
+        default: 'Everybody',
+    },
+    chat_notificaton: {
+        type: Boolean,
+        default: true,
+    },
+    email_notification: {
+        type: Boolean,
+        default: true,
     }
 }, { _id: false })
 

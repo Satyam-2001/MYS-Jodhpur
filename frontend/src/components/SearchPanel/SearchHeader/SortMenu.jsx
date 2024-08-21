@@ -32,7 +32,6 @@ function SortMenuItem({ label, value }) {
             sx={{
                 borderRadius: 0,
                 fontSize: '1rem',
-                // fontFamily: 'Lexend,sans-serif',
                 color: 'text.primary'
             }}>
             {label}

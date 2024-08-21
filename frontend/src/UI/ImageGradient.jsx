@@ -5,9 +5,8 @@ const ImageGradient = styled(Stack)(({ theme }) => ({
     width: '100%',
     borderRadius: 'inherit',
     justifyContent: 'flex-end',
-    backgroundImage: 'linear-gradient(-180deg, transparent 20%, rgba(0, 0, 0, 0.7) 100%)',
+    backgroundImage: 'linear-gradient(-180deg, transparent 50%, rgba(0, 0, 0, 1) 100%)',
     padding: '8px',
 }));
 
 export default ImageGradient
-

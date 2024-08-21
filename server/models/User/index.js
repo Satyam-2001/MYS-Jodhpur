@@ -7,7 +7,33 @@ const FamilySchema = require('./Family')
 const SettingsSchema = require('./Settings')
 const AboutMeSchema = require('./AboutMe')
 const Chat = require("../Chat")
+const PreferenceSchema = require("./Preference")
+const NotificationSchema = require("./Notification")
+const { userIncludes } = require("../../utils")
 require('dotenv').config();
+
+const activityUserListSchema = [{
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
+    date: {
+        type: Date,
+        default: Date.now,
+    }
+}]
+
+const lastSeenSchema = {
+    type: Date,
+    default: Date.now,
+}
+
+const statusSchema = {
+    type: String,
+    enum: ['online', 'offline'],
+    default: 'offline',
+}
+
 
 const userSchema = new mongoose.Schema({
     basic_info: BasicInfoSchema,
@@ -15,32 +41,34 @@ const userSchema = new mongoose.Schema({
     family: FamilySchema,
     contact: ContactSchema,
     settings: SettingsSchema,
-    last_seen: {
-        type: mongoose.Schema.Types.Mixed,
+    preference: PreferenceSchema,
+    status: statusSchema,
+    last_seen: lastSeenSchema,
+    last_seen_activity: lastSeenSchema,
+    last_seen_notification: lastSeenSchema,
+    shortlisted: activityUserListSchema,
+    sendinterest: activityUserListSchema,
+    receiveinterest: activityUserListSchema,
+    matchinterest: activityUserListSchema,
+    you_declined: activityUserListSchema,
+    they_declined: activityUserListSchema,
+    blocked_users: activityUserListSchema,
+    notifications: [NotificationSchema],
+    instagram: {
+        access_token: {
+            type: String,
+        },
+        expires_in: {
+            type: Date,
+        }
     },
-    shortlisted: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }],
-    sendinterest: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }],
-    receiveinterest: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }],
-    matchinterest: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }],
     images: {
         type: [String],
         validate: {
             validator: function (array) {
-                return array.length <= 10;
+                return array.length <= 50;
             },
-            message: 'You can store up to 10 images only.'
+            message: 'You can store up to 50 images only.'
         },
     },
     password: {
@@ -55,32 +83,46 @@ const userSchema = new mongoose.Schema({
     }]
 }, { timestamps: true })
 
-function getAge(dateString) {
-    var today = new Date();
-    var birthDate = new Date(dateString);
-    var age = today.getFullYear() - birthDate.getFullYear();
-    var m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
+function ensureMaxLength(array, maxLength) {
+    if (array.length > maxLength) {
+        return array.slice(-maxLength);
     }
-    return age;
+    return array;
 }
 
-userSchema.methods.toJSON = function () {
-    const userObject = this.toObject()
-    if (userObject.basic_info?.date_of_birth) {
-        userObject.basic_info.age = getAge(userObject.basic_info.date_of_birth)
+function cleanUserData(userObject) {
+    if (userObject?.settings?.show_activity_status !== undefined && !userObject.settings.show_activity_status) {
+        delete userObject.status
+        delete userObject.last_seen
     }
     delete userObject.password
     delete userObject.tokens
     return userObject
 }
 
+userSchema.methods.toJSON = function () {
+    const userObject = this.toObject()
+    return cleanUserData(userObject)
+}
+
 userSchema.methods.generateAuthToken = async function () {
     const token = jwt.sign({ _id: this._id.toString() }, process.env.JWT_SECRET)
     this.tokens = this.tokens.concat({ token })
+    this.tokens = ensureMaxLength(this.tokens)
     await this.save()
     return token
+}
+
+userSchema.methods.logout = async function (tokenToRemove) {
+    if (tokenToRemove) {
+        // Remove the specific token
+        this.tokens = this.tokens.filter((token) => token.token !== tokenToRemove);
+    } else {
+        // Remove all tokens
+        this.tokens = [];
+    }
+
+    await this.save();
 }
 
 userSchema.methods.filterUserFields = async function (user) {
@@ -88,27 +130,60 @@ userSchema.methods.filterUserFields = async function (user) {
 
     if (this._id.toString() === user?._id?.toString()) return userObject
 
-    switch (userObject.settings?.contact_visibility) {
-        case 'Nobody': {
-            delete userObject.contact
-            userObject.contact = 'hidden'
-            break
-        }
-        case 'Only Registered Users': {
-            if (!user) {
-                delete userObject.contact
-                userObject.contact = 'hidden'
+    const isSend = userIncludes(user?.receiveinterest, userObject?._id)
+    const isMatch = userIncludes(user?.matchinterest, userObject?._id)
+
+    function hideContact() {
+        delete userObject.contact
+        userObject.contact = 'hidden'
+    }
+
+    function hideName() {
+        userObject.basic_info.name = userObject?.basic_info?.name?.[0] + '****'
+    }
+
+    function hideImages() {
+        delete userObject?.basic_info?.profile_image;
+        delete userObject?.images;
+    }
+
+    function filterBasedOnOption(option, hideFunction) {
+        switch (option) {
+            case 'Nobody': {
+                hideFunction()
+                break
             }
-            break
-        }
-        case 'Only Matches': {
-            if (!user || !user.matchinterest?.includes(userObject._id)) {
-                delete userObject.contact
-                userObject.contact = 'hidden'
+            case 'Only to Registered Users': {
+                if (!user) {
+                    hideFunction()
+                }
+                break
             }
-            break
+            case 'Only to Interest Sent/ Matches': {
+                if (!(isMatch || isSend)) {
+                    hideFunction()
+                }
+                break;
+            }
+            case 'Only to Matches': {
+                if (!isMatch) {
+                    hideFunction()
+                }
+                break
+            }
         }
     }
+
+    filterBasedOnOption(userObject.settings?.contact_visibility, hideContact)
+    filterBasedOnOption(userObject.settings?.name_visibility, hideName)
+    filterBasedOnOption(userObject.settings?.image_visibility, hideImages)
+
+
+    if (userObject?.settings?.show_activity_status !== undefined && !userObject.settings.show_activity_status) {
+        delete userObject.status
+        delete userObject.last_seen
+    }
+
     return userObject
 }
 
@@ -117,7 +192,7 @@ userSchema.statics.findByCredentials = async (user_credentials, password) => {
     if (user && await bcrypt.compare(password, user.password)) {
         return user
     }
-    throw { msg: 'Unable to Login' }
+    throw { msg: 'Incorrect email or password' }
 }
 
 userSchema.pre('save', async function (next) {

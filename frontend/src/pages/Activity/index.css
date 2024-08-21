@@ -8,13 +8,8 @@
 }
 
 .swiper-pagination-bullet-active {
-    background: red;
+    /* background: blue; */
     opacity: 1;
-}
-
-.event-slide {
-    width: 80%;
-    /* width: 75vw; */
 }
 
 .carousel {
@@ -29,3 +24,10 @@
     align-items: center;
     min-width: 100%;
 }
+
+.swiper-slide {
+    background-position: center;
+    background-size: cover;
+    width: 360px;
+    max-width: 100%;
+  }

@@ -11,6 +11,7 @@ import CustomModal from '../../../../UI/CustomModal';
 import { formatMessageDate, timeFormat } from '../../../../utils';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import DoneOutlinedIcon from '@mui/icons-material/DoneOutlined';
+import useMessage from '../../hooks/useMessage';
 
 function ReadReceipt({ icon, title, time }) {
     const formatted_time = time ? `${formatMessageDate(time)} at ${timeFormat(time)}` : '-'
@@ -32,8 +33,7 @@ function ReadReceipt({ icon, title, time }) {
 function MessageInfoModal({ open, onClose, message }) {
     const { user } = useSelector(state => state.user)
     if (!open) return
-    console.log(message)
-    const readReceipt = message.readBy.find(item => item.paticipant != user._id)
+    const readReceipt = message.readBy.find(({ participant }) => participant == message.to)
     const readAt = readReceipt ? `${formatMessageDate(readReceipt.time)} at ${timeFormat(readReceipt.time)}` : '-'
     return (
         <CustomModal open={open} onClose={onClose} sx={{ p: 2, gap: 1 }}>
@@ -67,11 +67,10 @@ function MessageMenuItem({ children, onClick, Icon }) {
 }
 
 export function MessageMenu({ message, visible, color, bgcolor, onClose }) {
-    const { openReply, deleteMessage } = useChats()
     const [openMessageInfoModal, setOpenMessageInfoModal] = useState(false)
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const { user } = useSelector(state => state.user)
-    const isMe = message.from === user?._id
+    const { isMe, setReply, deleteMessage } = useMessage(message)
+
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -96,12 +95,12 @@ export function MessageMenu({ message, visible, color, bgcolor, onClose }) {
     }
 
     const replyClickHandler = () => {
-        openReply(message)
+        setReply()
         handleClose()
     }
 
     const deleteClickHandler = () => {
-        deleteMessage(message)
+        deleteMessage()
         handleClose()
     }
 
@@ -111,7 +110,6 @@ export function MessageMenu({ message, visible, color, bgcolor, onClose }) {
 
     return (
         <Fragment>
-
             <IconButton
                 aria-describedby={'message-menu-button'}
                 sx={{

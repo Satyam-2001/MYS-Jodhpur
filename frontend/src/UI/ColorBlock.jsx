@@ -2,6 +2,7 @@ import { Stack, useTheme } from '@mui/material'
 import chroma from 'chroma-js'
 import React from 'react'
 import Tilt from 'react-parallax-tilt'
+import { ElevatedStack } from './ElevatedComponents'
 
 export default function ColorBlock({ children, color, sx = {}, style = {} }) {
     const theme = useTheme()
@@ -17,7 +18,7 @@ export default function ColorBlock({ children, color, sx = {}, style = {} }) {
             glareBorderRadius="10px"
             style={{ borderRadius: '20px', ...style }}
         >
-            <Stack
+            <ElevatedStack
                 sx={{
                     p: 3,
                     gap: 2,
@@ -32,7 +33,7 @@ export default function ColorBlock({ children, color, sx = {}, style = {} }) {
                 }}
             >
                 {children}
-            </Stack>
+            </ElevatedStack>
         </Tilt>
     )
 }

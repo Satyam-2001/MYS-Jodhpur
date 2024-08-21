@@ -4,6 +4,7 @@ const router = new express.Router()
 const User = require("../models/User")
 require('dotenv').config()
 const { sendVerificationEmail, verifyEmail } = require('../controller/auth')
+const { getAge, generateBio } = require('../utils')
 
 const verifyUnique = async (req, res, next) => {
     try {
@@ -26,19 +27,21 @@ router.post('/otp/send', verifyUnique, sendVerificationEmail)
 
 router.post('/register', verifyEmail, async (req, res) => {
     try {
-        const { email, phone_number, password, father_name, mother_name, father_occupation, mother_occupation, ...basic_info } = req.body
+        const { email, phone_number, password, ...basic_info } = req.body
         const contact = { email, phone_number }
-        const family = { father_name, mother_name, father_occupation, mother_occupation }
-        const userData = { basic_info, contact, family, password }
+        const userData = { basic_info, contact, password, about_me: { bio: generateBio(basic_info) } }
         const user = new User(userData)
         await user.save()
         const token = await user.generateAuthToken()
         res.status(201).send({ user, token })
     }
     catch (e) {
+        console.log(e)
         res.status(400).send(e)
     }
 })
+
+
 
 router.post('/login', async (req, res) => {
     try {
@@ -48,7 +51,18 @@ router.post('/login', async (req, res) => {
         res.send({ user, token })
     }
     catch (e) {
+        console.log(e)
         res.status(400).send(e)
+    }
+})
+
+router.post('/logout', auth, async (req, res) => {
+    try {
+        await req.user.logout(req.token)
+        res.send({ msg: 'success' })
+    }
+    catch (e) {
+        res.status(500).send(e)
     }
 })
 

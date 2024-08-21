@@ -13,7 +13,7 @@ const PasswordInput = (props) => {
     }
 
     return (
-        <FormControl sx={{ width: '100%', marginTop: '1rem' }} variant="outlined">
+        <FormControl sx={{ width: '100%' }} variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">{props.label || "Password"}</InputLabel>
             <OutlinedInput
                 id="password"

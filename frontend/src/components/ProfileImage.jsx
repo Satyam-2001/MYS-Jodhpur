@@ -2,6 +2,8 @@ import { Stack } from '@mui/material'
 import React, { useState } from 'react'
 import { defaultImage } from '../data/constants'
 import ImageGradient from '../UI/ImageGradient'
+import { ElevatedStack } from '../UI/ElevatedComponents'
+import PersonIcon from '@mui/icons-material/Person';
 
 
 export default function ProfileImage({ profile, gradient = false, children, sx = {}, sx_image = {}, ...props }) {
@@ -30,10 +32,9 @@ export default function ProfileImage({ profile, gradient = false, children, sx =
                 justifyContent: 'flex-end',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                backgroundImage: `url(${image_gallery[currentIndex] || 'https://www.transparentpng.com/download/user/gray-user-profile-icon-png-fP8Q1P.png'})`,
+                backgroundImage: `url(${image_gallery[currentIndex] || require('../assets/person.png')})`,
                 borderRadius: '10px',
                 ...sx,
-                // boxShadow: 'inset 0px -10px 25px -10px #000',
             }}
         >
             {children}

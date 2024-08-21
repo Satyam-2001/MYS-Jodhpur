@@ -6,9 +6,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import SearchBar from './SearchBar';
 import SortMenu from './SortMenu'
-import Block from '../../../UI/Block';
-import { useDispatch, useSelector } from 'react-redux';
-import { searchActions } from '../../../store/SearchSlice';
+import { ElevatedIconButton, ElevatedStack } from '../../../UI/ElevatedComponents';
 import { useSearchParams } from 'react-router-dom';
 
 function ViewButton({ children, view, sx }) {
@@ -24,33 +22,21 @@ function ViewButton({ children, view, sx }) {
     }
 
     return (
-        <IconButton
+        <ElevatedIconButton
             onClick={changeViewStyleHandler}
-            sx={{ backgroundImage: (active ? 'var(--text-gradient)' : 'none'), color: (active ? 'white' : undefined), ...sx }}>
+            elevation={active ? -1 : 1}
+            sx={{ bgcolor: active && 'primary.main', color: (active ? 'white' : undefined), '&:hover': {bgcolor: active && 'primary.dark'}, ...sx }}>
             {children}
-        </IconButton>
+        </ElevatedIconButton>
     )
 }
 
-export default function SearchHeader() {
-
-    const [searchParams, setSearchParams] = useSearchParams()
-    const filter_open = searchParams.get('filter') === 'open'
-
-
-    const toggleFilterHandler = () => {
-        setSearchParams((searchParams) => {
-            const filter_open = searchParams.get('filter') === 'open'
-            if (filter_open) searchParams.delete('filter')
-            else searchParams.set('filter', 'open')
-            return searchParams
-        })
-    }
+export default function SearchHeader({ toggleFilterHandler }) {
 
     return (
-        <Block direction='row' gap={1} p={1} sx={{ width: '100%', alignItems: 'center' }}>
+        <ElevatedStack direction='row' gap={1} p={{ xs: 0.5, md: 1 }} sx={{ width: '100%', alignItems: 'center' }}>
             <IconButton onClick={toggleFilterHandler}>
-                {filter_open ? <FilterAltOffIcon fontSize='large' /> : <FilterAltIcon fontSize='large' />}
+                <FilterAltIcon fontSize='large' />
             </IconButton>
             <SearchBar />
             <Stack direction='row' gap={1}>
@@ -64,6 +50,6 @@ export default function SearchHeader() {
                     </ViewButton>
                 </Stack>
             </Stack>
-        </ Block>
+        </ ElevatedStack>
     )
 }

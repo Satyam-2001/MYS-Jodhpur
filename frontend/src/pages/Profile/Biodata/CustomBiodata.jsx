@@ -5,6 +5,7 @@ import { dateFormat, heightFormat, timeFormat } from '../../../utils'
 import { CustomBiodataContext } from './CustomBiodataContext'
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import axios from 'axios'
+import { elevation } from '../../../theme/styles'
 
 function CustomText({ children }) {
     const { color } = useContext(CustomBiodataContext)
@@ -52,7 +53,7 @@ function DetailBox({ title, children, hide = false, ...props }) {
 }
 
 export default forwardRef(function CustomBiodata(props, ref) {
-    const { profile } = useContext(ProfileContext)
+    const { profile, isPending } = useContext(ProfileContext)
     const selectedBiodata = useContext(CustomBiodataContext)
     // const [base64IMG, setBase64IMG] = useState('')
     const imageUrl = profile.basic_info.profile_image
@@ -65,6 +66,8 @@ export default forwardRef(function CustomBiodata(props, ref) {
         })
         return contain
     }
+
+    if (isPending) return
 
     return (
         <Stack
@@ -80,12 +83,7 @@ export default forwardRef(function CustomBiodata(props, ref) {
                 aspectRatio: '210/297',
                 backgroundImage: `url(${selectedBiodata.image})`,
                 backgroundSize: '100% 100%',
-                pt: selectedBiodata.pt,
-                pb: selectedBiodata.pb,
-                pl: selectedBiodata.pl,
-                pr: selectedBiodata.pr,
-                px: selectedBiodata.px,
-                py: selectedBiodata.py,
+                ...selectedBiodata
             }}>
             <Stack
                 p={2}
@@ -113,7 +111,7 @@ export default forwardRef(function CustomBiodata(props, ref) {
                             <IntroField label='Location' value={profile.basic_info.location} />
                             <IntroField label='Income' value={profile.basic_info.income + ' LPA'} />
                         </Stack>
-                        <Stack flex={1} p={1}>
+                        {/* <Stack flex={1} p={1}>
                             {profile.basic_info.profile_image && <img
                                 src={imageUrl}
                                 style={{
@@ -125,7 +123,7 @@ export default forwardRef(function CustomBiodata(props, ref) {
                                     width: '100%',
                                 }}
                             />}
-                        </Stack>
+                        </Stack> */}
                     </Stack>
                 </DetailBox>
                 <DetailBox title={'FAMILY DETAILS'} hide={!containsField(profile.family)} >

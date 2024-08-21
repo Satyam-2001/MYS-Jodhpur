@@ -9,11 +9,15 @@ import axios from '../../services/axiosinstance'
 import { useNavigate } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { userActions } from '../../store/UserSlice'
+import { ElevatedStack } from '../../UI/ElevatedComponents'
+import useProtectedRoute from '../../hooks/useProtectedRoute'
 
 export default function Login() {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    useProtectedRoute()
 
     const { mutateAsync } = useMutation({
         mutationFn: (data) => axios.post('/auth/login', data)
@@ -28,7 +32,7 @@ export default function Login() {
             try {
                 const { user, token } = await mutateAsync(values)
                 dispatch(userActions.setUser({ user, token }))
-                navigate('/profile')
+                navigate('/search')
             }
             catch (e) {
                 action.setStatus(e.response.data.msg || 'Something went wrong.')
@@ -36,26 +40,33 @@ export default function Login() {
         }
     })
 
-    
+
     const { handleSubmit, isSubmitting, status } = formikState
     return (
         <Container hideSideBar sx={{ justifyContent: 'center', alignItems: 'center' }}>
-            <Paper sx={{ p: 3, maxWidth: '90%' }}>
-                <Stack alignItems='center' gap={1} width='400px' maxWidth={'100%'}>
-                    <Typography variant='h3' fontSize={'2rem'} fontWeight={700} sx={{ opacity: 0.8, pb: 1 }} >
-                        Login
-                    </Typography>
-                    <InputField label='Email' type='email' formikState={formikState} />
-                    <InputField label='Password' type='password' formikState={formikState} />
-                    {status && <Typography color='error'>{status}</Typography>}
-                    <Button fullWidth onClick={handleSubmit} disabled={isSubmitting} variant='contained' sx={{ fontSize: '1rem', mt: 2 }}>
-                        {isSubmitting ? 'Logging in...' : 'Login'}
-                    </Button>
-                    <Typography sx={{ mt: 2, fontSize: '0.9rem', fontFamily: 'Lexend,sans-serif' }}>
-                        Don't have an account? <Link href='/register'>Register</Link>
-                    </Typography>
-                </Stack>
-            </Paper>
+            <ElevatedStack
+                gap={2}
+                sx={{
+                    p: 3,
+                    maxWidth: '90%',
+                    width: '400px',
+                    maxWidth: '100%',
+                    alignItems: 'center'
+                }}
+            >
+                <Typography variant='h3' fontSize={'2rem'} fontWeight={700} sx={{ opacity: 0.8, pb: 1 }} >
+                    Login
+                </Typography>
+                <InputField label='Email' type='email' formikState={formikState} />
+                <InputField label='Password' type='password' formikState={formikState} />
+                {status && <Typography color='error'>{status}</Typography>}
+                <Button fullWidth onClick={handleSubmit} disabled={isSubmitting} variant='contained' sx={{ fontSize: '1rem', mt: 2, backgroundImage: 'var(--text-gradient)' }}>
+                    {isSubmitting ? 'Logging in...' : 'Login'}
+                </Button>
+                <Typography sx={{ mt: 2, fontSize: '0.9rem', fontFamily: 'Lexend,sans-serif' }}>
+                    Don't have an account? <Link href='/register'>Register</Link>
+                </Typography>
+            </ElevatedStack>
         </Container >
     )
 }

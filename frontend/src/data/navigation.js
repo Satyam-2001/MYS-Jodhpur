@@ -12,9 +12,15 @@ import GroupsIcon from '@mui/icons-material/Groups';
 
 const navigationList = [
     { name: 'Home', to: '/', icon: <HomeIcon fontSize='large' /> },
-    { name: 'Members', to: '/members', icon: <PeopleIcon fontSize='large' /> },
     // { name: 'Register', to: '/register', icon: <HowToRegIcon fontSize='large' /> },
+    { name: 'Members', to: '/members'},
     { name: 'Search', to: '/search', icon: <SearchIcon fontSize='large' /> },
+]
+
+export const legalNavigationList = [
+    { name: 'About Us', to: '/aboutus' },
+    { name: 'Terms Of use', to: '/termsofuse' },
+    { name: 'Privacy Policy', to: '/privacypolicy' },
 ]
 
 export default navigationList

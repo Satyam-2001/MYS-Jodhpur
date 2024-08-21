@@ -1,6 +1,7 @@
 import React from 'react'
-import { Slider, Stack, Typography } from '@mui/material'
+import { FormControl, Slider, Stack, Typography } from '@mui/material'
 import { useSearchParams } from 'react-router-dom';
+import InputLabel from './InputLabel';
 
 export default function RangeSliderSelection({ title, min, max, format = (data) => data }) {
     const minParam = `min_${title}`, maxParam = `max_${title}`
@@ -19,35 +20,32 @@ export default function RangeSliderSelection({ title, min, max, format = (data) 
             return searchParams
         })
     }
-    
+
     return (
-        <Stack direction='column' gap={0} alignItems={'center'}>
-            <Typography variant='h5' fontSize={'1rem'} fontWeight={700} sx={{ opacity: 0.6, textTransform: 'uppercase' }} >
-                {title}
-            </Typography>
-            <Stack sx={{ flex: 1, width: '90%' }}>
-                <Slider
-                    // valueLabelFormat={value => undefined}
-                    valueLabelFormat={value => <Typography color='white' fontSize={'0.9rem'}>{format(value)}</Typography>}
-                    min={min}
-                    max={max}
-                    getAriaLabel={() => `${title} Range`}
-                    value={value}
-                    onChange={handleRangeChange}
-                    valueLabelDisplay="auto"
-                    getAriaValueText={(value) => value}
-                    marks={[
-                        {
-                            value: min_value,
-                            label: format(min_value)
-                        },
-                        {
-                            value: max_value,
-                            label: isAbove ? 'above' : format(max_value)
-                        },
-                    ]}
-                />
-            </Stack>
+        <Stack alignItems={'center'} gap={2} direction='row'>
+            <InputLabel label={title} />
+            <Slider
+                // valueLabelFormat={value => undefined}
+                sx={{ mx: 1 }}
+                valueLabelFormat={value => <Typography color='white' fontSize={'0.9rem'}>{format(value)}</Typography>}
+                min={min}
+                max={max}
+                getAriaLabel={() => `${title} Range`}
+                value={value}
+                onChange={handleRangeChange}
+                valueLabelDisplay="auto"
+                getAriaValueText={(value) => value}
+                marks={[
+                    {
+                        value: min_value,
+                        label: format(min_value)
+                    },
+                    {
+                        value: max_value,
+                        label: isAbove ? 'above' : format(max_value)
+                    },
+                ]}
+            />
         </Stack>
     )
 }

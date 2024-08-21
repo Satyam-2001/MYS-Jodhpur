@@ -17,6 +17,7 @@ export default function useUpdateProfile({ initialValues, mutationFn, validation
             queryClient.setQueryData(['profile', profile?._id], user)
         }
     })
+
     const formikState = useFormik({
         initialValues,
         validationSchema,
@@ -33,6 +34,7 @@ export default function useUpdateProfile({ initialValues, mutationFn, validation
             }
         }
     })
+
     const { setValues, handleSubmit, isSubmitting } = formikState
 
     return { formikState, handleSubmit, isSubmitting }

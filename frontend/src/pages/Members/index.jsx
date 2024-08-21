@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import Container from '../../components/Layouts/Container'
-import MemberCard from '../../components/MemberCard'
+import MemberCard from './MemberCard'
 import { Grid, Typography } from '@mui/material'
 import { karyakaarni, members, padadhikari } from '../../data/members'
 

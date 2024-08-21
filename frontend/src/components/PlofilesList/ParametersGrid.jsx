@@ -7,7 +7,7 @@ function ParameterItem({ Icon, value, color }) {
         <Grid item xs={6} sx={{ overflow: 'hidden', my: '2px' }}>
             <Stack direction='row' gap={1} sx={{ alignItems: 'center' }}>
                 <Icon sx={{ fontSize: '1.4rem', color: color || 'text.primary' }} />
-                <Typography sx={{ fontSize: '0.9rem', fontFamily: 'Lexend,sans-serif', color }}>
+                <Typography sx={{ fontSize: {xs: '0.9rem', md: '0.9rem'}, fontFamily: 'Lexend,sans-serif', color }}>
                     {value}
                 </Typography>
             </Stack>
@@ -16,10 +16,9 @@ function ParameterItem({ Icon, value, color }) {
 }
 
 export default function ParametersGrid({ profile, color }) {
-    const userInfo = profile.basic_info
     return (
-        <Grid container>
-            {getParameters(userInfo).map(({ value, Icon }) => {
+        <Grid container pt={1}>
+            {getParameters(profile.basic_info || {}).filter(({ list }) => !list).map(({ value, Icon }) => {
                 return (
                     <ParameterItem key={value} value={value} Icon={Icon} color={color} />
                 )

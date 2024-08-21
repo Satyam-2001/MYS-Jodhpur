@@ -8,13 +8,24 @@ import Profile from './pages/Profile'
 import Login from "./pages/Login";
 import Activity from "./pages/Activity";
 import Shortlist from "./pages/Activity/Sections/Shortlist";
-import InterestRecieve from "./pages/Activity/Sections/InterestRecieve";
+import InterestReceive from "./pages/Activity/Sections/InterestReceive";
 import InterestSent from "./pages/Activity/Sections/InterestSent";
 import MatchedProfiles from "./pages/Activity/Sections/MatchedProfiles";
 import Settings from "./pages/Settings";
-import Error from "./components/Error";
 import ChatBlock from "./pages/Chats/ChatBlock";
 import EmptyChatBlock from "./pages/Chats/EmptyChatBlock";
+import Error from "./components/StatusMessage/Error";
+import TermsOfUse from "./pages/Miscellaneous/TermsOfUse";
+import Notifications from "./pages/Notifications";
+import AboutUs from "./pages/Miscellaneous/AboutUs";
+import Biodata from "./pages/Profile/Biodata";
+import ImageGalleryPage from "./pages/Profile/Images/ImageGalleryPage";
+import Declined from "./pages/Activity/Sections/Declined";
+import AccountSection from "./pages/Settings/AccountSection";
+import PrivacySection from "./pages/Settings/PrivacySection";
+import HelpSection from "./pages/Settings/HelpSection";
+import NotificationsSection from "./pages/Settings/NotificationsSection";
+import PrivacyPolicy from "./pages/Miscellaneous/PrivacyPolicy";
 import Members from "./pages/Members";
 
 const router = createBrowserRouter([
@@ -73,12 +84,16 @@ const router = createBrowserRouter([
                         element: <InterestSent />
                     },
                     {
-                        path: 'interests_recieved',
-                        element: <InterestRecieve />
+                        path: 'interests_received',
+                        element: <InterestReceive />
                     },
                     {
                         path: 'matched',
                         element: <MatchedProfiles />
+                    },
+                    {
+                        path: 'declined',
+                        element: <Declined />
                     }
                 ]
             },
@@ -92,13 +107,65 @@ const router = createBrowserRouter([
                     },
                     {
                         path: ':profileId',
-                        element: <Profile />
+                        element: <Profile />,
+                        children: [
+                            {
+                                path: 'gallery',
+                                element: <ImageGalleryPage />
+                            },
+                            {
+                                path: 'biodata',
+                                element: <Biodata />
+                            }
+                        ]
                     }
                 ]
             },
             {
+                path: '/notifications',
+                element: <Notifications />
+            },
+            {
                 path: '/settings',
-                element: <Settings />,
+                element: <Outlet />,
+                children: [
+                    {
+                        index: true,
+                        element: <Settings />
+                    },
+                    {
+                        path: 'account',
+                        element: <AccountSection />
+                    },
+                    {
+                        path: 'privacy',
+                        element: <PrivacySection />
+                    },
+                    {
+                        path: 'notifications',
+                        element: <NotificationsSection />
+                    },
+                    {
+                        path: 'help',
+                        element: <HelpSection />
+                    },
+                ]
+            },
+            {
+                path: '/termsofuse',
+                element: <TermsOfUse />
+            },
+            {
+                path: '/privacypolicy',
+                element: <PrivacyPolicy />
+            },
+            {
+                path: '/aboutus',
+                element: <AboutUs />
+            },
+            {
+                path: '/biodata',
+                element: <Biodata />
             },
             {
                 path: '*',

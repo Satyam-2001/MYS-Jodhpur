@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const messageSchema = new mongoose.Schema({
     chatId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Chat'
+        ref: 'Chat',
+        required: true,
     },
     to: {
         type: mongoose.Schema.Types.ObjectId,
@@ -41,8 +42,15 @@ const messageSchema = new mongoose.Schema({
                 type: Date,
             }
         }
-    ]
+    ],
+    expiresAt: {
+        type: Date,
+        default: () => new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
+    }
 });
+
+messageSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+
 
 messageSchema.statics.SetAsRead = async (messageId, userId) => {
     const message = await Message.findById(messageId).populate('reply')

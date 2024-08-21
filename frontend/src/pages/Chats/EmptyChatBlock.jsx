@@ -1,16 +1,36 @@
 import React from 'react'
-import Block from '../../UI/Block'
-import { Typography, useTheme } from '@mui/material'
+import { ElevatedStack } from '../../UI/ElevatedComponents'
+import { Stack, Typography, useTheme } from '@mui/material'
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 const style = {
-    textAlign: 'center', fontSize: '3rem', fontFamily: 'Lexend,sans-serif',
+    textAlign: 'center', fontSize: { xs: '2rem', sm: '3rem' }, fontFamily: 'Lexend,sans-serif',
+}
+
+export function EmptyChatBlockContent({ sx = {} }) {
+    const theme = useTheme()
+
+    return (
+        <Stack
+            sx={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 1,
+                ...sx
+            }}
+        >
+            <ChatBubbleOutlineIcon sx={{ fontSize: { xs: '4rem', sm: '5rem' }, color: 'text.primary' }} />
+            <Typography sx={style}>
+                Start a <span style={{ color: theme.palette.primary.main }}>Chat</span><br />
+                With your <span style={{ color: theme.palette.primary.main }}>Match</span>
+            </Typography>
+        </Stack>
+    )
 }
 
 export default function EmptyChatBlock() {
-    const theme = useTheme()
     return (
-        <Block
+        <ElevatedStack
             p={1}
             sx={{
                 width: '70%',
@@ -20,11 +40,7 @@ export default function EmptyChatBlock() {
                 justifyContent: 'center',
                 alignItems: 'center',
             }}>
-            <ChatBubbleOutlineIcon sx={{ fontSize: '5rem', color: 'text.primary' }} />
-            <Typography sx={style}>
-                Start a <span style={{ color: theme.palette.primary.main }}>Chat</span><br />
-                With your <span style={{ color: theme.palette.primary.main }}>Match</span>
-            </Typography>
-        </Block >
+            <EmptyChatBlockContent />
+        </ElevatedStack >
     )
 }

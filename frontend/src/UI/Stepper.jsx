@@ -7,13 +7,13 @@ export const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.active}`]: {
         [`& .${stepConnectorClasses.line}`]: {
             backgroundImage:
-                'var(--text-gradient)',
+                theme.customGradients.mainGradient,
         },
     },
     [`&.${stepConnectorClasses.completed}`]: {
         [`& .${stepConnectorClasses.line}`]: {
             backgroundImage:
-                'var(--text-gradient)',
+                theme.customGradients.mainGradient,
         },
     },
     [`& .${stepConnectorClasses.line}`]: {
@@ -37,12 +37,12 @@ export const ColorlibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
     alignItems: 'center',
     ...(ownerState.active && {
         backgroundImage:
-            'var(--text-gradient)',
+            theme.customGradients.mainGradient,
         boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
     }),
     ...(ownerState.completed && {
         backgroundImage:
-            'var(--text-gradient)',
+            theme.customGradients.mainGradient,
     }),
 }));
 

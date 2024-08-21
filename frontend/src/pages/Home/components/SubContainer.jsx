@@ -1,14 +1,10 @@
 import { Divider, Stack, useTheme } from "@mui/material"
 import { Fragment } from "react"
 
-export default function SubContainer({ children, sx, color }) {
-    const theme = useTheme()
+export default function SubContainer({ children, sx, bgcolor }) {
     return (
-        <Fragment>
-            <Stack gap={4} sx={{ px: 4, py: 8, backgroundColor: color === 'secondary' && theme.palette.grey.A100, ...sx }}>
-                {children}
-            </Stack>
-            <Divider />
-        </ Fragment>
+        <Stack gap={4} sx={{ px: {xs: 1, md: 2}, py: 6, bgcolor, borderBottom: 1, borderColor: 'divider', ...sx }}>
+            {children}
+        </Stack>
     )
 }

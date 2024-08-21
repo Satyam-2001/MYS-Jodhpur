@@ -16,8 +16,15 @@ import CloseIcon from '@mui/icons-material/Close';
 import { RWebShare } from "react-web-share";
 import ShareIcon from '@mui/icons-material/Share';
 import { Link, useNavigate } from 'react-router-dom';
+import { ElevatedStack } from '../../UI/ElevatedComponents';
+
+function userFind(array, userId) {
+    return array?.find(data => data.user == userId)
+}
 
 export function ActionButton({ children, Icon, text, onClick = () => { }, sx = {}, ...props }) {
+
+    const theme = useTheme()
 
     const clickHandler = (event) => {
         event.stopPropagation()
@@ -25,41 +32,36 @@ export function ActionButton({ children, Icon, text, onClick = () => { }, sx = {
         onClick(event)
     }
 
-    if (!text) {
-        return (
-            <Button
-                onClick={clickHandler}
-                sx={{
-                    color: 'primary.main',
-                    flex: 1,
-                    borderRadius: '10px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    textTransform: 'none', ...sx
-                }}
-                {...props}
-            >
-                <Icon sx={{ fontSize: '1.6rem' }} />
-                <Typography fontSize={'0.9rem'} sx={{ color: 'primary.main' }}>{children}</Typography>
-            </Button>
-        )
-    }
-
     return (
-        <Button
+        <ElevatedStack
             onClick={clickHandler}
             fullWidth
             startIcon={<Icon />}
+            direction={text ? 'row' : 'column'}
+            gap={text ? 1 : 0.25}
             sx={{
-                fontSize: '1rem',
+                flex: 1,
+                py: '4px',
+                bgcolor: chroma(theme.palette.primary.main).alpha(0.2).hex(),
+                backdropFilter: 'blur(2px)',
+                fontSize: text ? '1rem' : '0.72rem',
                 textTransform: 'none',
                 fontFamily: 'Lexend,sans-serif',
-                ...sx
-            }}
+                justifyContent: 'center',
+                alignItems: 'center',
+                textAlign: 'center',
+                color: 'primary.main',
+                ...sx,
+                '&:hover': {
+                    transform: text ? 'scale(1.04)' : 'scale(1.08)'
+                }
+            }
+            }
             {...props}
         >
+            <Icon />
             {children}
-        </Button>
+        </ElevatedStack >
     )
 }
 
@@ -69,8 +71,13 @@ export function ShortlistButton({ profile, ...props }) {
     const { user, isLoggedIn } = useSelector(state => state.user)
     const dispatch = useDispatch()
     const isMe = user?._id === _id
-    const showSaveButton = isLoggedIn && !isMe && basic_info.gender !== user?.basic_info.gender
-    const isShortlisted = (user.shortlisted || []).includes(_id)
+    const showSaveButton = isLoggedIn && !isMe && basic_info?.gender !== user?.basic_info?.gender
+    const isShortlisted = userFind(user.shortlisted, _id)
+    const navigate = useNavigate()
+
+    const gotoLogin = () => {
+        navigate('/login')
+    }
 
     const { mutate } = useMutation({
         mutationFn: () => axios.post('/activity', { profileId: _id, type: 'shortlist' }),
@@ -81,7 +88,12 @@ export function ShortlistButton({ profile, ...props }) {
     })
 
     const clickHandler = () => {
-        mutate()
+        if (!isLoggedIn) {
+            gotoLogin()
+        }
+        else {
+            mutate()
+        }
     }
 
     return (
@@ -93,11 +105,13 @@ export function ShortlistButton({ profile, ...props }) {
 
 export function SendInterestButton({ profile, ...props }) {
     const { _id } = profile
-    const { user } = useSelector(state => state.user)
+    const { user, isLoggedIn } = useSelector(state => state.user)
     const dispatch = useDispatch()
-    const isMatchedInterest = (user.matchinterest || []).includes(_id)
-    const isRecieveInterest = (user.recieveinterest || []).includes(_id)
-    const isSentInterest = (user.sendinterest || []).includes(_id)
+    const isMatchedInterest = userFind(user.matchinterest, _id)
+    const isReceiveInterest = userFind(user.receiveinterest, _id)
+    const isSentInterest = userFind(user.sendinterest, _id)
+    const navigate = useNavigate()
+
 
     const { mutate } = useMutation({
         mutationFn: ({ type }) => axios.post('/activity', { profileId: _id, type }),
@@ -107,16 +121,20 @@ export function SendInterestButton({ profile, ...props }) {
         }
     })
 
+    const gotoLogin = () => {
+        navigate('/login')
+    }
+
     let content
 
     if (isMatchedInterest) {
         content = {
             Icon: CloseIcon,
-            label: 'Remove Interest',
+            label: 'Unmatch',
             clickHandler: () => mutate({ type: 'remove' })
         }
     }
-    else if (isRecieveInterest) {
+    else if (isReceiveInterest) {
         content = {
             Icon: CheckIcon,
             label: 'Accept Interest',
@@ -126,7 +144,7 @@ export function SendInterestButton({ profile, ...props }) {
     else if (isSentInterest) {
         content = {
             Icon: UnsubscribeIcon,
-            label: 'Cancel Interest',
+            label: 'Unsend Interest',
             clickHandler: () => mutate({ type: 'cancel' })
         }
     }
@@ -140,12 +158,12 @@ export function SendInterestButton({ profile, ...props }) {
 
     return (
         <Fragment>
-            {isRecieveInterest && (
-                <ActionButton Icon={CloseIcon} {...props} onClick={() => mutate({ type: 'decline' })}>
+            {isReceiveInterest && (
+                <ActionButton Icon={CloseIcon} {...props} onClick={isLoggedIn ? () => mutate({ type: 'decline' }) : gotoLogin}>
                     Decline Interest
                 </ActionButton >
             )}
-            <ActionButton Icon={content.Icon} {...props} onClick={content.clickHandler}>
+            <ActionButton Icon={content.Icon} {...props} onClick={isLoggedIn ? content.clickHandler : gotoLogin}>
                 {content.label}
             </ActionButton >
         </Fragment>
@@ -155,9 +173,9 @@ export function SendInterestButton({ profile, ...props }) {
 export function ShareButton({ profile, ...props }) {
     const { _id } = profile
     const { user } = useSelector(state => state.user)
-    const isRecieveInterest = (user.recieveinterest || []).includes(_id)
+    const isReceiveInterest = userFind(user.receiveinterest, _id)
 
-    if (isRecieveInterest) return
+    if (isReceiveInterest) return
 
     return (
         <RWebShare
@@ -176,14 +194,27 @@ export function ShareButton({ profile, ...props }) {
 
 export function ChatButton({ profile, ...props }) {
     const { _id } = profile
-    const { user } = useSelector(state => state.user)
+    const { user, isLoggedIn } = useSelector(state => state.user)
     const navigate = useNavigate()
-    const isRecieveIntrest = (user.recieveintrest || []).includes(_id)
+    const isReceiveIntrest = (user.receiveintrest || []).includes(_id)
 
-    if (isRecieveIntrest) return
+    if (isReceiveIntrest) return
+
+    const gotoLogin = () => {
+        navigate('/login')
+    }
+
+    const clickHandler = () => {
+        if (isLoggedIn) {
+            navigate(`/chats/${_id}`)
+        }
+        else {
+            gotoLogin()
+        }
+    }
 
     return (
-        <ActionButton Icon={ChatBubbleOutlineOutlinedIcon} onClick={() => navigate(`/chats/${_id}`)} {...props}>
+        <ActionButton Icon={ChatBubbleOutlineOutlinedIcon} onClick={clickHandler} {...props}>
             Chat
         </ActionButton>
     )
@@ -194,20 +225,23 @@ export function ChatButton({ profile, ...props }) {
 export default function ProfileActionButtons({ text = true, profile, sx = {}, ...props }) {
     const theme = useTheme()
     const { isLoggedIn } = useSelector(state => state.user)
-    if (!isLoggedIn) return
     return (
         <Stack
+            elevation={1}
             direction='row'
+            gap={text ? 2 : 1}
             sx={{
+                py: '4px',
                 height: '60px',
                 borderRadius: '10px',
                 flexShrink: 0,
-                backgroundColor: chroma(theme.palette.primary.main).alpha(0.1).hex(),
+                // backgroundColor: chroma(theme.palette.primary.main).alpha(0.1).hex(),
+                // backdropFilter: 'blur(2px)',
                 ...sx
             }}
             {...props}
         >
-            <ShortlistButton text={text} profile={profile} />
+            {/* <ShortlistButton text={text} profile={profile} /> */}
             <SendInterestButton text={text} profile={profile} />
             <ShareButton text={text} profile={profile} />
             <ChatButton text={text} profile={profile} />

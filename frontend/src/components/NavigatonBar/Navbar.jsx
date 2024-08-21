@@ -3,6 +3,7 @@ import { Button, IconButton, Stack, Tooltip, Typography, useTheme } from '@mui/m
 import { NavLink } from 'react-router-dom';
 
 import navigationList from '../../data/navigation';
+import { ElevatedStack } from '../../UI/ElevatedComponents';
 
 function IconElement({ to, name, icon }) {
 
@@ -22,7 +23,7 @@ function IconElement({ to, name, icon }) {
                         edge="start"
                         sx={{
                             borderRadius: '20px',
-                            background: isActive ? 'linear-gradient(135deg, #C52062 2.34%, #FE880C 100.78%)' : 'transparent',
+                            background: isActive ? 'var(--text-gradient)' : 'transparent',
                             color: isActive ? 'white' : undefined,
                         }}
                     >
@@ -35,23 +36,27 @@ function IconElement({ to, name, icon }) {
 function ButtonElement({ to, name, icon }) {
     const theme = useTheme()
     return (
-        <NavLink to={to} >
+        <NavLink to={to} style={{ textDecoration: 'none' }} >
             {({ isActive }) => (
-                <Button
+                <ElevatedStack
                     // startIcon={icon}
+                    elevation={isActive ? -1 : 1}
                     sx={{
+                        height: '34px',
                         width: '100%',
                         borderRadius: '30px',
                         px: 2,
-                        background: isActive ? 'linear-gradient(135deg, #cc0000 2.34%, #e96214d6 100.78%)' : 'transparent',
+                        backgroundColor: isActive ? 'primary.main' : 'transparent',
                         color: isActive ? 'white' : 'text.primary',
                         fontFamily: 'lexend,sans-serif',
                         textTransform: 'capitalize',
                         fontSize: '1rem',
+                        alignItems: 'center',
+                        justifyContent: 'center'
                     }}
                 >
                     {name}
-                </Button>)}
+                </ElevatedStack>)}
         </NavLink>)
 }
 

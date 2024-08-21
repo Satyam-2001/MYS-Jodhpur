@@ -82,6 +82,11 @@ export const karyakaarni = [
         designation: 'Kaaryakarni Member',
         image: require('../assets/members/Pawan Mantri.png')
     },
+    {
+        name: 'Tejraj Mantri',
+        designation: 'Kaaryakarni Member',
+        image: require('../assets/members/Tej Raj Mantri.png')
+    },
 ]
 
 export const members = [
@@ -136,14 +141,9 @@ export const members = [
         image: require('../assets/members/Mulchand Mundra.png')
     },
     {
-        name: 'Rishabh Rathi',
-        designation: 'Member',
-        image: require('../assets/members/Rishabh Rathi.png')
-    },
-    {
         name: 'Vikas Dhoot',
         designation: 'Member',
-        // image: require('../assets/members/Vikas Dhoot.png')
+        image: require('../assets/members/Vikas Dhoot.jpeg')
     },
     {
         name: 'Abhishek Somani',
@@ -175,4 +175,5 @@ export const members = [
         designation: 'Member',
         image: require('../assets/members/Vishnu Phoophaliya.png')
     },
+
 ]

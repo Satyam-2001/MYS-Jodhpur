@@ -13,21 +13,21 @@ export default function AboutContainer({ children, title, ...props }) {
     if (isMe) {
         const { EditModal } = props
         EditContent = <Fragment>
-            <Button startIcon={<EditOutlinedIcon />} onClick={() => setEditModalOpen(true)} variant='outlined'>
+            <Button variant='text' sx={{fontFamily: 'Lexend,sans-serif', textTransform: 'capitalize', fontSize: '0.9rem'}} startIcon={<EditOutlinedIcon />} onClick={() => setEditModalOpen(true)}>
                 Edit
             </Button>
             <EditModal title={title} open={editModalOpen} onClose={() => setEditModalOpen(false)} />
         </Fragment>
     }
     return (
-        <Paper elevation={3} sx={{ p: 2 }}>
-            <Stack direction='row' justifyContent={'space-between'}>
-                <Typography variant='h3' fontSize={'1.5rem'} fontWeight={600} sx={{ opacity: 0.8 }}>
+        <Stack sx={{ py: 1 }}>
+            <Stack direction='row' justifyContent={'space-between'} alignItems={'center'} >
+                <Typography variant='h3' fontSize={'1.2rem'} sx={{ opacity: 0.8, fontFamily: 'Lexend,sans-serif', fontWeight: 600, textAlign: 'center' }}>
                     {title}
                 </Typography>
                 {EditContent}
             </Stack>
             {children}
-        </Paper>
+        </Stack>
     )
 }

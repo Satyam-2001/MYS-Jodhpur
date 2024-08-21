@@ -1,10 +1,13 @@
-import { Box, Button, Grid, Paper, Stack, Typography, useTheme } from '@mui/material'
+import { Box, Button, Grid, Modal, Paper, Stack, Typography, useTheme } from '@mui/material'
 import React, { useContext, useState } from 'react'
 import CustomBiodata from './CustomBiodata'
 import { CustomBiodataContext } from './CustomBiodataContext'
 import { usePDF } from 'react-to-pdf';
 import { ProfileContext } from '../../../context/ProfileProvider';
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { ElevatedButton, ElevatedStack } from '../../../UI/ElevatedComponents';
+import { APPBAR_HEIGHT, HeaderContainer, HeaderStart } from '../../../components/Layouts/Header';
+import NameHeader from '../../../UI/NameHeader';
 
 
 const biodataDesigns = [
@@ -44,51 +47,67 @@ const biodataDesigns = [
         px: 4,
         py: 6,
     },
+    {
+        id: 6,
+        image: require('../../../assets/Biodata/6.jpg'),
+        color: '#bdac3c',
+        pt: 12,
+        pb: 4,
+        px: 8,
+    },
 ]
 
 export default function Biodata() {
 
     const theme = useTheme()
-    const { profile } = useContext(ProfileContext)
+    const { profile, isPending } = useContext(ProfileContext)
     const { toPDF, targetRef } = usePDF({
-        filename: `${profile.basic_info.name}.pdf`,
+        filename: `${profile?.basic_info?.name}.pdf`,
         page: { format: [105, 148.6] },
     });
     const [selectedBiodata, setSelectedBiodata] = useState(biodataDesigns[0])
-
+    if (isPending) return
     return (
-        <CustomBiodataContext.Provider value={selectedBiodata}>
-            <Stack className='hide-scroll-bar' direction={{ xs: 'column-reverse', md: 'row-reverse' }} py={2} px={1} gap={1} overflow={'hidden'}>
-                <Stack gap={1} sx={{ flex: 1 }}>
-                    <Paper className='hide-scroll-bar' elevation={2} sx={{ display: 'flex', overflow: 'auto', flex: { md: 1 }, flexShrink: 0, height: { xs: '100px' }, boxSizing: 'border-box', }}>
-                        <Grid container direction={{ xs: 'column', md: 'row' }}   >
-                            {biodataDesigns.map((biodataDesign) => {
-                                return (
-                                    <Grid item xs={undefined} md={6} p={1} >
-                                        <Box
+        <Modal open={true} sx={{ backgroundColor: 'background.default', }}>
+            <CustomBiodataContext.Provider value={selectedBiodata}>
+                <Stack className='hide-scroll-bar' sx={{ height: '100vh', bgcolor: 'background.default', pt: `${APPBAR_HEIGHT}px` }} overflow={'hidden'}>
+                    <HeaderContainer>
+                        <HeaderStart header={{ goBack: true }}>
+                            <NameHeader isPending={isPending} profile={profile} color='text.primary' hideActivityStatus hideShortlistIcon />
+                        </HeaderStart>
+                    </HeaderContainer>
+                    <Stack direction={{ md: 'row' }} sx={{ overflow: 'auto', px: { xs: 1, md: 6 }, py: { xs: 1, md: 2 }, gap: {xs:1, md:2}, justifyContent: 'space-evenly' }}>
+                        <Stack overflow={'auto'}  >
+                            <CustomBiodata ref={targetRef} />
+                        </Stack>
+                        <Stack sx={{ gap: 1, maxWidth: { md: '320px' } }}>
+                            <Stack direction='row' sx={{ gap: 1, height: { xs: '100px', md: 'auto' }, width: '100%', flexWrap: { md: 'wrap' }, overflow: 'auto' }}>
+                                {biodataDesigns.map((biodataDesign) => {
+                                    return (
+                                        <ElevatedStack
+                                            key={biodataDesign.image}
                                             onClick={() => setSelectedBiodata(biodataDesign)}
                                             sx={{
                                                 cursor: 'pointer',
                                                 border: biodataDesign.id === selectedBiodata.id && `solid ${theme.palette.primary.main} 5px`,
-                                                aspectRatio: '210/297',
-                                                minHeight: { xs: '80px' },
+                                                aspectRatio: '210/297 !important',
+                                                // minHeight: { xs: '80px' },
+                                                minWidth: { md: '100px' },
                                                 backgroundSize: '100% 100%',
                                                 backgroundImage: `url(${biodataDesign.image})})`,
                                             }}
                                         />
-                                    </ Grid>
-                                )
-                            })}
-                        </Grid>
-                    </Paper>
-                    <Button variant='contained' onClick={toPDF}>
-                        Download
-                    </Button>
+                                    )
+                                })}
+                            </Stack>
+                            <ElevatedButton variant='contained' onClick={toPDF} sx={{ bgcolor: 'primary.main', fontFamily: 'Lexend,sans-serif', textTransform: 'capitalize', fontSize: '0.9rem' }}>
+                                Download
+                            </ElevatedButton>
+                        </Stack>
+
+                    </Stack>
                 </Stack>
-                <Stack overflow={'auto'} >
-                    <CustomBiodata ref={targetRef} />
-                </Stack>
-            </Stack>
-        </CustomBiodataContext.Provider>
+            </CustomBiodataContext.Provider>
+        </Modal >
     )
 }

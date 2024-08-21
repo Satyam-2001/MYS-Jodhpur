@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Box, IconButton, Stack, TextField, Typography } from '@mui/material'
+import { Box, IconButton, Stack, TextField, Typography, useMediaQuery } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,22 +10,30 @@ import { useTheme } from '@emotion/react';
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import useChats from '../../../hooks/useChats';
-import Block from '../../../UI/Block';
+import { ElevatedStack } from '../../../UI/ElevatedComponents';
 import CloseIcon from '@mui/icons-material/Close';
 import MessageCard from '../components/MessageCard';
 
 function ReplyMessage() {
     const { closeReply } = useChats()
-    const { user } = useSelector(state => state.user)
     const { reply_message } = useSelector(state => state.chats)
     if (!reply_message) return
     return (
-        <Block p={1} gap={1} direction='row' sx={{ backgroundColor: 'rgba(100, 100, 100, 0.12)', width: '100%', alignItems: 'center' }}>
+        <ElevatedStack
+            p={1}
+            gap={1}
+            direction='row'
+            sx={{
+                backgroundColor: 'action.hover',
+                width: '100%',
+                alignItems: 'center'
+            }}
+        >
             <MessageCard message={reply_message} />
             <IconButton size='large' onClick={closeReply}>
                 <CloseIcon fontSize='large' />
             </IconButton>
-        </Block>
+        </ElevatedStack>
     )
 }
 
@@ -39,18 +47,20 @@ export default function ChatFooter() {
     const [value, setValue] = useState('')
     const [openPicker, setOpenPicker] = useState(false)
     const theme = useTheme()
+    const isMobile = useMediaQuery(theme => theme.breakpoints.down('md'))
 
     const sendMessageHandler = () => {
-        if (value === '') return
+        const msg = value && value.trim()
+        if (!msg) return
         const message = {
             to: userId,
             from: user._id,
             type: 'Text',
-            text: value,
+            text: msg,
         }
-        sendMessage(message)
-        closeReply()
         setValue('')
+        closeReply()
+        sendMessage(message)
     }
 
     const handleEmojiClick = (emoji) => {
@@ -62,14 +72,23 @@ export default function ChatFooter() {
         setOpenPicker(prop => !prop)
     }
 
-    const keyDownHandler = (e) => {
-        if (e.keyCode == 13) {
+    const keyDownHandler = (event) => {
+        if (!isMobile && event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
             sendMessageHandler()
         }
     }
 
     return (
-        <Stack gap={'2px'} p={{ xs: 1, md: 0 }} sx={{ width: '100%', alignItems: 'center' }}>
+        <ElevatedStack
+            gap={'6px'}
+            p={{ xs: '6px', md: 0 }}
+            sx={{
+                width: '100%',
+                alignItems: 'center',
+                borderRadius: { xs: 0, md: '10px' }
+            }}
+        >
             <Box
                 style={{
                     zIndex: 10,
@@ -91,19 +110,22 @@ export default function ChatFooter() {
                 variant="filled"
                 size='small'
                 placeholder='Type a message'
+                multiline
+                maxRows={5}
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
-                sx={{ flex: 1, width: '100%' }}
+                sx={{ flex: 1, width: '100%', p: 0 }}
                 onKeyDown={keyDownHandler}
                 inputProps={{
                     style: {
                         fontSize: '1.1rem',
-                        padding: '12px',
+                        padding: '0px',
+                        paddingTop: '0px',
                     },
                 }}
                 InputProps={{
                     disableUnderline: true,
-                    sx: { borderRadius: '10px', backgroundColor: 'rgba(100, 100, 100, 0.12)' },
+                    sx: { borderRadius: '10px', bgcolor: 'action.hover', p: 0 },
                     startAdornment: (
                         <IconButton size='large' onClick={toggleOpenPicker}>
                             <SentimentSatisfiedOutlinedIcon fontSize='large' />
@@ -118,6 +140,6 @@ export default function ChatFooter() {
                     ),
                 }}
             />
-        </Stack>
+        </ElevatedStack>
     )
 }

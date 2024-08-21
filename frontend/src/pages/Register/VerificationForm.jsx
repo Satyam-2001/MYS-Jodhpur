@@ -2,11 +2,9 @@ import { useFormik } from "formik";
 import { otpSchema } from "../../schemas/otpSchema";
 import { Button, Paper, Stack, Typography } from "@mui/material";
 import OTPInput from 'react-otp-input';
-import Mirror from "../../UI/Mirror";
 import { useMutation } from "@tanstack/react-query";
 import axios from '../../services/axiosinstance'
 import { useNavigate } from "react-router";
-import { Fragment, useContext } from "react";
 import { useDispatch } from "react-redux";
 import { userActions } from "../../store/UserSlice";
 
@@ -63,7 +61,7 @@ const VerificationForm = ({ formData }) => {
     return (
         <Paper elevation={3} sx={{ p: 2 }}>
             <Stack gap={1} sx={{ alignItems: 'center', p: 1 }}>
-                <Typography variant='h2'>
+                <Typography variant='h2' sx={{ fontFamily: 'Lexend,sans-serif' }}>
                     Verify Email
                 </Typography>
                 <Typography variant='h5' textAlign={'center'} sx={{ py: 1 }}>

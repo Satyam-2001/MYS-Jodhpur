@@ -28,9 +28,14 @@ const ContactSchema = mongoose.Schema({
     instagram: {
         type: String,
         trim: true,
-        validate: [isURL, 'Please fill a valid linkedin url']
+        validate: [isURL, 'Please fill a valid instagram url']
     },
     facebook: {
+        type: String,
+        trim: true,
+        validate: [isURL, 'Please fill a valid facebook url']
+    },
+    linkedin: {
         type: String,
         trim: true,
         validate: [isURL, 'Please fill a valid linkedin url']

@@ -25,7 +25,7 @@ function EditModal({ onSubmit, ...props }) {
 
     return (
         <EditContainer onSubmit={handleSubmit} isSubmitting={isSubmitting} {...props}>
-            <InputField label='About Me' multiline rows={5} formikState={formikState} />
+            <InputField label='Bio' multiline rows={5} formikState={formikState} />
         </EditContainer>
     )
 }
@@ -33,12 +33,12 @@ function EditModal({ onSubmit, ...props }) {
 export default function AboutMe() {
     const { profile } = useContext(ProfileContext)
     const profile_managed_by = profile?.basic_info?.profile_managed_by
-    const description = profile?.about_me?.about_me
+    const description = profile?.about_me?.bio
     return (
         <AboutContainer title='About Me' EditModal={EditModal}>
-            <Stack py={1} gap={1} justifyContent={description && 'center'} width='100%'>
-                <Typography sx={{ fontSize: '1rem', fontFamily: 'Lexend,sans-serif' }}>Profile Managed By {profile_managed_by}</Typography>
-                {description || <Typography sx={{ opacity: '0.6', fontSize: '1.3rem', fontWeight: 600 }}>No Description</Typography>}
+            <Stack py={1} gap={1} justifyContent={description && 'center'} width='100%' sx={{ color: 'text.primary', whiteSpace: 'pre-line' }}>
+                {/* <Typography sx={{ fontSize: '1rem', fontFamily: 'Lexend,sans-serif' }}>Profile Managed By {profile_managed_by}</Typography> */}
+                {description || <Typography sx={{ opacity: '0.6', fontSize: '1rem', fontFamily: 'Lexend' }}>No Bio Available</Typography>}
             </Stack>
         </AboutContainer>
     )

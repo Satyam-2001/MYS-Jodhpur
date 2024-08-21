@@ -1,13 +1,16 @@
 import React from 'react'
 import { Stack, TextField } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
+import { ElevatedStack } from '../../../UI/ElevatedComponents';
 
-export default function SearchBar() {
+export default function SearchBar({ value, onChange }) {
     return (
-        <Stack sx={{ width: '100%' }}>
+        <ElevatedStack elevation={-1} sx={{ width: '100%' }}>
             <TextField
                 variant="filled"
                 size='small'
+                value={value}
+                onChange={onChange}
                 placeholder='Search'
                 inputProps={{
                     style: {
@@ -20,11 +23,11 @@ export default function SearchBar() {
                     sx: { borderRadius: '10px' },
                     startAdornment: (
                         <Stack position="start">
-                            <SearchIcon fontSize='large' />
+                            <SearchIcon fontSize='large' sx={{ opacity: 0.6 }} />
                         </Stack>
                     ),
                 }}
             />
-        </Stack>
+        </ElevatedStack>
     )
 }

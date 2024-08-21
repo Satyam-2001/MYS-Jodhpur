@@ -4,21 +4,17 @@ import BookmarksOutlinedIcon from '@mui/icons-material/BookmarksOutlined';
 import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined';
 import ForwardToInboxOutlinedIcon from '@mui/icons-material/ForwardToInboxOutlined';
 import MoveToInboxOutlinedIcon from '@mui/icons-material/MoveToInboxOutlined';
-import Block from '../../UI/Block';
+import { ElevatedStack } from '../../UI/ElevatedComponents';
 import { Box, Grid, Stack, Typography } from '@mui/material';
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import axios from '../../services/axiosinstance'
 import ActivityCards from './ActivityCards';
 import './index.css'
+import { usePrivateRoute } from '../../hooks/useProtectedRoute';
+import DeclinedSection from './DeclinedSection';
 
 const activityItems = [
-    {
-        label: 'Shortlisted Profiles',
-        Icon: BookmarksOutlinedIcon,
-        field: 'shortlisted',
-        to: 'shortlist'
-    },
     {
         label: 'Matched Profiles',
         Icon: MarkEmailReadOutlinedIcon,
@@ -32,43 +28,56 @@ const activityItems = [
         to: 'interests_sent'
     },
     {
-        label: 'Interests Recieved',
+        label: 'Interests Received',
         Icon: MoveToInboxOutlinedIcon,
-        field: 'recieveinterest',
-        to: 'interests_recieved'
+        field: 'receiveinterest',
+        to: 'interests_received'
+    },
+    {
+        label: 'Shortlisted Profiles',
+        Icon: BookmarksOutlinedIcon,
+        field: 'shortlisted',
+        to: 'shortlist'
     },
 ]
 
 function ActivityTabCard({ label, Icon, to }) {
-    const [isHover, setIsHover] = useState(false)
     return (
         <Link to={`/activity/${to}`} style={{ textDecoration: 'none', flex: 1 }}>
-            <Block
+            <ElevatedStack
                 gap={1}
-                onMouseOver={() => setIsHover(true)}
-                onMouseLeave={() => setIsHover(false)}
                 sx={{
                     height: '150px',
                     minWidth: '150px',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    flexShrink: 0
+                    flexShrink: 0,
+                    '&:hover': {
+                        bgcolor: 'action.hover'
+                    }
                 }}
             >
-                <Icon sx={{ fontSize: '3rem', color: isHover ? 'primary.main' : 'text.primary' }} />
-                <Typography sx={{ fontSize: '1.3rem', textAlign: 'center', color: isHover ? 'primary.main' : 'text.primary' }}>
+                <Icon sx={{ fontSize: '3rem', color: 'text.primary' }} />
+                <Typography sx={{ fontSize: '1.3rem', textAlign: 'center', color: 'text.primary' }}>
                     {label}
                 </Typography>
-            </Block>
+            </ElevatedStack>
         </Link>
     )
 }
 
 export default function Activity() {
 
+    usePrivateRoute()
+
+    const header = {
+        title: 'Activity',
+    }
+
+
     return (
-        <Container className='hide-scroll-bar' direction='column' overflow='auto' gap={1} height='100%' >
-            <Stack className='hide-scroll-bar' direction='row' gap={1} overflow={'auto'} width='100%' flexShrink={0}>
+        <Container header={header} direction='column' overflow='auto' gap={1} >
+            <Stack px={1} pb={1} pt={'2px'} direction='row' gap={1} overflow={'auto'} width='100%' flexShrink={0}>
                 {activityItems.map(value => {
                     return <ActivityTabCard key={value.label} {...value} />
                 })}
@@ -76,6 +85,7 @@ export default function Activity() {
             {activityItems.map(value => {
                 return <ActivityCards key={value.label} {...value} />
             })}
+            <DeclinedSection />
         </Container>
     )
 }

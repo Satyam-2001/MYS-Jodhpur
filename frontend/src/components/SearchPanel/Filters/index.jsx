@@ -9,16 +9,24 @@ import Checkbox from '@mui/material/Checkbox';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import React, { Fragment, useEffect, useState } from 'react'
 import chroma from 'chroma-js';
-import Block from '../../../UI/Block';
+import { ElevatedStack } from '../../../UI/ElevatedComponents';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { heightFormat } from '../../../utils';
+import { heightFormat, incomeFormat, max_age, max_height, max_income, min_age, min_height, min_income } from '../../../utils';
 import { searchActions } from '../../../store/SearchSlice';
 import CustomModal from '../../../UI/CustomModal';
-import { useFormik } from 'formik'
+import { FormikProvider, useFormik } from 'formik'
 import RangeSliderSelection from './RangeSliderSelection';
 import InputField from '../../../UI/InputField';
-import { diet, manglik, martial_status, complexion, weight_category } from '../../../data/selectionData'
+import { diet, manglik, martial_status, complexion, weight_category, language, family_status, family_type, family_values, drink, education, occupation, employed_in } from '../../../data/selectionData'
+import InputLabel from './InputLabel';
+import { ElevatedButton } from '../../../UI/ElevatedComponents';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { queryClient } from '../../../services/http';
+import axios from '../../../services/axiosinstance'
+import { elevation } from '../../../theme/styles';
+import { preferenceSchema } from '../../../schemas/preferenceSchema';
+import { initialFilterValues } from '../utils';
 
 
 function GenderButton({ gender }) {
@@ -38,103 +46,135 @@ function GenderButton({ gender }) {
     )
 }
 
-const initialValues = { manglik: 'Any', martial_status: 'Any', diet: 'Any', complexion: 'Any', weight_category: 'Any' }
+const filterInputPropsList = [
+    { label: 'Age', type: 'range', hideLabel: true, min: min_age, max: max_age, elevation: false },
+    { label: 'Height', type: 'range', hideLabel: true, min: min_height, max: max_height, elevation: false, format: heightFormat },
+    { label: 'Income', type: 'range', hideLabel: true, min: min_income, max: max_income, elevation: false, format: incomeFormat },
+    { label: 'Mother Tongue', type: 'autocomplete', menuItems: language, input_prop: { multiple: true } },
+    {
+        label: 'Education',
+        type: 'autocomplete',
+        menuItems: education,
+        input_prop: {
+            multiple: true,
+            getOptionLabel: (option) => option.label,
+            groupBy: (option) => option.category,
+        }
+    },
+    {
+        label: 'Employed In',
+        type: 'autocomplete',
+        menuItems: employed_in,
+        input_prop: {
+            multiple: true,
+        }
+    },
+    {
+        label: 'Occupation',
+        type: 'autocomplete',
+        menuItems: occupation,
+        input_prop: {
+            multiple: true,
+            getOptionLabel: (option) => option.label,
+            groupBy: (option) => option.category,
+        }
+    },
+    { label: 'Manglik', type: 'autocomplete', menuItems: manglik, input_prop: { multiple: true } },
+    { label: 'Martial Status', type: 'autocomplete', menuItems: martial_status, input_prop: { multiple: true } },
+    { label: 'Diet', type: 'autocomplete', menuItems: diet, input_prop: { multiple: true } },
+    { label: 'Complexion', type: 'autocomplete', menuItems: complexion, input_prop: { multiple: true } },
+    { label: 'Weight Category', type: 'autocomplete', menuItems: weight_category, input_prop: { multiple: true } },
+    { label: 'Family Status', type: 'autocomplete', menuItems: family_status, input_prop: { multiple: true } },
+    { label: 'Family Type', type: 'autocomplete', menuItems: family_type, input_prop: { multiple: true } },
+    { label: 'Family Values', type: 'autocomplete', menuItems: family_values, input_prop: { multiple: true } },
+    { label: 'Drinks', type: 'autocomplete', menuItems: drink, input_prop: { multiple: true } },
+    { label: 'Smoke', type: 'autocomplete', menuItems: drink, input_prop: { multiple: true } },
+]
 
-function FilterBlock({ sx }) {
+function FilterElevatedStack({ formik, toggleFilterHandler, applyFiltersHandler }) {
     const [searchParams, setSearchParams] = useSearchParams()
-    const filter_open = searchParams.get('filter') === 'open'
     const { isLoggedIn } = useSelector(state => state.user)
-    const values = { ...initialValues }
-
-    const handleChange = (event) => {
-        const { name, value } = event.target
-        setSearchParams((searchParams) => {
-            if (value === 'Any') searchParams.delete(name)
-            else searchParams.set(name, value)
-            return searchParams
-        })
-    }
-
-    Object.keys(initialValues).forEach((key) => {
-        values[key] = searchParams.get(key) || values[key]
+    const { mutate, isPending } = useMutation({
+        mutationFn: (values) => axios.patch('/user/preference', values),
+        onSuccess: () => {
+            // queryClient.invalidateQueries(['users'])
+        }
     })
 
-    const filterInputPropsList = [
-        { label: 'Manglik', type: 'select', menuItems: ['Any', ...manglik] },
-        { label: 'Martial Status', type: 'select', menuItems: ['Any', ...martial_status] },
-        { label: 'Diet', type: 'select', menuItems: ['Any', ...diet] },
-        { label: 'Complexion', type: 'select', menuItems: ['Any', ...complexion] },
-        { label: 'Weight Category', type: 'select', menuItems: ['Any', ...weight_category] }
-    ]
+    const { user } = useSelector(state => state.user)
 
-    // useEffect(() => {
-    //     const newValues = { ...initialValues }
-    //     Object.keys(initialValues).forEach((key) => {
-    //         if (searchParams.get(key)) {
-    //             newValues[key] = searchParams.get(key)
-    //         }
-    //     })
-    //     setValues(newValues)
-    // }, [searchParams])
+    const setPreferenceHandler = () => {
+        // mutate(formik.values)
+        formik.setValues(user.preference)
+    }
+
+    const resetHandler = () => {
+        formik.setValues(initialFilterValues)
+    }
 
     return (
-        <Block
-            p={filter_open ? 2 : 0}
-            gap={2}
-            sx={{
-                overflowY: 'auto',
-                width: filter_open ? '280px' : '0px',
-                overflow: 'auto',
-                transition: 'ease-out width 0.35s',
-                // flex: 1,
-                ...sx,
-            }}>
-            <Stack direction='row' sx={{ justifyContent: 'space-between', alignItems: 'center', pb: 1 }}>
-                <Typography variant='h3' fontSize={'1.2rem'} fontWeight={700} sx={{ opacity: 0.6, pb: 1 }} >
-                    FILTERS
-                </Typography>
-            </Stack>
-            {!isLoggedIn && <ButtonGroup fullWidth>
-                <GenderButton gender='men' />
-                <GenderButton gender='women' />
-            </ButtonGroup>}
-            <RangeSliderSelection title='age' min={18} max={50} />
-            <RangeSliderSelection title='height' min={48} max={76} format={(value) => heightFormat(value)} />
-            <RangeSliderSelection title='income' min={1} max={100} format={(value) => `${value} lakhs`} />
-            {filterInputPropsList.map((props) => (
-                <Stack key={props.label} alignItems={'center'} gap={2}>
-                    <Typography variant='h5' fontSize={'1rem'} fontWeight={700} sx={{ opacity: 0.6, textTransform: 'uppercase' }} >
-                        {props.label}
+        <FormikProvider value={formik}>
+            <ElevatedStack
+                className='hide-scroll-bar'
+                p={{ xs: 1, md: 2 }}
+                gap={2}
+                sx={{
+                    overflow: 'hidden'
+                }}>
+                <Stack direction='row' sx={{ justifyContent: 'space-between', alignItems: 'center', pb: 1 }}>
+                    <Typography variant='h3' fontSize={'1.2rem'} fontWeight={700} sx={{ opacity: 0.6, pb: 1 }} >
+                        FILTERS
                     </Typography>
-                    <InputField key={props.label} {...props} hideLabel formikState={{ handleChange, values }} />
+                    <Stack direction='row' sx={{ gap: { xs: 1, md: 2 } }}>
+                        {isLoggedIn && <ElevatedButton variant='outlined' disabled={isPending} onClick={setPreferenceHandler}>
+                            {isPending ? 'Updating...' : 'Apply Preference'}
+                        </ElevatedButton>}
+                        <ElevatedButton variant='outlined' disabled={isPending} onClick={resetHandler}>
+                            Reset
+                        </ElevatedButton>
+                    </Stack>
                 </Stack>
-            ))}
-        </Block >
+                <Stack
+                    className='hide-scroll-bar'
+                    gap={2}
+                    sx={{
+                        py: 1,
+                        px: 0.5,
+                        overflowY: 'auto',
+                        overflowX: 'hidden',
+                        maxWidth: '100%',
+                    }}>
+
+                    {!isLoggedIn && <ButtonGroup fullWidth>
+                        <GenderButton gender='men' />
+                        <GenderButton gender='women' />
+                    </ButtonGroup>}
+                    {filterInputPropsList.map(({ input_prop = {}, ...props }) => (
+                        <Stack key={props.label} alignItems={'center'} gap={2} direction='row'>
+                            <InputLabel label={props.label} />
+                            <InputField {...props} hideLabel elevation={props.elevation !== undefined ? props.elevation : - 1} style={{ flex: 1 }} input_prop={{ size: 'small', sx: { borderRadius: '10px' }, ...input_prop }} />
+                        </Stack>
+                    ))}
+                </Stack>
+                <Stack gap={2} direction='row'>
+                    <ElevatedButton fullWidth elevation={-1} onClick={toggleFilterHandler}>
+                        Cancel
+                    </ElevatedButton>
+                    <ElevatedButton fullWidth variant='contained'
+                        onClick={formik.handleSubmit}
+                    >
+                        Apply
+                    </ElevatedButton>
+                </Stack>
+            </ElevatedStack >
+        </FormikProvider>
     )
 }
 
-export default function Filters() {
-    const [searchParams, setSearchParams] = useSearchParams()
-    const filter_open = searchParams.get('filter') === 'open'
-
-
-
-
-    const toggleFilterHandler = () => {
-        setSearchParams((searchParams) => {
-            const filter_open = searchParams.get('filter') === 'open'
-            if (filter_open) searchParams.delete('filter')
-            else searchParams.set('filter', 'open')
-            return searchParams
-        })
-    }
-
+export default function Filters({ open, formik, toggleFilterHandler, applyFiltersHandler }) {
     return (
-        <Fragment>
-            <FilterBlock sx={{ display: { xs: 'none', md: 'flex' } }} />
-            <CustomModal sx={{ display: { md: 'none' } }} open={filter_open} onClose={toggleFilterHandler}>
-                <FilterBlock sx={{ width: '100%' }} />
-            </CustomModal>
-        </Fragment>
+        <CustomModal sx={{ p: 0, width: '600px' }} open={open} onClose={toggleFilterHandler}>
+            <FilterElevatedStack sx={{ width: '100%' }} formik={formik} toggleFilterHandler={toggleFilterHandler} applyFiltersHandler={applyFiltersHandler} />
+        </CustomModal>
     )
 }

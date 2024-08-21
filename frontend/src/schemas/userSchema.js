@@ -17,7 +17,6 @@ export const basicInfoSchema = Yup.object({
     manglik,
     martial_status,
     disability,
-    diet,
     disease
 })
 
@@ -26,12 +25,9 @@ export const aboutMeSchema = Yup.object({
 })
 
 export const kundliSchema = Yup.object({
-    kundli_milan,
     place_of_birth,
     date_of_birth,
     time_of_birth,
-    gotra_self,
-    gotra_nanihal
 })
 
 export const familySchema = Yup.object({

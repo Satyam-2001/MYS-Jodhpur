@@ -2,12 +2,11 @@ import { Box, Divider, Grid, Stack, Typography, useTheme, styled, Button, FormCo
 import React, { Fragment } from 'react'
 import ImageSlider from './components/ImageSlider'
 import { Link, NavLink } from 'react-router-dom'
-import Tilt from 'react-parallax-tilt'
-import Mirror from '../../UI/Mirror'
-import chroma from 'chroma-js'
 import SubContainer from './components/SubContainer'
-import Members from './Members'
 import ColorBlock from '../../UI/ColorBlock'
+import BrowseSection from './BrowseSection'
+import MemberSection from './MemberSection'
+import SponserSection from './SponserSection'
 
 
 function MirrorContainer({ children, title, color }) {
@@ -33,7 +32,7 @@ function MirrorContainer({ children, title, color }) {
     )
 }
 
-function SelectionBlock({ to, title, src, direction, color }) {
+function SelectionElevatedStack({ to, title, src, direction, color }) {
     const theme = useTheme()
 
     return (
@@ -56,8 +55,8 @@ function SelectSection() {
 
     return (
         <Stack direction='row' gap={1} sx={{ justifyContent: 'center', alignItems: 'center', height: '100%', flex: 1 }}>
-            <SelectionBlock direction={{ md: 'row' }} color={'#02b2f7'} title={'Looking For Groom?'} to={'/search?gender=men'} src={require('../../assets/groom.png')} />
-            <SelectionBlock direction={{ md: 'row-reverse' }} color={'#fa46fa'} title={'Looking For Bride?'} to={'/search?gender=women'} src={require('../../assets/bride.png')} />
+            <SelectionElevatedStack direction={{ md: 'row' }} color={'#02b2f7'} title={'Looking For Groom?'} to={'/search?gender=men'} src={require('../../assets/groom.png')} />
+            <SelectionElevatedStack direction={{ md: 'row-reverse' }} color={'#fa46fa'} title={'Looking For Bride?'} to={'/search?gender=women'} src={require('../../assets/bride.png')} />
         </Stack>
     )
 }
@@ -75,13 +74,13 @@ function RegisterSection() {
                     Create a profile and add your preference for your match
                 </MirrorContainer>
                 <MirrorContainer color='#17f702' title='Search'>
-                    Create a profile and add your preference for your match
+                    Search for a partner which matches your preference
                 </MirrorContainer>
                 <MirrorContainer color='#f79502' title='Connect'>
-                    Create a profile and add your preference for your match
+                    Send them interest and connect with them
                 </MirrorContainer>
                 <MirrorContainer color='#02b2f7' title='Interact'>
-                    Create a profile and add your preference for your match
+                    Chat with them for free and interact.
                 </MirrorContainer>
             </Grid>
         </Fragment>
@@ -107,9 +106,10 @@ function CommunitySection() {
 function HeroSection(props) {
 
     const sub_components = [
-        SelectSection,
-        Members,
+        // SelectSection,
         RegisterSection,
+        MemberSection,
+        SponserSection,
         CommunitySection,
     ]
 
@@ -117,7 +117,7 @@ function HeroSection(props) {
         <Fragment>
             {sub_components.map((Component, index) => {
                 return (
-                    <SubContainer key={index} color={(index & 1) ? 'primary' : 'secondary'}>
+                    <SubContainer key={index} bgcolor={(index & 1) ? 'background.default' : 'background.paper'}>
                         <Component />
                     </SubContainer>
                 )

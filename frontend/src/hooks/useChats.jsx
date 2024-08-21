@@ -1,12 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
-import { chatActions } from "../store/ChatSlice";
+import { DeleteChat, chatActions } from "../store/ChatSlice";
 import { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../context/SocketProvider";
+import { useNavigate } from "react-router";
 
 export default function useChats() {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const { user } = useSelector(state => state.user)
-    const { chats, reply_message, selected_chat, selected_messages } = useSelector(state => state.chats)
+    const { chats, reply_message, open_chat_id } = useSelector(state => state.chats)
     const [userData, setUserData] = useState()
     const { socket } = useContext(SocketContext)
 
@@ -24,11 +26,11 @@ export default function useChats() {
         dispatch(chatActions.setReply(null))
     }
 
-    function getSenderFromMessage(message) {
-        if (!message) return
-        const user = selected_chat.participants.find(item => item._id === message.from)
-        return user
-    }
+    // function getSenderFromMessage(message) {
+    //     if (!message) return
+    //     const user = selected_chat.participants.find(item => item._id === message.from)
+    //     return user
+    // }
 
     function deleteMessage(message) {
         socket.emit('delete_message', message)
@@ -37,15 +39,16 @@ export default function useChats() {
     async function sendMessage(temp_message) {
         const temp_id = `new-message-${Math.random()}`
         let reply
+        const chat = chats.find((chat) => chat._id === open_chat_id)
         if (reply_message?._id) {
-            reply = selected_messages.find(item => item._id === reply_message?._id)
+            reply = chat.messages.find(item => item._id === reply_message?._id)
         }
 
         const message_to_be_added = {
             ...temp_message,
             reply,
             created_at: Date.now(),
-            chatId: selected_chat._id,
+            chatId: open_chat_id,
             status: 'loading',
             temp_id
         }
@@ -53,12 +56,20 @@ export default function useChats() {
 
         const message_to_be_send = {
             ...temp_message,
+            chatId: open_chat_id,
             reply: reply_message?._id
         }
-        socket.emit('send_message', { message: message_to_be_send }, (chat, message) => {
-            dispatch(chatActions.replaceLoadingMessage({ chat, message, temp_id }))
+        socket.emit('send_message', message_to_be_send, (message) => {
+            if (message) {
+                dispatch(chatActions.replaceLoadingMessage({ message, temp_id }))
+            }
         })
     }
 
-    return { openReply, closeReply, getSenderFromMessage, deleteMessage, sendMessage, userData }
+    function deleteChat() {
+        dispatch(DeleteChat(open_chat_id, socket))
+        navigate(-1)
+    }
+
+    return { openReply, closeReply, deleteMessage, sendMessage, deleteChat, userData }
 }

@@ -1,17 +1,23 @@
 import React, { useContext, useEffect } from 'react'
 import AboutContainer from './components/AboutContainer'
-import { Grid, Stack, Typography, menuItemClasses, useTheme } from '@mui/material'
+import { Grid, Paper, Stack, Typography, makeStyles, menuItemClasses, useTheme } from '@mui/material'
 import parameters, { getParameters } from '../../../data/parameters'
 import EditContainer from './components/EditContaioner'
 import InputField from '../../../UI/InputField'
 import { useFormik } from 'formik'
-import { height, gender, manglik, martial_status, profile_managed_by, kundli_milan, weight_category, complexion, diet, disease, disability } from '../../../data/selectionData'
+import { height, gender, manglik, martial_status, profile_managed_by, kundli_milan, weight_category, complexion, diet, disease, disability, language } from '../../../data/selectionData'
 import { useMutation } from '@tanstack/react-query'
 import axios from '../../../services/axiosinstance'
 import { queryClient } from '../../../services/http'
 import { ProfileContext } from '../../../context/ProfileProvider'
 import useUpdateProfile from './hooks/useProfileUpdate'
 import { basicInfoSchema } from '../../../schemas/userSchema'
+import chroma from 'chroma-js'
+import { ElevatedStack } from '../../../UI/ElevatedComponents'
+import RadialEffect from '../../../UI/RadialEffect'
+import { colors } from '../../../data/constants'
+import ValueCard from '../../../components/ValueCard'
+import { filterProfileValue } from '../utils'
 
 
 function EditModal({ onSubmit, ...props }) {
@@ -29,20 +35,16 @@ function EditModal({ onSubmit, ...props }) {
         { label: 'Name' },
         { label: 'Date Of Birth', type: 'date' },
         { label: 'Gender', type: 'select', menuItems: gender, md: 6 },
-        { label: 'Profile Managed By', type: 'select', menuItems: profile_managed_by, md: 6 },
-        { label: 'Education', md: 6 },
-        { label: 'Occupation', md: 6 },
-        { label: 'Income', type: 'number', md: 6, InputProps: { endAdornment: <Typography fontWeight={500}>lakhs</Typography> } },
-        { label: 'Location', md: 6 },
-        { label: 'Height', type: 'select', menuItems: height, md: 4 },
+        { label: 'Mother Tongue', type: 'select', menuItems: language, md: 6 },
+        { label: 'Profile Managed By', type: 'select', menuItems: profile_managed_by, md: 12 },
+        { label: 'Location', type: 'location', md: 6 },
+        { label: 'Height', type: 'select', menuItems: height, md: 6 },
         { label: 'Weight Category', type: 'select', menuItems: weight_category, md: 4 },
         { label: 'Complexion', type: 'select', menuItems: complexion, md: 4 },
         { label: 'Manglik', type: 'select', menuItems: manglik, md: 4 },
         { label: 'Martial Status', type: 'select', menuItems: martial_status, md: 4 },
         { label: 'Disability', type: 'select', menuItems: disability, md: 4 },
-        { label: 'Diet', type: 'select', menuItems: diet },
-        { label: 'Disease', type: 'select', menuItems: disease }
-
+        { label: 'Disease', type: 'select', menuItems: disease, md: 4 }
     ]
 
     return (
@@ -51,7 +53,7 @@ function EditModal({ onSubmit, ...props }) {
                 {inputArray.map((item) => {
                     return (
                         <Grid key={item.label} item xs={12} md={item.md || 6} p={1}>
-                            <InputField {...item} formikState={formikState} />
+                            <InputField elevation={1} {...item} formikState={formikState} />
                         </Grid>
                     )
                 })}
@@ -62,20 +64,20 @@ function EditModal({ onSubmit, ...props }) {
 
 export default function BasicInfo() {
     const theme = useTheme()
-    const { profile } = useContext(ProfileContext)
-    const basicInfo = profile.basic_info
+    const { profile, isMe } = useContext(ProfileContext)
+    const basicInfo = getParameters(profile.basic_info || {}, { type: 'personal' })
+    const fields = filterProfileValue(basicInfo)
+
+    if (!fields && !isMe) return
+
     return (
-        <AboutContainer title='Basic info' EditModal={EditModal}>
-            <Grid container py={2}>
-                {getParameters(basicInfo || {}).map(({ Icon, value }) => {
+        <AboutContainer title='Personal Details' EditModal={EditModal}>
+            <Grid container pt={2} pb={1} spacing={1.5}>
+                {fields.map(({ Icon, value, label }, index) => {
+                    const color = colors[index % colors.length]
                     return (
-                        <Grid key={value} item xs={12} sm={6} md={4}>
-                            <Stack direction='row' gap={2} key={value} p={'3px'}>
-                                <Icon sx={{ fontSize: 28, color: theme.palette.text.primary }} />
-                                <Typography fontSize={'1rem'} fontFamily={'Lexend,sans-serif'}>
-                                    {value}
-                                </Typography>
-                            </Stack>
+                        <Grid key={label} item xs={6} sm={4} md={3}>
+                            <ValueCard value={value} Icon={Icon} color={color} />
                         </Grid>
                     )
                 })}

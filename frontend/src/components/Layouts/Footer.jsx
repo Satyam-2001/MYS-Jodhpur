@@ -6,17 +6,17 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 
 import logo from '../../assets/logo.png'
-import navigationList from '../../data/navigation';
+import navigationList, { legalNavigationList } from '../../data/navigation';
 
 const socials = [
     {
         Icon: InstagramIcon,
-        link: 'https://www.instagram.com/wolfame_official/'
+        link: 'https://www.instagram.com/mys-shaadi_org/'
     },
-    {
-        Icon: FacebookIcon,
-        link: 'https://www.facebook.com/Wolfame18/'
-    },
+    // {
+    //     Icon: FacebookIcon,
+    //     link: 'https://www.facebook.com/Wolfame18/'
+    // },
 ]
 
 function StyledLink({ to, children }) {
@@ -45,9 +45,9 @@ function Footer() {
     return (
         <Paper >
             <Grid spacing={3} container sx={{ p: 4, boxSizing: 'border-box' }}>
-                <Grid item xs={12} sm={4} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {/* <Grid item xs={12} sm={4} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <img src={logo} style={{ height: '12rem' }} />
-                </Grid>
+                </Grid> */}
                 <Grid item xs={6} sm={4} sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Stack>
                         <Typography variant='h3' fontSize={'1.2rem'} fontWeight={700} sx={{ opacity: 0.6 }} >
@@ -66,20 +66,29 @@ function Footer() {
                 <Grid item xs={6} sm={4} sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Stack>
                         <Typography variant='h3' fontSize={'1.2rem'} fontWeight={700} sx={{ opacity: 0.6 }} >
-                            SOCIALS
+                            LEGAL
                         </Typography>
-                        <Stack direction='row' pt={2} gap={1}>
-                            {socials.map(({ link, Icon }) => {
-                                return <SocialIconLink key={link} link={link} Icon={Icon} />
+                        <Stack pt={2} gap={1}>
+                            {legalNavigationList.map(({ to, name }) => {
+                                return (
+                                    <StyledLink key={to} to={to}>
+                                        {name}
+                                    </StyledLink>)
                             })}
                         </Stack>
                     </Stack>
                 </Grid>
             </Grid>
+
             <Grid item xs={12} sx={{ justifyContent: 'center' }}>
                 <Divider />
                 <Typography variant='h5' fontSize={'1rem'} textAlign={'center'} sx={{ p: 2 }}>
-                    Copyright © 2024. All rights reserved by MYS Jodhpur.
+                    Copyright © 2024. All rights reserved by MYS Shaadi.
+                </Typography>
+            </Grid>
+            <Grid item xs={12} sx={{ justifyContent: 'center' }}>
+                <Typography variant='h5' fontSize={'1.2rem'} textAlign={'center'} sx={{ p: 2 }}>
+                    Developed By <Link target='blank' to={'https://www.linkedin.com/company/bytesbridge'} style={{ textDecoration: 'underline', color: theme.palette.primary.main }}>Bytes Bridge.</Link>
                 </Typography>
             </Grid>
         </Paper>

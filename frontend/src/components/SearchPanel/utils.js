@@ -1,0 +1,16 @@
+export const initialFilterValues = {
+    manglik: '',
+    martial_status: '',
+    diet: '',
+    complexion: '',
+    weight_category: '',
+    mother_tongue: '',
+    family_status: '',
+    family_type: '',
+    family_values: '',
+    drinks: '',
+    smoke: '',
+    education: '',
+    occupation: '',
+    employed_in: '',
+}
