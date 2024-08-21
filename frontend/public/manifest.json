@@ -3,15 +3,15 @@
   "name": "MYS Shaadi",
   "icons": [
     {
-      "src": "logo512.png",
+      "src": "logo192.png",
       "type": "image/png",
-      "sizes": "512x512",
+      "sizes": "192x192",
       "purpose": "any maskable"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#ffffff",
   "background_color": "#ffffff",
   "prefer_related_applications": true,
   "display_override": "minimal-ui"
