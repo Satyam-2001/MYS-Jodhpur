@@ -111,9 +111,6 @@ export default function Contact() {
 
     const fields = filterProfileValue(contactItems)
 
-    if (!isMe && fields.length === 0) return
-
-
     return (
         <AboutContainer title='Contact' EditModal={EditModal}>
             {isHidden ? <HideContact /> : <Grid container py={2} px={1} rowSpacing={{ xs: 1, md: 2 }} columnSpacing={{ md: 4 }} overflow='hidden'>

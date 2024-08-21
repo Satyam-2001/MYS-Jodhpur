@@ -35,7 +35,7 @@ const sendVerificationEmail = async (req, res) => {
 
         const body = {
             name: name,
-            intro: "It looks like you are trying to register to MYS Johpur using your email and password. As an additional security measure you are requested to enter the OTP code (one-time password) provided in this email.\nIf you did not intend to register to MYS Jodhpur, please ignore this email.",
+            intro: "It looks like you are trying to register to MYS Shaadi using your email and password. As an additional security measure you are requested to enter the OTP code (one-time password) provided in this email.\nIf you did not intend to register to MYS Shaadi, please ignore this email.",
             outro: `The OTP code is: <b>${otp}</b>`
         }
 

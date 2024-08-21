@@ -88,7 +88,7 @@ function Footer() {
             </Grid>
             <Grid item xs={12} sx={{ justifyContent: 'center' }}>
                 <Typography variant='h5' fontSize={'1.2rem'} textAlign={'center'} sx={{ p: 2 }}>
-                    Developed By <Link target='blank' to={'https://www.linkedin.com/company/bytesbridge'} style={{ textDecoration: 'underline', color: theme.palette.primary.main }}>Bytes Bridge.</Link>
+                    Developed By <Link target='blank' to={'https://www.linkedin.com/company/bytesbridge'} style={{ textDecoration: 'underline', color: theme.palette.primary.main }}>Bytes Bridge</Link>
                 </Typography>
             </Grid>
         </Paper>

@@ -57,5 +57,5 @@ export function lastSeenDate(date) {
     if (now.subtract(1, 'days').isSame(messageDate, 'day')) {
         return 'Yesterday';
     }
-    return moment(new Date(date)).format('D MMMM, YY')
+    return moment(new Date(date)).format('D MMM, YY')
 }

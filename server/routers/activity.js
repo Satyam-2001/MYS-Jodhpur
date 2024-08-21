@@ -105,7 +105,6 @@ router.post('/', auth, async (req, res) => {
                     }
                 },
                     { new: true })
-                sendInterestReceiveMail(req.user, receiver)
                 break;
             }
             case 'cancel': {

@@ -37,7 +37,7 @@ function getFilterQuery(filters, user, options) {
     })
 
     if (options.exclude && user?._id) {
-        const hideProfiles = concatProfileId(user.blocked_users, user.they_declined, user.you_declined, user.matchinterest)
+        const hideProfiles = concatProfileId(user.blocked_users, user.they_declined, user.you_declined)
         filter['_id'] = { $nin: hideProfiles };
     }
 

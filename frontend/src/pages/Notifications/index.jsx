@@ -13,7 +13,7 @@ export default function Notifications() {
         goBack: true
     }
     return (
-        <SideContainer header={header} >
+        <SideContainer header={header} sx={{ p: 0 }} >
             {!!notifications?.length && <Stack sx={{ gap: '3px' }}>
                 {notifications?.map((notification, index) => <NotificationCard key={notification.date} index={index} {...notification} />)}
             </Stack>}

@@ -16,9 +16,9 @@ const sendMail = async (email, subject, body) => {
     const MailGenerator = new Mailgen({
         theme: "default",
         product: {
-            name: "MYS Jodhpur",
-            logo: 'https://github.com/Satyam-2001/Bytes-Bridge/assets/88069082/586d8b68-420e-484a-b50a-9cabbcdfaa92',
-            link: 'https://mysjodhpur.in'
+            name: "MYS Shaadi",
+            logo: 'https://www.mys-shaadi.com/static/media/logo.362707f2dd36dd5ac0be.png',
+            link: 'https://mys-shaadi.com'
         }
     })
 

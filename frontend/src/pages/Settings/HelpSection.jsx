@@ -25,7 +25,7 @@ export default function HelpSection() {
             title: 'Developer',
             subtitle: 'Contact with the development team',
             Icon: PersonOutlineOutlinedIcon,
-            to: 'https://www.linkedin.com/in/satyam-lohiya/',
+            to: 'https://www.linkedin.com/company/bytesbridge',
             target: 'blank',
         }
     ]
