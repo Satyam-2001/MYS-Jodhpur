@@ -108,23 +108,27 @@ router.get('/:field', auth, async (req, res) => {
             .populate({ path: `${field}.user`, select: 'basic_info images status last_seen', });
 
         // Ensure the requesting user's field data is up-to-date
-        if (req.user[field].length !== user[field].length) {
-            req.user[field] = user[field].map(data => ({ ...data, user: data.user._id }));
-            await req.user.save();
-        }
+
 
         // Apply filterUserFields to each user object in the list
-        const filteredData = await Promise.all(
+        const filteredData = (await Promise.all(
             user[field].map(async (data) => {
+                if (!data.user) return
                 // Filter the user fields based on the requesting user
                 data.user = await data.user.filterUserFields(req.user);
                 return data
             })
-        );
+        )).filter(value => !!value);
+
+        if (req.user[field].length !== filteredData.length) {
+            req.user[field] = filteredData.map(data => ({ ...data, user: data.user._id }));
+            await req.user.save();
+        }
 
         // Send the filtered data
         res.send(filteredData);
     } catch (e) {
+        console.log(e)
         res.status(500).send(e);
     }
 });

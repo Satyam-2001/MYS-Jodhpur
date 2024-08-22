@@ -1,4 +1,4 @@
-import { Grid, IconButton, Stack, Typography, useTheme } from '@mui/material'
+import { Button, Grid, IconButton, Stack, Typography, useTheme } from '@mui/material'
 import React, { useState } from 'react'
 import UserCardGridView, { UserCardGridViewSkeleton } from '../../components/PlofilesList/UserCardGridView'
 import { useSelector } from 'react-redux';
@@ -7,6 +7,7 @@ import axios from '../../services/axiosinstance'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { ElevatedIconButton } from '../../UI/ElevatedComponents';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -17,6 +18,7 @@ import 'swiper/css/pagination';
 
 // import required modules
 import { EffectCoverflow, Pagination } from 'swiper/modules';
+import { Link, useNavigate } from 'react-router-dom';
 
 function ActivityCardView({ profileId }) {
     const { data: profile, isPending } = useQuery({
@@ -31,8 +33,10 @@ function ActivityCardView({ profileId }) {
     return <UserCardGridView profile={profile} sx={{ height: '100%', width: '100%' }} />
 }
 
-function Carousel({ list }) {
+function Carousel({ list, label, field, to }) {
     const theme = useTheme()
+
+    const maxLength = 5
 
     return (
         <Stack sx={{ width: '100%', height: '75vh', position: 'relative', alignItems: 'center' }}>
@@ -59,7 +63,7 @@ function Carousel({ list }) {
                 className="mySwiper"
                 style={{ height: '100%', maxWidth: '100%' }}
             >
-                {list.map((item, i) => (
+                {list.slice(0, maxLength).map((item, i) => (
                     <SwiperSlide
                         key={i}
                         className="event-slide"
@@ -67,6 +71,17 @@ function Carousel({ list }) {
                         <ActivityCardView profileId={list[i]} />
                     </SwiperSlide>
                 ))}
+                {/* {list.length > maxLength && <SwiperSlide
+                    className="event-slide"
+                >
+                    <Link to={`/activity/${to}`} style={{ textDecoration: 'none' }}>
+                        <Stack sx={{ flex: 1, height: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            <Button sx={{ textTransform: 'capitalize', fontSize: '1.5rem' }} endIcon={<ArrowForwardIcon sx={{fontSize: '1.5rem'}} />}>
+                                View More
+                            </Button>
+                        </Stack>
+                    </Link>
+                </SwiperSlide>} */}
             </Swiper>
             {/* {(itemIndex > 0) && (
                 <ElevatedIconButton onClick={backWardHandler} sx={{ position: 'absolute', bgcolor: 'primary.main', borderRadius: '50%', left: { xs: '5%', md: '10%' }, top: '50%', translate: '-50% -50%' }}>
@@ -83,14 +98,23 @@ function Carousel({ list }) {
     )
 }
 
-export default function ActivityCards({ isPending, field, label }) {
+export default function ActivityCards({ isPending, field, label, to }) {
     const { user } = useSelector(state => state.user)
     const profileList = user?.[field]?.map(data => data.user)
+    const navigate = useNavigate()
     if (isPending || !profileList?.length) { return }
+    const viewAllHandler = () => {
+        navigate(to)
+    }
     return (
         <Stack gap={1} p={1} sx={{ bgcolor: 'transparent' }}>
-            <Typography sx={{ fontSize: '1.5rem', px: 1, fontFamily: 'Lexend,sans-serif' }}>{label}</Typography>
-            <Carousel list={profileList} />
+            <Stack direction='row' sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+                <Typography sx={{ fontSize: '1.5rem', px: 1, fontFamily: 'Lexend,sans-serif' }}>{label}</Typography>
+                <Button variant='outlined' onClick={viewAllHandler}>
+                    View All
+                </Button>
+            </Stack>
+            <Carousel list={profileList} to={to} label={label} field={field} />
         </Stack>
     )
 }
