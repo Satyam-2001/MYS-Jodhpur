@@ -13,6 +13,7 @@ import ActivityCards from './ActivityCards';
 import './index.css'
 import { usePrivateRoute } from '../../hooks/useProtectedRoute';
 import DeclinedSection from './DeclinedSection';
+import { useSelector } from 'react-redux';
 
 const activityItems = [
     {
@@ -41,7 +42,10 @@ const activityItems = [
     },
 ]
 
-function ActivityTabCard({ label, Icon, to }) {
+function ActivityTabCard({ label, Icon, to, field }) {
+    const { user } = useSelector(state => state.user)
+    const profileList = user?.[field]?.map(data => data.user)
+    const length = profileList?.length || 0
     return (
         <Link to={`/activity/${to}`} style={{ textDecoration: 'none', flex: 1 }}>
             <ElevatedStack
@@ -58,8 +62,8 @@ function ActivityTabCard({ label, Icon, to }) {
                 }}
             >
                 <Icon sx={{ fontSize: '3rem', color: 'text.primary' }} />
-                <Typography sx={{ fontSize: '1.3rem', textAlign: 'center', color: 'text.primary' }}>
-                    {label}
+                <Typography sx={{ fontSize: '1.3rem', textAlign: 'center', color: 'text.primary', fontFamily: '"Baloo Bhaijaan 2", sans-serif' }}>
+                    {`${label} (${length})`}
                 </Typography>
             </ElevatedStack>
         </Link>
@@ -77,7 +81,7 @@ export default function Activity() {
 
     return (
         <Container header={header} direction='column' overflow='auto' gap={1} >
-            <Stack px={1} pb={1} pt={'2px'} direction='row' gap={1} overflow={'auto'} width='100%' flexShrink={0}>
+            <Stack px={1} pb={1} pt={'2px'} direction='row' gap={{xs: 1, md: 2}} overflow={'auto'} width='100%' flexShrink={0}>
                 {activityItems.map(value => {
                     return <ActivityTabCard key={value.label} {...value} />
                 })}

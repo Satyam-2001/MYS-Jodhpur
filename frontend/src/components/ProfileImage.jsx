@@ -4,6 +4,11 @@ import { defaultImage } from '../data/constants'
 import ImageGradient from '../UI/ImageGradient'
 import { ElevatedStack } from '../UI/ElevatedComponents'
 import PersonIcon from '@mui/icons-material/Person';
+// import { Swiper, SwiperSlide } from 'swiper/react';
+
+// import { Scrollbar } from 'swiper/modules'
+// import 'swiper/css';
+// import 'swiper/css/scrollbar';
 
 
 export default function ProfileImage({ profile, gradient = false, children, sx = {}, sx_image = {}, ...props }) {
@@ -21,6 +26,7 @@ export default function ProfileImage({ profile, gradient = false, children, sx =
             return prop + 1
         })
     }
+
     return (
         <Stack
             // {...props}
