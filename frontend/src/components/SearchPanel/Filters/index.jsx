@@ -29,18 +29,15 @@ import { preferenceSchema } from '../../../schemas/preferenceSchema';
 import { initialFilterValues } from '../utils';
 
 
-function GenderButton({ gender }) {
+function GenderButton({ gender, value, setValue }) {
     const [searchParams, setSearchParams] = useSearchParams()
     const genderSearch = (searchParams.get('gender') || '').toLowerCase()
 
     const genderSelectHandler = () => {
-        setSearchParams((searchParams) => {
-            searchParams.set('gender', gender)
-            return searchParams
-        })
+        setValue(gender)
     }
     return (
-        <Button variant={gender === genderSearch ? 'contained' : 'outlined'} onClick={genderSelectHandler}>
+        <Button variant={gender === value.toLowerCase() ? 'contained' : 'outlined'} onClick={genderSelectHandler}>
             {gender}
         </Button>
     )
@@ -112,6 +109,10 @@ function FilterElevatedStack({ formik, toggleFilterHandler, applyFiltersHandler 
         formik.setValues(initialFilterValues)
     }
 
+    const setGenderValue = (value) => {
+        formik.setFieldValue('gender', value)
+    }
+
     return (
         <FormikProvider value={formik}>
             <ElevatedStack
@@ -146,8 +147,8 @@ function FilterElevatedStack({ formik, toggleFilterHandler, applyFiltersHandler 
                     }}>
 
                     {!isLoggedIn && <ButtonGroup fullWidth>
-                        <GenderButton gender='men' />
-                        <GenderButton gender='women' />
+                        <GenderButton gender='men' value={formik.values.gender} setValue={setGenderValue} />
+                        <GenderButton gender='women' value={formik.values.gender} setValue={setGenderValue} />
                     </ButtonGroup>}
                     {filterInputPropsList.map(({ input_prop = {}, ...props }) => (
                         <Stack key={props.label} alignItems={'center'} gap={2} direction='row'>
