@@ -46,9 +46,14 @@ function ImageMenu({ image }) {
 
     const { mutate: deleteImage } = useMutation({
         mutationFn: () => axios.delete('/user/image', { data: { image } }),
-        onSuccess: ({ user }) => {
-            deleteMedia(image)
-            updateProfile(user)
+        onSuccess: async ({ user }) => {
+            try {
+                await deleteMedia(image)
+                updateProfile(user)
+            }
+            catch (e) {
+                console.error(e)
+            }
         }
     })
 

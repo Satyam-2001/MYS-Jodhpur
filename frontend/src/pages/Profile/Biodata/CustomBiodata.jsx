@@ -6,6 +6,7 @@ import { CustomBiodataContext } from './CustomBiodataContext'
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import axios from 'axios'
 import { elevation } from '../../../theme/styles'
+import { filterProfileValue } from '../utils'
 
 function CustomText({ children }) {
     const { color } = useContext(CustomBiodataContext)
@@ -20,7 +21,7 @@ function IntroField({ label, value }) {
     if (!value) return
     return (
         <Stack direction='row' gap={1} fontSize={'1em'}>
-            <Stack direction='row' width='6em' fontSize={'1em'} justifyContent={'space-between'}>
+            <Stack direction='row' width='8em' fontSize={'1em'} justifyContent={'space-between'}>
                 <CustomText>
                     {label}
                 </CustomText>
@@ -68,6 +69,27 @@ export default forwardRef(function CustomBiodata(props, ref) {
     }
 
     if (isPending) return
+
+    const family_details = [
+        {
+            label: "Father's Name",
+            value: profile.family?.father_name
+        },
+        {
+            label: "Father's Occupation",
+            value: profile.family?.father_occupation
+        },
+        {
+            label: "Mother's Name",
+            value: profile.family?.mother_name
+        },
+        {
+            label: "Mother's Occupation",
+            value: profile.family?.mother_occupation
+        },
+    ]
+
+    const family = filterProfileValue(family_details)
 
     return (
         <Stack
@@ -126,11 +148,8 @@ export default forwardRef(function CustomBiodata(props, ref) {
                         </Stack> */}
                     </Stack>
                 </DetailBox>
-                <DetailBox title={'FAMILY DETAILS'} hide={!containsField(profile.family)} >
-                    <IntroField label="Father's Name" value={profile.family?.father_name} />
-                    <IntroField label='Occupation' value={profile.family?.father_occupation} />
-                    <IntroField label="Mother's Name" value={profile.family?.mother_name} />
-                    <IntroField label='Occupation' value={profile.family?.mother_occupation} />
+                <DetailBox title={'FAMILY DETAILS'} hide={!family.length} >
+                    {family.map((props) => <IntroField key={props.label} {...props} />)}
                 </DetailBox>
                 <DetailBox title={'CONTACT DETAILS'} hide={!containsField(profile.contact)}>
                     <IntroField label="Contact No." value={profile.contact.phone_number} />

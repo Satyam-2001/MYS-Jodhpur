@@ -33,7 +33,7 @@ function ReadReceipt({ icon, title, time }) {
 function MessageInfoModal({ open, onClose, message }) {
     const { user } = useSelector(state => state.user)
     if (!open) return
-    const readReceipt = message.readBy.find(({ participant }) => participant == message.to)
+    const readReceipt = message.readBy.find(({ participant }) => participant !== message.from)
     const readAt = readReceipt ? `${formatMessageDate(readReceipt.time)} at ${timeFormat(readReceipt.time)}` : '-'
     return (
         <CustomModal open={open} onClose={onClose} sx={{ p: 2, gap: 1 }}>

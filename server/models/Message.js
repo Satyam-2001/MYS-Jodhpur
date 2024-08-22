@@ -1,5 +1,15 @@
 const mongoose = require('mongoose');
 
+const readSchema = new mongoose.Schema({
+    participant: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    time: {
+        type: Date,
+    }
+}, { _id: false })
+
 const messageSchema = new mongoose.Schema({
     chatId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -28,20 +38,10 @@ const messageSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Message'
     },
-    readBy: [
-        {
-            participant: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'User'
-            },
-            time: {
-                type: Date,
-            }
-        }
-    ],
+    readBy: [readSchema],
     expiresAt: {
         type: Date,
-        default: () => new Date(Date.now() + 180 * 24 * 60 * 60 * 1000)
+        default: () => new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)
     }
 });
 

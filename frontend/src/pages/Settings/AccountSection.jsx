@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import Container from '../../components/Layouts/Container'
 import { ElevatedStack } from '../../UI/ElevatedComponents'
-import { Button, Divider, FormControl, FormHelperText, Grid, MenuItem, Select, Stack, Switch, Typography } from '@mui/material'
+import { Button, Divider, FormControl, FormHelperText, Grid, IconButton, MenuItem, Select, Stack, Switch, Typography } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useDispatch, useSelector } from 'react-redux'
 import { userActions } from '../../store/UserSlice'
@@ -17,7 +17,10 @@ import SideContainer from '../../components/Layouts/SideContainer'
 import { Link } from 'react-router-dom'
 import SettingsSelectInput from './components/SettingSelectInput'
 import SettingCard from './components/SettingCard'
-
+import { SideNavbarHeader } from '../../components/NavigatonBar/SideNavbar'
+import QrCodeIcon from '@mui/icons-material/QrCode';
+import QRCode from "react-qr-code";
+import { Heading, elevation } from '../../theme/styles'
 
 
 function CustomButton({ children, sx = {}, ...props }) {
@@ -148,6 +151,32 @@ function DeleteProfile() {
     )
 }
 
+function AccountInfo() {
+    const [open, setOpen] = useState(false)
+    const { user } = useSelector(state => state.user)
+    const url = `https://www.mys-shaadi.com/profile/${user._id}`
+
+
+    return (
+        <Stack direction='row' sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+            <CustomModal open={open} onClose={() => setOpen(false)} sx={{ p: 2, alignItems: 'center', gap: 2 }}>
+                <Heading sx={{ borderBottom: 1, borderColor: 'divider', width: '100%', textAlign: 'center' }}>QR code</Heading>
+                <Stack gap={1.5} sx={{ alignItems: 'center' }}>
+                    <QRCode value={url} style={{ borderRadius: '10px', boxShadow: elevation().xs }} />
+                    <Stack sx={{ alignItems: 'center' }}>
+                        <Typography sx={{ fontSize: '1rem', fontFamily: 'Lexend,sans-serif' }}>{user?.basic_info?.name}</Typography>
+                        <Typography sx={{ fontSize: '0.9rem', fontFamily: 'Lexend,sans-serif' }}>Profile Id : {user?._id}</Typography>
+                    </Stack>
+                </Stack>
+            </CustomModal>
+            <SideNavbarHeader />
+            <IconButton onClick={() => setOpen(true)}>
+                <QrCodeIcon sx={{ color: 'primary.main', fontSize: '2rem' }} />
+            </IconButton>
+        </Stack>
+    )
+}
+
 export default function AccountSection() {
     const header = {
         title: 'Account',
@@ -157,6 +186,10 @@ export default function AccountSection() {
     return (
         <SideContainer header={header}>
             <Grid container rowSpacing={2} >
+                <Grid item xs={12} md={8} p={1} >
+                    <AccountInfo />
+                    <Divider sx={{ mt: 1.5 }} />
+                </Grid>
                 <Grid item xs={12} md={8} p={1} >
                     <ChangePassword />
                 </Grid>

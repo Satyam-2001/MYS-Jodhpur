@@ -66,9 +66,9 @@ const userSchema = new mongoose.Schema({
         type: [String],
         validate: {
             validator: function (array) {
-                return array.length <= 50;
+                return array.length <= 10;
             },
-            message: 'You can store up to 50 images only.'
+            message: 'You can store up to 10 images only.'
         },
     },
     password: {

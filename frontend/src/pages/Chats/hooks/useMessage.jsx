@@ -12,7 +12,7 @@ export default function useMessage(message) {
     const selected_chat = useMemo(() => chats.find((chat) => chat._id === open_chat_id), [chats, open_chat_id])
     const sender = selected_chat.participants.find(item => item._id === message.from)
     const time = moment(new Date(message.created_at)).format('hh:mm A')
-    const readByAll = message?.readBy?.find(({ participant }) => message.to === participant)
+    const readByAll = message?.readBy?.find(({ participant }) => message.from !== participant)
     const dispatch = useDispatch()
 
     function setReply() {
