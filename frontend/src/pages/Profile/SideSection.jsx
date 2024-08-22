@@ -65,10 +65,10 @@ export default function SideSection() {
         <SideSectionContainer>
             <ProfileImage profile={profile} gradient={true} sx_image={{ justifyContent: 'space-between' }} sx={{ borderRadius: 'inherit', height: { xs: '100%', md: '300px' }, justifyContent: 'space-between' }}>
                 <Stack direction={'row'} sx={{ justifyContent: 'space-between' }}>
-                    <IconButton sx={{ color: 'white', borderRadius: '50%', '&:hover': { backdropFilter: 'blur(4px)', color: 'primary.main' } }} onClick={gotoPreviousPageHandler}>
+                    <IconButton sx={{ bgcolor: 'action.hover', color: 'white', borderRadius: '50%', '&:hover': { backdropFilter: 'blur(4px)', color: 'primary.main' } }} onClick={gotoPreviousPageHandler}>
                         <ArrowBackIosNewOutlinedIcon sx={{ fontSize: '1.6rem' }} />
                     </IconButton>
-                    <IconButton sx={{ color: 'white', borderRadius: '50%', '&:hover': { backdropFilter: 'blur(4px)', color: 'primary.main' } }} onClick={gotoBiodata}>
+                    <IconButton sx={{ bgcolor: 'action.hover', color: 'white', borderRadius: '50%', '&:hover': { backdropFilter: 'blur(4px)', color: 'primary.main' } }} onClick={gotoBiodata}>
                         <FilePresentOutlinedIcon sx={{ fontSize: '1.6rem' }} />
                     </IconButton>
                 </Stack>

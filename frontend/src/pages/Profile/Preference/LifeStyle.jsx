@@ -53,7 +53,7 @@ export default function LifeStyle() {
         { label: 'Smoke', value: preference.smoke },
     ]
     return (
-        <AboutContainer title={`Partener's Life Style`} EditModal={EditModal} >
+        <AboutContainer title={`Partner's Life Style`} EditModal={EditModal} >
             <Grid container rowSpacing={{ xs: 1, md: 2 }} columnSpacing={4} pt={2} pb={1} px={1}>
                 {life_style.map(({ label, value }, index) => (
                     <Grid item xs={12} md={6}>

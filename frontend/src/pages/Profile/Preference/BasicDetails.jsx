@@ -65,7 +65,7 @@ export default function BasicDetails() {
         { label: 'Weight Category', value: preference.weight_category },
     ]
     return (
-        <AboutContainer title={`Partener's Basic Details`} EditModal={EditModal} >
+        <AboutContainer title={`Partner's Basic Details`} EditModal={EditModal} >
             < Grid container rowSpacing={{ xs: 1, md: 2 }} columnSpacing={4} pt={2} pb={1} px={1} >
                 {
                     basic_details.map(({ label, value }, index) => (

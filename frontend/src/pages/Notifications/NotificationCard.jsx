@@ -16,7 +16,7 @@ export default function NotificationCard({ type, data, date, index }) {
     })
 
     const cardClickHandler = () => {
-        navigate(`/profile/${profile._id}`)
+        navigate(`/profile/${profile?._id}`)
     }
 
     return (

@@ -63,7 +63,7 @@ export default function Family() {
         },
     ]
     return (
-        <AboutContainer title={`Partener's Family`} EditModal={EditModal} >
+        <AboutContainer title={`Partner's Family`} EditModal={EditModal} >
             <Grid container rowSpacing={{ xs: 1, md: 2 }} columnSpacing={4} pt={2} pb={1} px={1}>
                 {family.map(({ label, value }, index) => (
                     <Grid item xs={12} md={6}>

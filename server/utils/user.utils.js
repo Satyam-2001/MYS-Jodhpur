@@ -20,15 +20,26 @@ function concatProfileId(...profileLists) {
     return array
 }
 
+function getGenderFilter(gender, user) {
+    const isLoggedIn = !!user
+    if (!isLoggedIn) return gender
+    const user_gender = user?.basic_info?.gender
+    return user_gender === 'Men' ? 'Women' : 'Men'
+}
+
 function getFilterQuery(filters, user, options) {
     if (!filters) return
     const { search, min_age, max_age, min_height, max_height, min_income, max_income, gender, education, family_status, family_type, family_values, ...selection_filter } = filters
-    const isLoggedIn = !!user
-    const userGender = user?.basic_info?.gender
-    const oppositeGender = userGender === 'Men' ? 'Women' : 'Men'
-    const genderValue = isLoggedIn ? oppositeGender : gender
+    const genderValue = getGenderFilter(gender, user)
     const filter = {}
 
+    //Excluding Unncessary (Blocked/ Declined) User
+    if (options.exclude && user?._id) {
+        const hideProfiles = concatProfileId(user.blocked_users, user.they_declined, user.you_declined)
+        filter['_id'] = { $nin: hideProfiles };
+    }
+
+    // Applying Family Filters
     const family = ['family_status', 'family_type', 'family_values']
     family.forEach((key) => {
         if (!filters[key]) return;
@@ -36,16 +47,13 @@ function getFilterQuery(filters, user, options) {
         filter[`family.${key}`] = { $regex: regexValues.join('|'), $options: 'i' };
     })
 
-    if (options.exclude && user?._id) {
-        const hideProfiles = concatProfileId(user.blocked_users, user.they_declined, user.you_declined)
-        filter['_id'] = { $nin: hideProfiles };
-    }
-
+    // Applying Basic Info Filters
     Object.keys(selection_filter).forEach(key => {
         const regexValues = selection_filter[key].split(',').map(value => `^${value}$`);
         filter[`basic_info.${key}`] = { $regex: regexValues.join('|'), $options: 'i' };
     })
 
+    // Applyinf Education Filters
     if (education) {
         const educationRegexPattern = education.split(',').map(degree => `(^|,\\s*)${degree}(\\s*,|$)`).join('|');
         filter[`basic_info.education`] = { $regex: educationRegexPattern, $options: 'i' };

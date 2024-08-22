@@ -27,7 +27,7 @@ export default function MemberCard({ name, designation, image, hideDesignaton })
                 cursor: 'pointer',
                 padding: '0.5rem',
                 boxSizing: 'border-box',
-                boxShadow: elevation(),
+                boxShadow: elevation()?.md,
             }}
         >
             <Stack gap={1} sx={{ alignItems: 'center' }}>

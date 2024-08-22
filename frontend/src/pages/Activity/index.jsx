@@ -18,7 +18,7 @@ const activityItems = [
     {
         label: 'Matched Profiles',
         Icon: MarkEmailReadOutlinedIcon,
-        field: 'matched',
+        field: 'matchinterest',
         to: 'matched'
     },
     {

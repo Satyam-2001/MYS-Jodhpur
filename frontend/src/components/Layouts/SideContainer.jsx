@@ -17,6 +17,7 @@ export default function SideContainer({ title, children, sx = {}, style = {}, ..
                         borderBottom: 1,
                         borderColor: 'divider',
                         px: 1,
+                        py: 0.5,
                     }}
                 />
                 {/* <Stack

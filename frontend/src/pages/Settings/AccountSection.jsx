@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 import Container from '../../components/Layouts/Container'
 import { ElevatedStack } from '../../UI/ElevatedComponents'
 import { Button, Divider, FormControl, FormHelperText, Grid, MenuItem, Select, Stack, Switch, Typography } from '@mui/material'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useDispatch, useSelector } from 'react-redux'
 import { userActions } from '../../store/UserSlice'
 import axios from '../../services/axiosinstance'
@@ -90,7 +90,11 @@ function ChangePassword() {
 function LogoutButton() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const logoutHandler = () => {
+    const { mutateAsync } = useMutation({
+        mutationFn: () => axios.post('/auth/logout')
+    })
+    const logoutHandler = async () => {
+        await mutateAsync()
         dispatch(userActions.signout())
         navigate('/')
     }

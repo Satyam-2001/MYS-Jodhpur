@@ -86,7 +86,7 @@ export default function EducationAndCareer() {
         },
     ]
     return (
-        <AboutContainer title={`Partener's Education & Career`} EditModal={EditModal} >
+        <AboutContainer title={`Partner's Education & Career`} EditModal={EditModal} >
             <Grid container rowSpacing={{ xs: 1, md: 2 }} columnSpacing={4} pt={2} pb={1} px={1}>
                 {family.map(({ label, value }, index) => (
                     <Grid item xs={12} md={6}>

@@ -6,10 +6,6 @@ const messageSchema = new mongoose.Schema({
         ref: 'Chat',
         required: true,
     },
-    to: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    },
     from: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
@@ -20,7 +16,7 @@ const messageSchema = new mongoose.Schema({
     },
     created_at: {
         type: Date,
-        default: Date.now(),
+        default: Date.now,
     },
     text: {
         type: String,
@@ -45,7 +41,7 @@ const messageSchema = new mongoose.Schema({
     ],
     expiresAt: {
         type: Date,
-        default: () => new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
+        default: () => new Date(Date.now() + 180 * 24 * 60 * 60 * 1000)
     }
 });
 

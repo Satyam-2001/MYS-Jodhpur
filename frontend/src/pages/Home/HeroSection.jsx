@@ -13,8 +13,8 @@ function MirrorContainer({ children, title, color }) {
     const theme = useTheme()
     const mode = theme.palette.mode
     return (
-        <Grid item md={3} sx={{ px: 2, py: { xs: 2, md: 0 } }}>
-            <ColorBlock color={color}>
+        <Grid item xs={6} md={3} sx={{ px: 2, py: { xs: 2, md: 0 } }}>
+            <ColorBlock color={color} style={{height: '100%'}}>
                 <img style={{
                     height: '80px', filter: (mode === 'dark' ? 'invert(100%)' : 'none')
                 }} src={require(`../../assets/community/${title.toLowerCase()}.png`)} />

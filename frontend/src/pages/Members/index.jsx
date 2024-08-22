@@ -25,7 +25,7 @@ function MembersGrid({ title, members, hideDesignaton }) {
 
 export default function Members() {
     return (
-        <Container hideSideBar direction='column' gap={4} pt={12} overflow={'auto'}>
+        <Container hideSideBar showFooter direction='column' gap={4} pt={12} overflow={'auto'}>
             <MembersGrid title={'पदाधिकारी'} members={padadhikari} />
             <MembersGrid title={'कार्यकारणी सदस्य'} hideDesignaton members={karyakaarni} />
             <MembersGrid title={'सदस्य'} hideDesignaton members={members} />
