@@ -37,7 +37,7 @@ function GenderButton({ gender, value, setValue }) {
         setValue(gender)
     }
     return (
-        <Button variant={gender === value.toLowerCase() ? 'contained' : 'outlined'} onClick={genderSelectHandler}>
+        <Button variant={gender === value?.toLowerCase() ? 'contained' : 'outlined'} onClick={genderSelectHandler}>
             {gender}
         </Button>
     )
