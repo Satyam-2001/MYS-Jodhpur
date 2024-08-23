@@ -23,7 +23,9 @@ export default function Login() {
     const { mutateAsync } = useMutation({
         mutationFn: (data) => axios.post('/auth/login', data),
         onSuccess: () => {
-            queryClient.invalidateQueries(['search'])
+            queryClient.invalidateQueries({
+                predicate: (query) => query.queryKey.some(key => key.includes('search')),
+            });
         }
     })
 
