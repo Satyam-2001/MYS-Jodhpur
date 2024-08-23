@@ -27,7 +27,7 @@ export default function ChatBody() {
     const { socket, isConnected } = useContext(SocketContext)
     const { chats, open_chat_id, loading } = useSelector(state => state.chats)
 
-    const chat = chats.find((chat) => chat._id === open_chat_id)
+    const chat = chats?.find((chat) => chat._id === open_chat_id)
     const selected_messages = chat?.messages || []
     const total_messages = chat?.total || 0
     const hasMore = total_messages > selected_messages.length

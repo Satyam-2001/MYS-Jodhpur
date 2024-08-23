@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux'
 import { userActions } from '../../store/UserSlice'
 import { ElevatedStack } from '../../UI/ElevatedComponents'
 import useProtectedRoute from '../../hooks/useProtectedRoute'
+import { queryClient } from '../../services/http'
 
 export default function Login() {
 
@@ -20,7 +21,10 @@ export default function Login() {
     useProtectedRoute()
 
     const { mutateAsync } = useMutation({
-        mutationFn: (data) => axios.post('/auth/login', data)
+        mutationFn: (data) => axios.post('/auth/login', data),
+        onSuccess: () => {
+            queryClient.invalidateQueries(['search'])
+        }
     })
 
     const formikState = useFormik({

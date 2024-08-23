@@ -7,8 +7,7 @@ export default function SponserSection() {
         <>
             <Stack sx={{ alignItems: 'center', gap: 3 }}>
                 <Typography variant='h1' fontWeight={600} sx={{ fontSize: '3.6rem', textAlign: 'center' }} m={0}>
-                    <span class="text-gradient">Sponsored </span>
-                    By
+                    <span class="text-gradient">Associate</span>
                 </Typography>
                 <Stack component={'img'} src={sponserImg} sx={{maxWidth: {xs: '90%', md: '75%'}}} />
             </Stack>

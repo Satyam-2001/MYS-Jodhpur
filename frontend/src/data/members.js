@@ -35,12 +35,12 @@ export const padadhikari = [
         image: require('../assets/members/Sushila Rathi.png')
     },
     {
-        name: 'Sunita Hedda',
+        name: 'Sunita Heda',
         designation: 'Cultural Minister',
         image: require('../assets/members/Sunita Hedda.png')
     },
     {
-        name: 'Ashok Lohiya',
+        name: 'Ashok Lohia (Charlie)',
         designation: 'Organization Minister',
         image: require('../assets/members/Ashok Lohiya.png')
     }
@@ -96,7 +96,7 @@ export const members = [
         image: require('../assets/members/Kailash Somani.png')
     },
     {
-        name: 'Sandeep Hedda',
+        name: 'Sandeep Heda',
         designation: 'Member',
         image: require('../assets/members/Sandeep Hedda.png')
     },
@@ -136,7 +136,7 @@ export const members = [
         image: require('../assets/members/Ravi Shah.png')
     },
     {
-        name: 'Mulchand Mundra',
+        name: 'Moolchand Mundra',
         designation: 'Member',
         image: require('../assets/members/Mulchand Mundra.png')
     },
@@ -166,12 +166,12 @@ export const members = [
         image: require('../assets/members/Ashok Tapariya.png')
     },
     {
-        name: 'Alka Johri',
+        name: 'Alka Johari',
         designation: 'Member',
         image: require('../assets/members/Alka Johri.png')
     },
     {
-        name: 'Vishnu Phoophaliya',
+        name: 'Vishnu Phophaliya',
         designation: 'Member',
         image: require('../assets/members/Vishnu Phoophaliya.png')
     },

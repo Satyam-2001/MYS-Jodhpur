@@ -6,7 +6,7 @@ export default function Search() {
     return (
         <Container>
             <SearchPanel
-                queryKey={['users']}
+                queryKey={['users', 'search']}
                 url='/user/list'
             />
         </Container>

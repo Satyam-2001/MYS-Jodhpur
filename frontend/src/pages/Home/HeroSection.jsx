@@ -107,9 +107,9 @@ function HeroSection(props) {
 
     const sub_components = [
         // SelectSection,
+        SponserSection,
         RegisterSection,
         MemberSection,
-        SponserSection,
         CommunitySection,
     ]
 
