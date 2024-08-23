@@ -11,8 +11,9 @@ export default function BottomNavigation() {
         <ElevatedStack position={'fixed'} gap={1} px={1} direction='row' sx={{ display: { md: 'none' }, width: '100%', height: '64px', bgcolor: 'background.paper', justifyContent: 'space-evenly', alignItems: 'center', bottom: 0, borderRadius: 0 }}>
             {sidebarNavigationList.map(({ Icon, name, to, auth }) => {
                 if (auth !== undefined && (auth ^ isLoggedIn)) return
+                const isReplace = !window.location.pathname.startsWith('/search')
                 return (
-                    <NavLink preventScrollReset replace key={name} style={{ textDecoration: 'none', flex: 1 }} to={to}>{
+                    <NavLink preventScrollReset replace={isReplace} key={name} style={{ textDecoration: 'none', flex: 1 }} to={to}>{
                         ({ isActive }) => (
                             <ElevatedStack elevation={isActive ? -1.5 : 1} p={'3px'} sx={{ height: '48px', justifyContent: 'center', alignItems: 'center', borderRadius: '18px', bgcolor: isActive ? 'primary.main' : null }}>
                                 <Icon sx={{ fontSize: '1.6rem', color: isActive ? 'white' : 'text.primary' }} />
