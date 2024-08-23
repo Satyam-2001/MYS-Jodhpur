@@ -16,10 +16,10 @@ export default function ProfilesList({ profilesList, view, isPending, children }
 
     const viewStyle = shortScreen ? 'grid' : view
 
+
     return (
         <Grid
             container
-            className='hide-scroll-bar'
             sx={{
                 display: 'flex',
                 boxSizing: 'border-box',

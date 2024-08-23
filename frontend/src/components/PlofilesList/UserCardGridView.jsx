@@ -53,6 +53,7 @@ export default function UserCardGridView({ profile, sx = {} }) {
                 height: '100%'
             }}>
                 <Link
+                    preventScrollReset
                     to={`/profile/${profile._id}`}
                     style={{
                         textDecoration: 'none',

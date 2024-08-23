@@ -12,7 +12,7 @@ export default function BottomNavigation() {
             {sidebarNavigationList.map(({ Icon, name, to, auth }) => {
                 if (auth !== undefined && (auth ^ isLoggedIn)) return
                 return (
-                    <NavLink key={name} style={{ textDecoration: 'none', flex: 1 }} to={to}>{
+                    <NavLink preventScrollReset replace key={name} style={{ textDecoration: 'none', flex: 1 }} to={to}>{
                         ({ isActive }) => (
                             <ElevatedStack elevation={isActive ? -1.5 : 1} p={'3px'} sx={{ height: '48px', justifyContent: 'center', alignItems: 'center', borderRadius: '18px', bgcolor: isActive ? 'primary.main' : null }}>
                                 <Icon sx={{ fontSize: '1.6rem', color: isActive ? 'white' : 'text.primary' }} />

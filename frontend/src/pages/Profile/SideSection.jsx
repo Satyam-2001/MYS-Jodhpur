@@ -52,7 +52,7 @@ export default function SideSection() {
     const gotoPreviousPageHandler = (event) => {
         event.stopPropagation()
         event.preventDefault()
-        navigate(-1)
+        navigate(-1, { preventScrollReset: true })
     }
 
     const gotoBiodata = (event) => {

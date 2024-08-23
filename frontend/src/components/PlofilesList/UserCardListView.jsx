@@ -40,7 +40,11 @@ export default function UserCardListView({ profile }) {
                 mx: 1,
             }} >
             <ElevatedStack sx={{ height: '100%', p: 1 }}>
-                <Link to={`/profile/${profile._id}`} style={{ textDecoration: 'none', height: '100%' }}>
+                <Link
+                    preventScrollReset
+                    to={`/profile/${profile._id}`}
+                    style={{ textDecoration: 'none', height: '100%' }}
+                >
                     <Stack direction='row' sx={{ height: '100%' }}>
                         <ProfileImage profile={profile} sx={{ width: '220px' }} />
                         <Stack pl={2} sx={{ flexGrow: 1, boxSizing: 'border-box' }}>
