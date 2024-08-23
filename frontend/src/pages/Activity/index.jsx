@@ -56,6 +56,7 @@ function ActivityTabCard({ label, Icon, to, field }) {
                     alignItems: 'center',
                     justifyContent: 'center',
                     flexShrink: 0,
+                    p: 1,
                     '&:hover': {
                         bgcolor: 'action.hover'
                     }
