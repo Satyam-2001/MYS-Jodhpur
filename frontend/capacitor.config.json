@@ -1,5 +1,20 @@
 {
-  "appId": "com.onrender.mys-shaadi",
+  "appId": "com.mys-shaadi",
   "appName": "MYS Shaadi",
-  "webDir": "build"
+  "webDir": "build",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1500
+    }
+  },
+  "capacitor": {
+    "assets": {
+      "android": {
+        "icon": "public/logo512.png"
+      },
+      "ios": {
+        "icon": "public/logo512.png"
+      }
+    }
+  }
 }

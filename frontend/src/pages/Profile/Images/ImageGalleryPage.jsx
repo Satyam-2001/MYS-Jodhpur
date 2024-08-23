@@ -21,7 +21,7 @@ import { ElevatedStack } from '../../../UI/ElevatedComponents';
 import ImageContainer from './ImageContainer';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
-import { APPBAR_HEIGHT } from '../../../components/Layouts/Header';
+import Header, { APPBAR_HEIGHT, HeaderContainer, HeaderStart } from '../../../components/Layouts/Header';
 
 const GalleryMenuItem = styled(MenuItem)(({ theme }) => ({
     padding: '4px 8px',
@@ -126,16 +126,13 @@ export default function ImageGalleryPage(props) {
 
     return (
         <Modal open={open} sx={{ backgroundColor: 'background.default', }}>
-            <Stack height='100vh'>
-                <Stack direction='row' alignItems={'center'} justifyContent={'space-between'} sx={{ bgcolor: 'background.default', height: APPBAR_HEIGHT, }}>
-                    <Stack direction='row' gap={1} alignItems={'center'}>
-                        <IconButton onClick={closeHandler} >
-                            <ArrowBackIcon sx={{ fontSize: '1.4rem', color: 'text.primary' }} />
-                        </IconButton>
+            <Stack height='100vh' sx={{pt: `${APPBAR_HEIGHT}px`}}>
+                <HeaderContainer>
+                    <HeaderStart header={{ goBack: true }}>
                         <NameHeader isPending={isPending} profile={profile} color='text.primary' hideActivityStatus hideShortlistIcon />
-                    </Stack>
+                    </HeaderStart>
                     {isMe && <ImageMenu image={images[imageIndex]} />}
-                </Stack>
+                </HeaderContainer>
                 <Stack sx={{ flex: 1, justifyContent: 'center', alignItems: 'center', bgcolor: 'background.default' }}>
                     < ImageGallery
                         startIndex={imageIndex}

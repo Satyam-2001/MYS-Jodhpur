@@ -77,29 +77,15 @@ function Carousel({ list, label, field, to }) {
                     <Link to={`/activity/${to}`} style={{ textDecoration: 'none' }}>
                         <Stack sx={{ flex: 1, height: 1, justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
                             <Stack sx={{ position: 'absolute', height: 1, width: 1, bgcolor: 'primary.light', borderRadius: '10px', alignItems: 'center', justifyContent: 'center', zIndex: 100 }} >
-                                <Typography variant='h2' sx={{ fontFamily: '"Baloo Bhaijaan 2", sans-serif', color: 'white' }}>
+                                <Typography variant='h2' sx={{ color: 'white' }}>
                                     {`View All (${list.length})`}
                                 </Typography>
                             </Stack>
-                            <ActivityCardView profileId={list[maxLength]} sx={{opacity: 0.6}}/>
-                            {/* <Button sx={{ textTransform: 'capitalize', fontSize: '1.5rem' }} endIcon={<ArrowForwardIcon sx={{ fontSize: '1.5rem' }} />}>
-                                View More
-                            </Button> */}
+                            <ActivityCardView profileId={list[maxLength]} sx={{ opacity: 0.6 }} />
                         </Stack>
                     </Link>
                 </SwiperSlide>}
             </Swiper>
-            {/* {(itemIndex > 0) && (
-                <ElevatedIconButton onClick={backWardHandler} sx={{ position: 'absolute', bgcolor: 'primary.main', borderRadius: '50%', left: { xs: '5%', md: '10%' }, top: '50%', translate: '-50% -50%' }}>
-                    <ArrowForwardIosIcon fontSize='large' sx={{ color: 'white', transform: 'rotate(180deg)', '&:hover': { color: 'text.primary' } }} />
-                </ElevatedIconButton>)
-            }
-            <ActivityCardView profileId={list[itemIndex]} />
-            {(itemIndex < list.length - 1) && (
-                <ElevatedIconButton onClick={forwardHandler} sx={{ position: 'absolute', bgcolor: 'primary.main', borderRadius: '50%', right: { xs: '5%', md: '10%' }, top: '50%', translate: '50% -50%' }}>
-                    <ArrowForwardIosIcon fontSize='large' sx={{ color: 'white', '&:hover': { color: 'text.primary' } }} />
-                </ElevatedIconButton>)
-            } */}
         </Stack>
     )
 }

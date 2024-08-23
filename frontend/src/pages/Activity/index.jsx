@@ -62,7 +62,7 @@ function ActivityTabCard({ label, Icon, to, field }) {
                 }}
             >
                 <Icon sx={{ fontSize: '3rem', color: 'text.primary' }} />
-                <Typography sx={{ fontSize: '1.3rem', textAlign: 'center', color: 'text.primary', fontFamily: '"Baloo Bhaijaan 2", sans-serif' }}>
+                <Typography sx={{ fontSize: '1.2rem', textAlign: 'center', color: 'text.primary' }}>
                     {`${label} (${length})`}
                 </Typography>
             </ElevatedStack>
@@ -81,7 +81,7 @@ export default function Activity() {
 
     return (
         <Container header={header} direction='column' overflow='auto' gap={1} >
-            <Stack px={1} pb={1} pt={'2px'} direction='row' gap={{xs: 1, md: 2}} overflow={'auto'} width='100%' flexShrink={0}>
+            <Stack px={1} pb={1} pt={'2px'} direction='row' gap={{ xs: 1, md: 2 }} overflow={'auto'} width='100%' flexShrink={0}>
                 {activityItems.map(value => {
                     return <ActivityTabCard key={value.label} {...value} />
                 })}
