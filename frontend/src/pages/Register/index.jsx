@@ -11,7 +11,7 @@ import useProtectedRoute from '../../hooks/useProtectedRoute'
 export default function Register() {
     const [formData, setFormData] = useState()
 
-    useProtectedRoute()
+    useProtectedRoute('/profile')
 
     const { mutate: verifyOtpMutate } = useMutation({
         mutationFn: (data) => axios.post('/auth/otp/send', data),

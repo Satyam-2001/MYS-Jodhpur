@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema({
     about_me: AboutMeSchema,
     family: FamilySchema,
     contact: ContactSchema,
-    settings: SettingsSchema,
+    settings: { type: SettingsSchema, default: () => ({}) },
     preference: PreferenceSchema,
     status: statusSchema,
     last_seen: lastSeenSchema,

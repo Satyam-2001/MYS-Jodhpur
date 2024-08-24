@@ -38,7 +38,7 @@ const BasicInfoSchema = new mongoose.Schema({
     },
     location: {
         type: String,
-        maxLength: 50,
+        maxLength: 200,
     },
     education: {
         type: String,

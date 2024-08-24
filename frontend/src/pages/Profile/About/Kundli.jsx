@@ -35,6 +35,9 @@ function EditModal({ onSubmit, ...props }) {
         { label: 'Place Of Birth', md: 12 },
     ]
 
+
+
+
     return (
         <EditContainer onSubmit={handleSubmit} isSubmitting={isSubmitting} {...props}>
             <Grid container overflow={'auto'}>
@@ -76,8 +79,8 @@ function ValueField({ value, children }) {
 export default function Kundli() {
     const { profile, isMe } = useContext(ProfileContext)
     const basicInfo = profile.basic_info
-    const birth_date = moment(new Date(basicInfo?.date_of_birth)).format('Do MMM, YYYY')
-    const birth_time = moment(new Date(basicInfo?.time_of_birth)).format('h:mm A')
+    const birth_date = basicInfo?.date_of_birth ? moment(new Date(basicInfo?.date_of_birth)).format('Do MMM, YYYY') : null
+    const birth_time = basicInfo?.time_of_birth ? moment(new Date(basicInfo?.time_of_birth)).format('h:mm A') : null
     const birth_place = basicInfo?.place_of_birth
 
     const values = [

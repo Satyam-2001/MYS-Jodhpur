@@ -18,7 +18,7 @@ export default function Login() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    useProtectedRoute()
+    useProtectedRoute('/profile')
 
     const { mutateAsync } = useMutation({
         mutationFn: (data) => axios.post('/auth/login', data),
@@ -38,7 +38,7 @@ export default function Login() {
             try {
                 const { user, token } = await mutateAsync(values)
                 dispatch(userActions.setUser({ user, token }))
-                navigate('/search')
+                navigate(`/profile`)
             }
             catch (e) {
                 action.setStatus(e.response.data.msg || 'Something went wrong.')

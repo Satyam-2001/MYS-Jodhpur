@@ -16,24 +16,37 @@ const io = socketio(server, {
 });
 
 io.on('connection', async (socket) => {
-
     const user_id = socket.handshake.query["user_id"];
     console.log(`User connected ${socket.id}`);
-    const socketController = new SocketController(socket, io)
-    if (await socketController.verify.bind(socketController)()) {
-        socket.emit('verified', { message: 'success' })
-        socket.on('get_chat_by_id', socketController.fetchChatById.bind(socketController))
-        socket.on('get_chats', socketController.fetchChats.bind(socketController))
-        socket.on('get_messages', socketController.fetchMessages.bind(socketController))
-        socket.on('send_message', socketController.sendMessage.bind(socketController))
-        socket.on('create_chat', socketController.createChat.bind(socketController))
-        socket.on('read_chat', socketController.readChat.bind(socketController))
-        socket.on('edit_message', socketController.editMessage.bind(socketController))
-        socket.on('delete_chat', socketController.deleteChat.bind(socketController))
-        socket.on('delete_message', socketController.deleteMessage.bind(socketController))
-        socket.on('disconnect', socketController.disconnect.bind(socketController))
+
+    const socketController = new SocketController(socket, io);
+
+    // Verify user and set up event handlers if verification is successful
+    if (await socketController.verify()) {
+        socket.emit('verified', { message: 'success' });
+        bindEvents(socket, socketController);
     }
-})
+});
+
+// Bind all socket events to their respective handlers
+function bindEvents(socket, socketController) {
+    const events = {
+        'get_chat_by_id': socketController.fetchChatById,
+        'get_chats': socketController.fetchChats,
+        'get_messages': socketController.fetchMessages,
+        'send_message': socketController.sendMessage,
+        'create_chat': socketController.createChat,
+        'read_chat': socketController.readChat,
+        'edit_message': socketController.editMessage,
+        'delete_chat': socketController.deleteChat,
+        'delete_message': socketController.deleteMessage,
+        'disconnect': socketController.disconnect
+    };
+
+    for (const [event, handler] of Object.entries(events)) {
+        socket.on(event, handler.bind(socketController));
+    }
+}
 
 
 // io.on('connection', (socket) => {

@@ -11,6 +11,8 @@ import StarIcon from '@mui/icons-material/Star';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import { ElevatedIconButton } from './ElevatedComponents';
 import LastSeen from '../components/LastSeen';
+import { RWebShare } from 'react-web-share';
+import ShareIcon from '@mui/icons-material/Share';
 
 function getAge(dateString) {
     var today = new Date();
@@ -21,6 +23,31 @@ function getAge(dateString) {
         age--;
     }
     return age;
+}
+
+function ShareButton({ profile }) {
+    return (
+        <ElevatedIconButton sx={{ bgcolor: 'transparent' }}
+            onClick={(event) => {
+                event.stopPropagation()
+                event.preventDefault()
+            }} >
+            <RWebShare
+                data={{
+                    text: 'Share Profile',
+                    url: `${window.location.protocol}//${window.location.host}/profile/${profile._id}`,
+                    title: profile.name,
+                }}
+                onClick={(event) => {
+                    event.stopPropagation()
+                    event.preventDefault()
+                }}
+            >
+
+                <ShareIcon sx={{ fontSize: '1.3rem', color: 'white' }} />
+            </RWebShare >
+        </ElevatedIconButton>
+    )
 }
 
 export default function NameHeader({ hideActivityStatus = false, hideShortlistIcon = false, isPending: isLoading = false, profile = {}, sx = {}, color = 'white' }) {
@@ -81,7 +108,9 @@ export default function NameHeader({ hideActivityStatus = false, hideShortlistIc
             </Stack>
             {showSaveButton && !isLoading && !hideShortlistIcon && <ElevatedIconButton disabled={isPending} sx={{ bgcolor: 'transparent' }} onClick={clickHandler}>
                 {isShortlisted ? <StarIcon sx={{ fontSize: '1.4rem', color: 'primary.main' }} /> : <StarOutlineIcon sx={{ fontSize: '1.6rem', color }} />}
-            </ElevatedIconButton>}
+            </ElevatedIconButton>
+            }
+            {isMe && <ShareButton profile={profile} />}
         </Stack>
     )
 }

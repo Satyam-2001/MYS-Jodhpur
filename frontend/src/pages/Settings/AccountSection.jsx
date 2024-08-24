@@ -21,6 +21,7 @@ import { SideNavbarHeader } from '../../components/NavigatonBar/SideNavbar'
 import QrCodeIcon from '@mui/icons-material/QrCode';
 import QRCode from "react-qr-code";
 import { Heading, elevation } from '../../theme/styles'
+import { deleteMedia } from '../../services/uploadMedia'
 
 
 function CustomButton({ children, sx = {}, ...props }) {
@@ -111,11 +112,23 @@ function LogoutButton() {
 function DeleteProfile() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const { user } = useSelector(state => state.user)
     const [modalOpen, setModalOpen] = useState(false)
+
+    console.log(user.images)
 
     const { mutate: deleteUserHandler, isPending } = useMutation({
         mutationFn: () => axios.delete('/auth'),
-        onSuccess: () => {
+        onSuccess: async () => {
+            try {
+                const response = await Promise.all(user.images.map(async (image) => {
+                    const res = await deleteMedia(image)
+                    return res
+                }))
+                console.log(user.images, response)
+            } catch (e) {
+                console.log(e)
+            }
             dispatch(userActions.signout())
             navigate('/')
         }
