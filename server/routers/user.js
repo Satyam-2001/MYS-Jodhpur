@@ -11,10 +11,14 @@ router.get('/list', authLazy, async (req, res) => {
     try {
         const { page = 1, limit = 10, sortby, ...filters } = req.query
         const skip = (page - 1) * limit;
-        const total = await User.countDocuments();
         const sort = sortby ? getSortQuery(sortby) : getSortQuery('-last_seen', '')
         const filter = getFilterQuery(filters, req.user, { exclude: true })
-        const users = await User.find(filter, { basic_info: 1, status: 1, last_seen: 1, settings: 1, images: 1 }, { sort }).skip(skip).limit(limit);
+        const query = User.find(filter, { basic_info: 1, status: 1, last_seen: 1, settings: 1, images: 1 }, { sort })
+        const total = await User.countDocuments(filter);
+        const users = await User.find(filter, { basic_info: 1, status: 1, last_seen: 1, settings: 1, images: 1 })
+            .sort(sort)
+            .skip(skip)
+            .limit(limit);
         const filteredUsers = await Promise.all(
             users.map(async (user) => {
                 return await user.filterUserFields(req.user);
