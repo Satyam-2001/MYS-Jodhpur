@@ -121,10 +121,10 @@ export const themeSettings = (mode, main, primary) => {
 
 
 
-export const ColorModeContext = createContext({ mode: 'dark', toggleMode: () => { } });
+export const ColorModeContext = createContext({ mode: 'light', toggleMode: () => { } });
 
 export const ColorModeProvider = ({ children }) => {
-    const [mode, setMode] = useState('dark')
+    const [mode, setMode] = useState('light')
     const { user, isLoggedIn } = useSelector(state => state.user)
 
     const defaultColor = '#fc793d'

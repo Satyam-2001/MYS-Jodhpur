@@ -121,12 +121,12 @@ export default forwardRef(function CustomBiodata(props, ref) {
                     <Stack direction='row' width='100%' fontSize={'1em'}>
                         <Stack gap={'3px'} fontSize={'1em'}>
                             <IntroField label='Name' value={profile.basic_info.name} />
-                            <IntroField label='Date of Birth' value={dateFormat(profile.basic_info.date_of_birth)} />
-                            <IntroField label='Time of Birth' value={timeFormat(profile.basic_info.time_of_birth)} />
+                            <IntroField label='Date of Birth' value={profile.basic_info.date_of_birth ? dateFormat(profile.basic_info.date_of_birth) : null} />
+                            <IntroField label='Time of Birth' value={profile.basic_info.time_of_birth ? timeFormat(profile.basic_info.time_of_birth) : null} />
                             <IntroField label='Place of Birth' value={profile.basic_info.place_of_birth} />
                             <IntroField label='Gotra' value={profile.basic_info.gotra_self} />
                             <IntroField label='Manglik' value={profile.basic_info.manglik} />
-                            <IntroField label='Height' value={heightFormat(profile.basic_info.height)} />
+                            <IntroField label='Height' value={profile.basic_info.height ? heightFormat(profile.basic_info.height) : null} />
                             <IntroField label='Complexion' value={profile.basic_info.color} />
                             <IntroField label='Education' value={profile.basic_info.education} />
                             <IntroField label='Occupation' value={profile.basic_info.occupation} />
