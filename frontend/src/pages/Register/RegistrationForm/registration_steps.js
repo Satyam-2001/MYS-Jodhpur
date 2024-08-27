@@ -57,7 +57,7 @@ const registration_steps = [
                 }
             },
             { label: 'Income', type: 'number', InputProps: { endAdornment: <Typography fontWeight={500}>lakhs</Typography> } },
-            { label: 'Location', type: 'location' },
+            { label: 'Current Location', type: 'location', name: 'location' },
         ],
     },
     // {

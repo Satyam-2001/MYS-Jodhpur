@@ -10,7 +10,7 @@ import { elevation } from '../theme/styles';
 
 export default function LocationInput({ formikState, ...props }) {
 
-    const name = props.label.toLowerCase()
+    const name = props.name || props.label?.toLowerCase()
     const value = formikState.values[name] || ''
     const input = useDebounce(value, 500)
 
@@ -19,6 +19,8 @@ export default function LocationInput({ formikState, ...props }) {
         queryFn: ({ signal }) => axios.get(`https://nominatim.openstreetmap.org/search?q=${input}&format=json`, { signal }).then(res => res.data),
         enabled: input.length >= 1,
     })
+
+    console.log(props)
 
     return (
         <Autocomplete
@@ -35,7 +37,7 @@ export default function LocationInput({ formikState, ...props }) {
             onInputChange={(e, v) => {
                 formikState.setFieldValue(name, v)
             }}
-            renderInput={(params) => <TextField {...params} label={'Location'} />}
+            renderInput={(params) => <TextField {...params} label={props.label} />}
         />
     )
 }

@@ -37,7 +37,7 @@ const VerificationForm = ({ formData }) => {
     })
 
 
-    const { values, handleSubmit, errors, touched, setFieldValue } =
+    const { values, handleSubmit, errors, touched, setFieldValue, isSubmitting } =
         useFormik({
             initialValues,
             validationSchema: otpSchema,
@@ -46,11 +46,11 @@ const VerificationForm = ({ formData }) => {
             onSubmit: async (values, action) => {
                 try {
                     const data = await registerMutate({ ...formData, ...values })
-                    action.resetForm()
                 }
                 catch (e) {
                     action.setFieldError('otp', e.response.data.msg || 'Unknown error occured')
                 }
+                action.resetForm()
             },
         });
 
@@ -83,11 +83,11 @@ const VerificationForm = ({ formData }) => {
                         {errors.otp}
                     </Typography>
                 )}
-                <Button sx={{ margin: 1 }} onClick={resendOtpHandler}>
+                <Button disabled={isSubmitting} sx={{ margin: 1 }} onClick={resendOtpHandler}>
                     Resend
                 </Button>
-                <Button variant='contained' onClick={handleSubmit}>
-                    Verify OTP
+                <Button disabled={isSubmitting} variant='contained' onClick={handleSubmit}>
+                    {isSubmitting ? 'Verifying...' : 'Verify OTP'}
                 </Button>
             </Stack>
         </Paper>

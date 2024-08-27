@@ -19,7 +19,8 @@ const ContactSchema = mongoose.Schema({
         type: String,
         required: true,
         maxLength: 50,
-        validate: [isEmail, 'Please fill a valid email address']
+        validate: [isEmail, 'Please fill a valid email address'],
+        unique: true,
     },
     address: {
         type: String,

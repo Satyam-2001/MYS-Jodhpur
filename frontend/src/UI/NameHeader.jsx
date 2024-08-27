@@ -25,7 +25,7 @@ function getAge(dateString) {
     return age;
 }
 
-function ShareButton({ profile }) {
+function ShareButton({ profile, sx = {} }) {
     return (
         <ElevatedIconButton sx={{ bgcolor: 'transparent' }}
             onClick={(event) => {
@@ -44,7 +44,7 @@ function ShareButton({ profile }) {
                 }}
             >
 
-                <ShareIcon sx={{ fontSize: '1.3rem', color: 'white' }} />
+                <ShareIcon sx={{ fontSize: '1.3rem', color: 'white', ...sx }} />
             </RWebShare >
         </ElevatedIconButton>
     )
@@ -94,6 +94,7 @@ export default function NameHeader({ hideActivityStatus = false, hideShortlistIc
                     sx={{
                         fontSize: '1.5rem',
                         fontWeight: 600,
+                        textTransform: 'capitalize',
                         ...sx,
                         '&:hover': {
                             color: 'primary.main',
@@ -102,7 +103,7 @@ export default function NameHeader({ hideActivityStatus = false, hideShortlistIc
                             // WebkitBackgroundClip: 'text'
                         }
                     }}>
-                    {!isLoading ? `${name}, ${age}` : 'Loading...'}
+                    {!isLoading ? `${name?.toLowerCase()}, ${age}` : 'Loading...'}
                 </Typography>
                 {!isMe && !isLoading && !hideActivityStatus && <LastSeen user={profile} sx={sx} />}
             </Stack>
@@ -110,7 +111,7 @@ export default function NameHeader({ hideActivityStatus = false, hideShortlistIc
                 {isShortlisted ? <StarIcon sx={{ fontSize: '1.4rem', color: 'primary.main' }} /> : <StarOutlineIcon sx={{ fontSize: '1.6rem', color }} />}
             </ElevatedIconButton>
             }
-            {isMe && <ShareButton profile={profile} />}
+            {isMe && <ShareButton profile={profile} sx={{ color }} />}
         </Stack>
     )
 }
