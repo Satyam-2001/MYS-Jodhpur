@@ -20,8 +20,6 @@ export default function LocationInput({ formikState, ...props }) {
         enabled: input.length >= 1,
     })
 
-    console.log(props)
-
     return (
         <Autocomplete
             disablePortal

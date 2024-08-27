@@ -38,8 +38,8 @@ function getAge(dateString) {
 }
 
 function generateBio(user) {
-    const intro = `Hello! I’m ${user.name}, a ${getAge(user.date_of_birth)}-year-old`
-    const education = ` I’ve completed my ${user.education} and currently working as a ${user.occupation}.\n\n`
+    const intro = `Hello! I’m ${user?.name}, a ${getAge(user?.date_of_birth)}-year-old`
+    const education = ` I’ve completed my ${user?.education} and currently working as a ${user?.occupation}.\n\n`
     const looking_for = `I’m looking for a life partner who shares similar values and interests.`
     const bio = intro + (' ' + user?.gender?.toLowerCase()) + '.' + education + looking_for
     return bio

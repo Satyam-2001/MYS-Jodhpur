@@ -59,7 +59,6 @@ const BasicInfoSchema = new mongoose.Schema({
     income: {
         type: Number,
         min: 0,
-        max: 10000,
     },
     mother_tongue: {
         type: String,

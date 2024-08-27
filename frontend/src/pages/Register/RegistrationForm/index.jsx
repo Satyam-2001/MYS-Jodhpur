@@ -46,6 +46,7 @@ function CustomForm({ next, prev, selectedStep, inputField, active = false, comp
             validateOnChange: true,
             validateOnBlur: false,
             onSubmit: (values, action) => {
+                console.log(values)
                 next(values)
             },
         });
@@ -85,7 +86,9 @@ export default function RegisterationForm({ submitFormHandler }) {
     const [error, setError] = useState(null)
 
     const { mutate: verifyOtpMutate } = useMutation({
-        mutationFn: (data) => axios.post('/auth/otp/send', data),
+        mutationFn: (data) => {
+            return axios.post('auth/otp/send', data)
+        },
         onSuccess: (data) => {
             setVerifyUserByOtp(true)
         },
@@ -94,8 +97,9 @@ export default function RegisterationForm({ submitFormHandler }) {
         }
     })
 
+    console.log(formData)
+
     const stepBack = (data) => {
-        setFormData((prop) => { return { ...prop, ...data } })
         setSelectedStep((prop) => prop - 1)
     }
 
@@ -103,6 +107,7 @@ export default function RegisterationForm({ submitFormHandler }) {
         setFormData((prop) => { return { ...prop, ...data } })
         setSelectedStep((prop) => {
             if (prop + 1 === registration_steps.length) {
+                console.log('submit', { ...formData, ...data })
                 verifyOtpMutate({ ...formData, ...data })
                 return prop
             }
@@ -110,11 +115,6 @@ export default function RegisterationForm({ submitFormHandler }) {
         })
     }
 
-    // if (verifyUserByOtp) {
-    //     return (
-
-    //     )
-    // }
 
     return (
         <Fragment>
