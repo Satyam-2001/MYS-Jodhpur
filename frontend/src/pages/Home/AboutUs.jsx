@@ -16,7 +16,7 @@ export default function AboutUs() {
                     textAlign: 'center'
                 }}
             >
-                At MYS Shaadi, we are dedicated to celebrating and nurturing the rich heritage and values of the Agarwal community through our innovative matrimonial platform. Our mission is to connect individuals and families seeking meaningful relationships and lifelong partnerships while ensuring a seamless, secure, and enriching experience.
+                At MYS Shaadi, we are dedicated to celebrating and nurturing the rich heritage and values of the Maheshwari community through our innovative matrimonial platform. Our mission is to connect individuals and families seeking meaningful relationships and lifelong partnerships while ensuring a seamless, secure, and enriching experience.
             </Typography>
             <NavigateButton
                 to='/aboutus'
