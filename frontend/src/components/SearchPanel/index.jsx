@@ -108,8 +108,8 @@ export default function SearchPanel({ queryKey, url }) {
             <Stack alignItems={'center'} gap={1.5} sx={{ width: '100%', height: '100%', flex: 1 }}>
                 <SearchHeader toggleFilterHandler={toggleFilterHandler} />
                 <ProfilesList isPending={isPending} profilesList={profilesList || []} view={view} >
-                    {totalPages > 1 && <Grid item xs={12} sx={{ scrollSnapAlign: 'start', justifyContent: 'center', p: 2, display: 'flex' }}>
-                        <Pagination page={page} count={totalPages} onChange={handlePageChange} />
+                    {totalPages > 1 && <Grid item xs={12} sx={{ scrollSnapAlign: 'start', justifyContent: 'center', py: 2, display: 'flex' }}>
+                        <Pagination variant="outlined" siblingCount={1} boundaryCount={1} page={page} count={totalPages} onChange={handlePageChange} />
                     </Grid>}
                 </ProfilesList>
             </Stack>
