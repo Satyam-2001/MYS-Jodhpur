@@ -6,12 +6,12 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 
 import logo from '../../assets/logo.png'
-import navigationList, { legalNavigationList } from '../../data/navigation';
+import navigationList, { helpNavigationList, legalNavigationList } from '../../data/navigation';
 
 const socials = [
     {
         Icon: InstagramIcon,
-        link: 'https://www.instagram.com/mys-shaadi_org/'
+        link: 'https://www.instagram.com/'
     },
     // {
     //     Icon: FacebookIcon,
@@ -38,60 +38,55 @@ function SocialIconLink({ link, Icon }) {
     )
 }
 
+function LinkStack({ name, navigationList }) {
+    return (
+        <Grid item xs={6} sm={4} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Stack>
+                <Typography variant='h3' fontSize={'1.2rem'} fontWeight={700} sx={{ opacity: 0.7, textTransform: 'uppercase' }} >
+                    {name}
+                </Typography>
+                <Stack pt={2} gap={1}>
+                    {navigationList.map(({ to, name }) => {
+                        return (
+                            <StyledLink key={to} to={to}>
+                                {name}
+                            </StyledLink>)
+                    })}
+                </Stack>
+            </Stack>
+        </Grid>
+    )
+}
+
 function Footer() {
 
     const theme = useTheme()
 
     return (
-        <Paper >
-            <Grid spacing={3} container sx={{ p: 4, boxSizing: 'border-box' }}>
-                {/* <Grid item xs={12} sm={4} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Stack sx={{ width: '100%', bgcolor: 'background.paper' }} >
+            <Stack sx={{ bgcolor: 'action.hover' }}>
+                <Grid spacing={3} container sx={{ p: 4, boxSizing: 'border-box' }}>
+                    {/* <Grid item xs={12} sm={4} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <img src={logo} style={{ height: '12rem' }} />
                 </Grid> */}
-                <Grid item xs={6} sm={4} sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Stack>
-                        <Typography variant='h3' fontSize={'1.2rem'} fontWeight={700} sx={{ opacity: 0.6 }} >
-                            EXPLORE
-                        </Typography>
-                        <Stack pt={2} gap={1}>
-                            {navigationList.map(({ to, name }) => {
-                                return (
-                                    <StyledLink key={to} to={to}>
-                                        {name}
-                                    </StyledLink>)
-                            })}
-                        </Stack>
-                    </Stack>
-                </Grid>
-                <Grid item xs={6} sm={4} sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Stack>
-                        <Typography variant='h3' fontSize={'1.2rem'} fontWeight={700} sx={{ opacity: 0.6 }} >
-                            LEGAL
-                        </Typography>
-                        <Stack pt={2} gap={1}>
-                            {legalNavigationList.map(({ to, name }) => {
-                                return (
-                                    <StyledLink key={to} to={to}>
-                                        {name}
-                                    </StyledLink>)
-                            })}
-                        </Stack>
-                    </Stack>
-                </Grid>
-            </Grid>
+                    <LinkStack name={'Explore'} navigationList={navigationList} />
+                    <LinkStack name={'Legal'} navigationList={legalNavigationList} />
+                    <LinkStack name={'Help'} navigationList={helpNavigationList} />
 
-            <Grid item xs={12} sx={{ justifyContent: 'center' }}>
-                <Divider />
-                <Typography variant='h5' fontSize={'1rem'} textAlign={'center'} sx={{ p: 2 }}>
-                    Copyright © 2024. All rights reserved by MYS Shaadi.
-                </Typography>
-            </Grid>
-            <Grid item xs={12} sx={{ justifyContent: 'center' }}>
-                <Typography variant='h5' fontSize={'1.2rem'} textAlign={'center'} sx={{ p: 2 }}>
-                    Developed By <Link target='blank' to={'https://www.linkedin.com/company/bytesbridge'} style={{ textDecoration: 'underline', color: theme.palette.primary.main }}>Bytes Bridge</Link>
-                </Typography>
-            </Grid>
-        </Paper>
+                    <Grid item xs={12} sx={{ justifyContent: 'center' }}>
+                        <Divider />
+                        <Typography variant='h5' fontSize={'1rem'} textAlign={'center'} sx={{ p: 1 }}>
+                            Copyright © 2024. All rights reserved by MYS Shaadi.
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sx={{ justifyContent: 'center' }}>
+                        <Typography variant='h5' fontSize={'1.2rem'} textAlign={'center'}>
+                            Developed By <Link target='blank' to={'https://www.linkedin.com/company/bytesbridge'} style={{ textDecoration: 'none', color: theme.palette.primary.main }}>Bytes Bridge</Link>
+                        </Typography>
+                    </Grid>
+                </Grid>
+            </Stack>
+        </Stack>
     )
 }
 

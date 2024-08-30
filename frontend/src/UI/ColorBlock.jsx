@@ -4,14 +4,15 @@ import React from 'react'
 import Tilt from 'react-parallax-tilt'
 import { ElevatedStack } from './ElevatedComponents'
 
-export default function ColorBlock({ children, color, sx = {}, style = {} }) {
+export default function ColorBlock({ children, sx = {}, style = {} }) {
     const theme = useTheme()
     const mode = theme.palette.mode
+    const color = theme.palette.action.hover
     return (
         <Tilt
             tiltEnable={false}
             glareEnable={true}
-            scale={1.1}
+            scale={1.05}
             glareMaxOpacity={0.3}
             glareColor={mode === 'dark' ? 'white' : chroma(color).darken().hex()}
             glarePosition="all"
@@ -28,7 +29,7 @@ export default function ColorBlock({ children, color, sx = {}, style = {} }) {
                     borderColor: color,
                     height: '100%',
                     justifyContent: 'center',
-                    backgroundColor: chroma(color).alpha(0.25).hex(),
+                    backgroundColor: chroma(color).alpha(0.1).hex(),
                     ...sx
                 }}
             >

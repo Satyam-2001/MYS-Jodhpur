@@ -1,14 +1,21 @@
 import { Stack } from "@mui/material"
-import HeroSection from "./HeroSection"
 import IntroSection from "./IntroSection"
 import Container from "../../components/Layouts/Container"
 import Footer from "../../components/Layouts/Footer"
 import useProtectedRoute from "../../hooks/useProtectedRoute"
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useEffect, useRef } from "react"
+import bg_image from '../../assets/background.jpg'
+import SafetySection from "./SafetySection"
+import RegisterSection from "./RegistrationSection"
+import CommunitySection from "./CommunitySection"
+import ContactUsSection from "./ContactUsSection"
+import AboutUs from "./AboutUs"
+import FeatureSection from "./FeatureSection"
+import SponserSection from "./SponserSection"
+import MemberSection from "./MemberSection"
 
-const image_url = 'https://images.unsplash.com/photo-1615966650071-855b15f29ad1?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGNvdXBsZSUyMGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D'
-// 'https://pikwizard.com/pw/medium/81145461cf9d2348111ba92f037a6823.jpg'
+const image_url = 'https://i.pinimg.com/originals/71/6e/fc/716efc545dbb2b0e2a018bed028b26f7.jpg'
 
 
 function Home() {
@@ -21,11 +28,19 @@ function Home() {
                 bgcolor: 'transparent',
                 backgroundSize: 'cover',
                 backgroundPosition: { xs: 'center', md: 'center' },
-                backgroundImage: `url(${image_url})`,
+                backgroundImage: `url(${bg_image})`,
                 // boxShadow: 'inset 0px 100px 120px -50px black'
             }} >
             <IntroSection />
-            <HeroSection />
+            <SponserSection />
+            <RegisterSection />
+            <FeatureSection />
+            <SafetySection />
+            <AboutUs />
+            <MemberSection />
+            <ContactUsSection />
+            <CommunitySection />
+            {/* <HeroSection /> */}
         </Container>
     )
 }

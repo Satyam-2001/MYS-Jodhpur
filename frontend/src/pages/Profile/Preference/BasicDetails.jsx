@@ -26,7 +26,7 @@ function EditModal({ onSubmit, ...props }) {
     const inputArray = [
         { label: 'Age', type: 'range', min: 18, max: 60, md: 12 },
         { label: 'Height', type: 'range', min: 48, max: 100, format: heightFormat, md: 12 },
-        { label: 'Income', type: 'range', min: 1, max: 100, format: incomeFormat, md: 12 },
+        { label: 'Income', type: 'range', min: 0, max: 100, format: incomeFormat, md: 12 },
         { label: 'Location', type: 'location' },
         { label: 'Mother Tongue', type: 'autocomplete', menuItems: language, input_prop: { multiple: true }, md: 12 },
         { label: 'Manglik', type: 'autocomplete', menuItems: manglik, input_prop: { multiple: true }, md: 12 },

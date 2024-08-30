@@ -27,6 +27,7 @@ import HelpSection from "./pages/Settings/HelpSection";
 import NotificationsSection from "./pages/Settings/NotificationsSection";
 import PrivacyPolicy from "./pages/Miscellaneous/PrivacyPolicy";
 import Members from "./pages/Members";
+import ContactUs from "./pages/Miscellaneous/ContactUs";
 
 const router = createBrowserRouter([
     {
@@ -166,6 +167,10 @@ const router = createBrowserRouter([
             {
                 path: '/biodata',
                 element: <Biodata />
+            },
+            {
+                path: '/contactus',
+                element: <ContactUs />
             },
             {
                 path: '*',

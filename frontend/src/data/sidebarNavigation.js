@@ -5,11 +5,13 @@ import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import LoginIcon from '@mui/icons-material/Login';
+import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 
 const sidebarNavigationList = [
     { name: 'Home', to: '/', Icon: HomeIcon, auth: false },
     { name: 'Search', to: '/search', Icon: SearchIcon },
     { name: 'Register', to: '/register', Icon: LoginIcon, auth: false },
+    { name: 'Contact Us', to: '/contactus', Icon: HelpOutlineOutlinedIcon, auth: false },
     { name: 'Chats', to: '/chats', Icon: ChatBubbleOutlineOutlinedIcon, auth: true, badge: true },
     { name: 'Activity', to: '/activity', Icon: AccessTimeOutlinedIcon, auth: true },
     { name: 'Profile', to: '/profile', Icon: PermIdentityOutlinedIcon, md: false, auth: true },

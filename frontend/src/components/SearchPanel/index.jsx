@@ -66,7 +66,7 @@ export default function SearchPanel({ queryKey, url }) {
     })
 
     const { view, search, ...filter } = params
-    const [page, setPage] = useState(1)
+    const page = +searchParams.get('page') || 1
     const [filterOpen, setFilterOpen] = useState(false)
     const searchValue = useDebounce(search, 500)
 
@@ -96,7 +96,6 @@ export default function SearchPanel({ queryKey, url }) {
 
 
     const handlePageChange = (event, value) => {
-        setPage(value)
         setSearchParams((searchParams) => {
             searchParams.set('page', value)
             return searchParams

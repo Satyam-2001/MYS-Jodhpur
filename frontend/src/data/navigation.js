@@ -23,4 +23,8 @@ export const legalNavigationList = [
     { name: 'Privacy Policy', to: '/privacypolicy' },
 ]
 
+export const helpNavigationList = [
+    { name: 'Contact Us', to: '/contactus' }
+]
+
 export default navigationList

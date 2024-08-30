@@ -44,7 +44,7 @@ export const themeSettings = (mode, main, primary) => {
     }
 
     const customGradients = {
-        mainGradient: primary ? 'linear-gradient(135deg, #C52062 2.34%, #0a6efa 100.78%)' : 'linear-gradient(135deg, #fab14b 2.34%, #FC793D 100.78%)',
+        mainGradient: primary ? 'linear-gradient(135deg, #C52062 2.34%, #0a6efa 100.78%)' : 'linear-gradient(135deg, #9b58bf 2.34%, #7732a8 100.78%)',
         // secondaryGradient: 'linear-gradient(to right, #00c6ff, #0072ff)',
     }
 
@@ -127,7 +127,7 @@ export const ColorModeProvider = ({ children }) => {
     const [mode, setMode] = useState('light')
     const { user, isLoggedIn } = useSelector(state => state.user)
 
-    const defaultColor = '#fc793d'
+    const defaultColor = '#7732a8'
     const maleColor = '#0a6efa'
     const femaleColor = '#f285e9'
 
