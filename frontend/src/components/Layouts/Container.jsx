@@ -2,7 +2,7 @@ import { Stack } from '@mui/material'
 import React, { Fragment, forwardRef, useContext } from 'react'
 import Sidebar from '../NavigatonBar/SideNavbar'
 import { useSelector } from 'react-redux'
-import BottomNavigation from '../NavigatonBar/BottomNavbar'
+import BottomNavigation, { BOTTOMBAR_HEIGHT } from '../NavigatonBar/BottomNavbar'
 import Header, { APPBAR_HEIGHT } from './Header'
 import Footer from './Footer'
 import { useScroll, useTransform } from 'framer-motion'
@@ -46,7 +46,7 @@ const Container = forwardRef(({ children, hideSideBar, hideBottomNavBar, hideApp
         )
     }
     return (
-        <Stack height='100vh' boxSizing={'border-box'} sx={{ position: 'relative', paddingBottom: { xs: hideBottomNavBar ? 0 : '65px', md: 0 }, bgcolor: 'background.default', ...style }}>
+        <Stack height='100vh' boxSizing={'border-box'} sx={{ position: 'relative', paddingBottom: { xs: hideBottomNavBar ? 0 : BOTTOMBAR_HEIGHT, md: 0 }, bgcolor: 'background.default', ...style }}>
             <Stack boxSizing={'border-box'} sx={{ flex: 1, overflow: 'hidden', bgcolor: 'inherit' }}>
                 {!hideAppBar && <Header header={header} appBarTranslucent={appBarTranslucent} />}
                 {Internal}

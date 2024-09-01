@@ -41,9 +41,7 @@ export default function NotificationCard({ type, data, date, index }) {
         >
             <Stack direction='row' sx={{ gap: 2, alignItems: 'center', justifyContent: 'space-between' }}>
                 <Stack direction='row' sx={{ gap: 2, alignItems: 'center' }}>
-                    <Avatar src={profile?.basic_info?.profile_image} sx={{ width: 52, height: 52 }}>
-                        {profile?.basic_info?.name}
-                    </Avatar>
+                    <Avatar src={profile?.basic_info?.profile_image} sx={{ width: 52, height: 52 }} />
                     <Stack sx={{ justifyContent: 'space-evenly' }}>
                         <Typography vayiant='h3' sx={{ fontSize: '18px' }}>
                             {profile?.basic_info?.name}

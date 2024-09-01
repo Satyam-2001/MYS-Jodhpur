@@ -5,6 +5,8 @@ import { NavLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { ElevatedStack } from '../../UI/ElevatedComponents'
 
+export const BOTTOMBAR_HEIGHT = '64px'
+
 export default function BottomNavigation() {
     const { isLoggedIn } = useSelector(state => state.user)
     return (
