@@ -4,6 +4,7 @@ import { elevation } from '../theme/styles'
 
 const occupation = [
     { label: 'Accounting Professional', category: 'Banking & Finance' },
+    { label: 'Share Broker', category: 'Banking & Finance' },
     { label: 'Auditor', category: 'Banking & Finance' },
     { label: 'Banking Professional', category: 'Banking & Finance' },
     { label: 'Charted Accountant', category: 'Banking & Finance' },
