@@ -44,7 +44,7 @@ function EditModal({ onSubmit, ...props }) {
         { label: 'Manglik', type: 'select', menuItems: manglik, md: 4 },
         { label: 'Martial Status', type: 'select', menuItems: martial_status, md: 4 },
         { label: 'Disability', type: 'select', menuItems: disability, md: 4 },
-        { label: 'Disease', type: 'select', menuItems: disease, md: 4 }
+        { label: 'Disease', type: 'autocomplete', menuItems: disease, input_prop: { multiple: true }, md: 4 }
     ]
 
     return (

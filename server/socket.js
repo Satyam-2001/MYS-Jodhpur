@@ -17,7 +17,6 @@ const io = socketio(server, {
 
 io.on('connection', async (socket) => {
     const user_id = socket.handshake.query["user_id"];
-    console.log(`User connected ${socket.id}`);
 
     const socketController = new SocketController(socket, io);
 

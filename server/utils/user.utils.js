@@ -47,9 +47,10 @@ function getFilterQuery(filters, user, options) {
         filter[`family.${key}`] = { $regex: regexValues.join('|'), $options: 'i' };
     })
 
+
     // Applying Basic Info Filters
     Object.keys(selection_filter).forEach(key => {
-        const regexValues = selection_filter[key].split(',').map(value => `^${value}$`);
+        const regexValues = selection_filter[key].split(',').map(value => `^${value.trim()}$`);
         filter[`basic_info.${key}`] = { $regex: regexValues.join('|'), $options: 'i' };
     })
 

@@ -18,7 +18,7 @@ import CustomModal from '../../../UI/CustomModal';
 import { FormikProvider, useFormik } from 'formik'
 import RangeSliderSelection from './RangeSliderSelection';
 import InputField from '../../../UI/InputField';
-import { diet, manglik, martial_status, complexion, weight_category, language, family_status, family_type, family_values, drink, education, occupation, employed_in } from '../../../data/selectionData'
+import { diet, manglik, martial_status, complexion, weight_category, language, family_status, family_type, family_values, drink, education, occupation, employed_in, disease } from '../../../data/selectionData'
 import InputLabel from './InputLabel';
 import { ElevatedButton } from '../../../UI/ElevatedComponents';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -86,6 +86,7 @@ const filterInputPropsList = [
     { label: 'Family Values', type: 'autocomplete', menuItems: family_values, input_prop: { multiple: true } },
     { label: 'Drinks', type: 'autocomplete', menuItems: drink, input_prop: { multiple: true } },
     { label: 'Smoke', type: 'autocomplete', menuItems: drink, input_prop: { multiple: true } },
+    { label: 'Disease', type: 'autocomplete', menuItems: disease, input_prop: { multiple: true } },
 ]
 
 function FilterElevatedStack({ formik, toggleFilterHandler, applyFiltersHandler }) {
