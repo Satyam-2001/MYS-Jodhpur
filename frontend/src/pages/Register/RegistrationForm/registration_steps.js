@@ -7,8 +7,6 @@ import { Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import LocationInput from '../../../components/LocationInput';
 import { Component } from 'react';
-import OccupationInput from '../../../components/OccupationInput';
-import EducationInput from '../../../components/EducationInput';
 
 const registration_steps = [
     {

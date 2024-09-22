@@ -40,6 +40,7 @@ export const employed_in = [
 ]
 export const occupation = [
     { label: 'Accounting Professional', category: 'Banking & Finance' },
+    { label: 'Share Broker', category: 'Banking & Finance' },
     { label: 'Auditor', category: 'Banking & Finance' },
     { label: 'Banking Professional', category: 'Banking & Finance' },
     { label: 'Charted Accountant', category: 'Banking & Finance' },
@@ -116,7 +117,9 @@ export const occupation = [
     { label: 'Artist', category: 'Others' },
     { label: 'Beautician', category: 'Others' },
     { label: 'Broker', category: 'Others' },
+    { label: 'Business', category: 'Others' },
     { label: 'Fashion Designer', category: 'Others' },
+    { label: 'Entrepreneur', category: 'Others' },
     { label: 'Interior Designer', category: 'Others' },
     { label: 'Others', category: 'Others' },
     { label: 'Security Professional', category: 'Others' },

@@ -12,7 +12,7 @@ export default function LocationInput({ formikState, ...props }) {
 
     const name = props.name || props.label?.toLowerCase()
     const value = formikState.values[name] || ''
-    const input = useDebounce(value, 500)
+    const input = useDebounce(value, 0)
 
     const { data = [], isPending } = useQuery({
         queryKey: ['location', input],
