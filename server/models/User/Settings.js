@@ -7,7 +7,7 @@ const SettingsSchema = new mongoose.Schema({
     },
     contact_visibility: {
         type: String,
-        default: 'Only to Matches'
+        default: 'Only to Registered Users'
     },
     show_activity_status: {
         type: Boolean,
