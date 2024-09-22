@@ -19,7 +19,7 @@ export default function ValueCard({ value, color, to, Icon, sx = {} }) {
                 overflow: 'hidden',
                 position: 'relative',
                 '&:hover': {
-                    transform: 'scale(1.06)'
+                    transform: 'scale(1.02)'
                 },
                 ...sx,
             }}>

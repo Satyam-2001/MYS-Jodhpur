@@ -62,7 +62,7 @@ function ImageBox({ image, onClick }) {
             onClick={onClick}
             sx={{
                 backgroundSize: 'cover',
-                backgroundImage: `url(${image})`,
+                backgroundImage: `url("${image}")`,
             }}
         />
     )

@@ -38,7 +38,7 @@ export default function ProfileImage({ profile, gradient = false, children, sx =
                 justifyContent: 'flex-end',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                backgroundImage: `url(${image_gallery[currentIndex] || require('../assets/person.png')})`,
+                backgroundImage: `url("${image_gallery[currentIndex] || require('../assets/person.png')}")`,
                 borderRadius: '10px',
                 ...sx,
             }}
