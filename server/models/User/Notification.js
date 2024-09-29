@@ -11,12 +11,12 @@ const NotificationSchema = mongoose.Schema({
     data: {
         type: mongoose.Schema.Types.Mixed
     },
-    expiresAt: {
-        type: Date,
-        default: () => new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-    }
+    // expiresAt: {
+    //     type: Date,
+    //     default: () => new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+    // }
 }, { _id: false })
 
-NotificationSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+// NotificationSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 module.exports = NotificationSchema
