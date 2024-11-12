@@ -6,6 +6,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useCapacitorApp from './hooks/useCapacitorApp';
 
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
 function App(props) {
@@ -16,10 +18,10 @@ function App(props) {
     useCapacitorApp()
 
     return (
-        <Fragment>
+        <GoogleOAuthProvider clientId="368591574569-dg1d1555eliucla4p77rvdquliqcfa40.apps.googleusercontent.com">
             <ToastContainer toastStyle={{ backgroundColor: theme.palette.background.default }} />
             <Outlet />
-        </Fragment>
+        </GoogleOAuthProvider>
     )
 }
 
